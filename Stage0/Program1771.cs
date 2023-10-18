@@ -1,4 +1,6 @@
-﻿using System;
+﻿//The project was done by only one student (because the number of students in the group is odd)
+
+using System;
 
 namespace Targil0
 {
