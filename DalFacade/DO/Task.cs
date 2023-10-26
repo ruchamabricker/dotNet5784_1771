@@ -4,33 +4,34 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DO;
 /// <summary>
-/// task entity represents a task
+/// task entity represents a task with all its props
 /// </summary>
-/// <param name="id"></param>
-/// <param name="description"></param>
-/// <param name="alias"></param>
-/// <param name="milestone"></param>
-/// <param name="ceratedAt"></param>
-/// <param name="start"></param>
-/// <param name="scheduledDate"></param>
-/// <param name="deadline"></param>
-/// <param name="complete"></param>
-/// <param name="deliverabels"></param>
-/// <param name="remarks"></param>
-/// <param name="engineerid"></param>
-/// <param name="complexityLevel"></param>
+/// <param name="id"> uniqe id for the task </param>
+/// <param name="description"> description of the task </param>
+/// <param name="alias"> short name of the tasd </param>
+/// <param name="milestone"> significant event or achievement that marks a key point in the progress of a task </param>
+/// <param name="ceratedAt"> date the task was created </param>
+/// <param name="start"> date the task started </param>
+/// <param name="scheduledDate">  scheduled date to finish the task </param>
+/// <param name="deadline"> deadline to finish the task </param>
+/// <param name="complete"> date the task was completed </param>
+/// <param name="deliverabels"> a string describing the deliverabels </param>
+/// <param name="remarks"> remarks about the task </param>
+/// <param name="engineerid"> id of the engineer </param>
+/// <param name="complexityLevel"> level of coplexity </param>
+
 public record Task(
     int id,
     string description,
     string alias,
     bool milestone,
-    DateTime ceratedAt,
-    DateTime start,
-    DateTime scheduledDate,
-    DateTime deadline,
-    DateTime complete,
-    string deliverabels,
-    string remarks,
     int engineerid,
-    EngineerExperience complexityLevel
+    EngineerExperience complexityLevel,
+    DateTime ceratedAt,
+    DateTime? start=null,
+    DateTime? scheduledDate = null,
+    DateTime? deadline = null,
+    DateTime? complete = null,
+    string? deliverabels = null,    
+    string? remarks=null
     );

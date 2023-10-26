@@ -1,13 +1,13 @@
 ﻿
 namespace DO;
 /// <summary>
-/// 
+/// Enigneer Entity, represents a enigneer with all its props
 /// </summary>
-/// <param name="id"></param>
-/// <param name="name"></param>
-/// <param name="email"></param>
-/// <param name="level"></param>
-/// <param name="cost"></param>
+/// <param name="id"> uniqe id of enigneer </param>
+/// <param name="name"> name of enigneer </param>
+/// <param name="email"> email of enigneer </param>
+/// <param name="level"> experience level of the enigneer </param>
+/// <param name="cost"> cost per hour </param>
 public record Enigneer(  
     int id,
     string name,
