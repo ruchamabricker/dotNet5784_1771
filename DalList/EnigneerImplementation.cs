@@ -25,11 +25,13 @@ public class EnigneerImplementation : IEnigneer
             DataSource.Enigneers.Find(item=>id==item.id);
 
             throw new NotImplementedException();
+
+        
     }
 
-    public Enigneer? Read(Enigneer id)
+    public Enigneer? Read(int id)
     {
-        throw new NotImplementedException();
+        return DataSource.Enigneers.Find(lk => lk.id == id);
     }
 
     public List<Enigneer> ReadAll()

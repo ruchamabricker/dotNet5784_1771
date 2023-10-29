@@ -9,17 +9,27 @@ public class ListImplementation : ITask
 {
     public int Create(Task item)
     {
-        throw new NotImplementedException();
+        //for entities with auto id
+        int newid = DataSource.Config.NextTaskId;
+        Task copy = item with { id = newid };
+        DataSource.Tasks.Add(copy);
+        return newid;
     }
 
     public void Delete(int id)
     {
         throw new NotImplementedException();
     }
-
-    public Task? Read(Task id)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Task? Read(int id)
     {
-        throw new NotImplementedException();
+        return DataSource.Tasks.Find(lk => lk.id == id);
+
+      //  throw new NotImplementedException();
     }
 
     public List<Task> ReadAll()
