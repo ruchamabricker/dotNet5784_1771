@@ -17,7 +17,15 @@ public class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        if (DataSource.Dependencys.Find(item => item.id == id) == null)
+        {
+            throw new Exception($"there is no dependency with this id: {id}");
+        }
+        //if (DataSource.Tasks.Find(item => item.engineerid == id) != null)
+        //{
+        //    throw new Exception($"this enigeer {id} has tasks, he can not be deleted!");
+        //}
+        DataSource.Enigneers.Remove(DataSource.Enigneers.Find(item => id == id));
     }
 
     public Dependency? Read(int id)
@@ -27,11 +35,18 @@ public class DependencyImplementation : IDependency
 
     public List<Dependency> ReadAll()
     {
-        throw new NotImplementedException();
+        List<Dependency> listD = DataSource.Dependencys;
+        return listD;
     }
 
     public void Update(Dependency item)
     {
-        throw new NotImplementedException();
+        Dependency d = DataSource.Dependencys.Find(lk => lk.id == item.id);
+        if (d != null)
+        {
+            DataSource.Dependencys.Remove(d);
+            DataSource.Dependencys.Add(item);
+        }
+        throw new Exception($"no such item with {item.id} id in dependcy");
     }
 }
