@@ -25,7 +25,7 @@ public class DependencyImplementation : IDependency
         //{
         //    throw new Exception($"this enigeer {id} has tasks, he can not be deleted!");
         //}
-        DataSource.Enigneers.Remove(DataSource.Enigneers.Find(item => id == id));
+        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => id == id));
     }
 
     public Dependency? Read(int id)
