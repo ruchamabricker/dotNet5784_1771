@@ -8,7 +8,7 @@ namespace DO;
 /// </summary>
 /// <param name="id"> uniqe id for the task </param>
 /// <param name="description"> description of the task </param>
-/// <param name="alias"> short name of the tasd </param>
+/// <param name="alias"> short name of the task </param>
 /// <param name="milestone"> significant event or achievement that marks a key point in the progress of a task </param>
 /// <param name="ceratedAt"> date the task was created </param>
 /// <param name="start"> date the task started </param>
@@ -32,6 +32,6 @@ public record Task(
     DateTime? scheduledDate = null,
     DateTime? deadline = null,
     DateTime? complete = null,
-    string? deliverabels = null,    
+    string? deliverabels = null,
     string? remarks=null
     );
