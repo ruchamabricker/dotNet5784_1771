@@ -26,7 +26,7 @@ public class TaskImplementation : ITask
         {
             throw new Exception($"this task {id} has tasks depented on it, it can not be deleted!");
         }
-        DataSource.Tasks.Remove(DataSource.Tasks.Find(item => id == id));
+        DataSource.Tasks.Remove(DataSource.Tasks.Find(item => item.id == id));
         
     }
   
@@ -37,7 +37,8 @@ public class TaskImplementation : ITask
 
     public List<Task> ReadAll()
     {
-        throw new NotImplementedException();
+        List<Task> listT = DataSource.Tasks;
+        return listT;
     }
 
     public void Update(Task item)
@@ -48,6 +49,7 @@ public class TaskImplementation : ITask
             DataSource.Tasks.Remove(d);
             DataSource.Tasks.Add(item);
         }
-        throw new Exception($"no such item with {item.id} id in task");
+        else
+            throw new Exception($"no such item with {item.id} id in task");
     }
 }

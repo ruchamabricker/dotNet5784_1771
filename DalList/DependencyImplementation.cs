@@ -25,7 +25,9 @@ public class DependencyImplementation : IDependency
         //{
         //    throw new Exception($"this enigeer {id} has tasks, he can not be deleted!");
         //}
-        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => id == id));
+        //DataSource.Engineers.Remove(DataSource.Engineers.Find(item => id == id));
+        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => item.id == id));
+
     }
 
     public Dependency? Read(int id)
@@ -47,6 +49,7 @@ public class DependencyImplementation : IDependency
             DataSource.Dependencys.Remove(d);
             DataSource.Dependencys.Add(item);
         }
-        throw new Exception($"no such item with {item.id} id in dependcy");
+        else
+            throw new Exception($"no such item with {item.id} id in dependcy");
     }
 }

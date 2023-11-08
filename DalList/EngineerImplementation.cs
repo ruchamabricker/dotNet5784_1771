@@ -25,7 +25,7 @@ public class EngineerImplementation : IEngineer
         {
             throw new Exception($"this enigeer {id} has tasks, he can not be deleted!");
         }
-        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => id == id));
+        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => item.id == id));
     }
 
     public Engineer? Read(int id)
@@ -47,6 +47,7 @@ public class EngineerImplementation : IEngineer
             DataSource.Engineers.Remove(e);
             DataSource.Engineers.Add(item);
         }
-        throw new Exception($"no such item with {item.id} id in Engineers");
+        else
+            throw new Exception($"no such item with {item.id} id in Engineers");
     }
 }
