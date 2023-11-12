@@ -7,6 +7,7 @@ using DO;
 
 namespace Program // Note: actual namespace depends on the project name.
 {
+
     internal class Program
     {
         public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK };
