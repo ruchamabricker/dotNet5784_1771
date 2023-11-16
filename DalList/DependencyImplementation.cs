@@ -4,7 +4,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-public class DependencyImplementation : IDependency
+internal class DependencyImplementation : IDependency
 {
     public int Create(Dependency item)
     {
@@ -21,13 +21,7 @@ public class DependencyImplementation : IDependency
         {
             throw new Exception($"there is no dependency with this id: {id}");
         }
-        //if (DataSource.Tasks.Find(item => item.engineerid == id) != null)
-        //{
-        //    throw new Exception($"this enigeer {id} has tasks, he can not be deleted!");
-        //}
-        //DataSource.Engineers.Remove(DataSource.Engineers.Find(item => id == id));
         DataSource.Engineers.Remove(DataSource.Engineers.Find(item => item.id == id));
-
     }
 
     public Dependency? Read(int id)

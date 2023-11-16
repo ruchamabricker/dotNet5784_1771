@@ -11,9 +11,12 @@ using System.Xml.Linq;
 /// </summary>
 public static class Initialization
 {
-    private static ITask? s_dalTask;
-    private static IEngineer? s_dalEngineer;
-    private static IDependency? s_dalDependency;
+    //private static ITask? s_dalTask;
+    //private static IEngineer? s_dalEngineer;
+    //private static IDependency? s_dalDependency;
+
+    private static IDal? s_dal; //stage 2
+
 
     private static readonly Random s_rand = new();
     /// <summary>
@@ -56,10 +59,11 @@ public static class Initialization
             string _description = taskDescriptions[randNumber];
             string _alias = taskAlias[randNumber];
             //chooses a random engineer id, that he should do the task
-            int _engineerid = (s_dalEngineer!.ReadAll()[s_rand.Next(0, s_dalEngineer.ReadAll().Count())].id);
+            int _engineerid = (s_dal!.Engineer!.ReadAll()[s_rand.Next(0, s_dal!.Task.ReadAll().Count())].id);
             EngineerExperience _complexityLevel = (EngineerExperience)(s_rand.Next(0, 3));
             DateTime _ceratedAt = new DateTime(s_rand.Next(2017, 2023), s_rand.Next(1, 13), s_rand.Next(1, 29));
-            s_dalTask!.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
+            //s_dalTask!.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
+            s_dal!.Task.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
         }
 
     }
@@ -123,7 +127,9 @@ public static class Initialization
             EngineerExperience engineerExperience = (EngineerExperience)(s_rand.Next(0, 3));
             double cost = s_rand.Next(120, 590);
 
-            s_dalEngineer!.Create(new Engineer(id, name, email, engineerExperience, cost));
+            //s_dalEngineer!.Create(new Engineer(id, name, email, engineerExperience, cost));
+            s_dal!.Engineer.Create(new Engineer(id, name, email, engineerExperience, cost));
+
         }
 
     }
@@ -134,7 +140,8 @@ public static class Initialization
     {
         for (int i = 0; i < 25; i++)
         {
-            s_dalDependency!.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));
+            //s_dalDependency!.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));
+            s_dal!.Dependency.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));
         }
     }
     /// <summary>
@@ -144,11 +151,18 @@ public static class Initialization
     /// <param name="dalDependency">checks the engineers arent null</param>
     /// <param name="dalEngineer">checks the dependencies arent null</param>
     /// <exception cref="NullReferenceException"></exception>
-    public static void DO(ITask? dalTask, IDependency? dalDependency, IEngineer? dalEngineer)
+    /// 
+
+
+    //public static void DO(ITask? dalTask, IDependency? dalDependency, IEngineer? dalEngineer)
+    public static void Do(IDal dal) //stage 2
+
     {
-        s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
+
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
 
         createEngineers();
         createTasks();
