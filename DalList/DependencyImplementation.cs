@@ -17,33 +17,45 @@ internal class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        if (DataSource.Dependencys.Find(item => item.id == id) == null)
+        if (DataSource.Dependencys.FirstOrDefault(item => item.id == id) == null)
         {
-            throw new Exception($"there is no dependency with this id: {id}");
+            throw new DalDoesNotExistException($"there is no dependency with this id: {id}");
         }
-        DataSource.Engineers.Remove(DataSource.Engineers.Find(item => item.id == id));
+        DataSource.Engineers.Remove(DataSource.Engineers.FirstOrDefault(item => item.id == id));
     }
 
     public Dependency? Read(int id)
     {
-        return DataSource.Dependencys.Find(lk => lk.id == id);
+        return DataSource.Dependencys.FirstOrDefault(lk => lk.id == id);
     }
 
-    public List<Dependency> ReadAll()
+   public Dependency? Read(Func<Dependency, bool> filter) // stage 2
     {
-        List<Dependency> listD = DataSource.Dependencys;
-        return listD;
+        return DataSource.Dependencys.FirstOrDefault(filter);
+    }
+    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null) // stage 2
+    {
+        //List<Dependency> listD = DataSource.Dependencys;
+        //return listD;
+        if (filter != null)
+        {
+            return from item in DataSource.Dependencys
+                   where filter(item)
+                   select item;
+        }
+        return from item in DataSource.Dependencys
+               select item;
     }
 
     public void Update(Dependency item)
     {
-        Dependency d = DataSource.Dependencys.Find(lk => lk.id == item.id);
+        Dependency d = DataSource.Dependencys.FirstOrDefault(lk => lk.id == item.id);
         if (d != null)
         {
             DataSource.Dependencys.Remove(d);
             DataSource.Dependencys.Add(item);
         }
         else
-            throw new Exception($"no such item with {item.id} id in dependcy");
+            throw new DalDoesNotExistException($"no such item with {item.id} id in dependcy");
     }
 }

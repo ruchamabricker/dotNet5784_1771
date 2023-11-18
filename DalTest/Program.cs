@@ -37,7 +37,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     int dependsOn, dependent;
                     dependsOn = int.Parse(Console.ReadLine());
                     dependent = int.Parse(Console.ReadLine());
-                    Console.WriteLine("the id of the new dependency is: "+ s_dal!.Dependency.Create(new Dependency(0, dependsOn, dependent)));
+                    Console.WriteLine("the id of the new dependency is: " + s_dal!.Dependency.Create(new Dependency(0, dependsOn, dependent)));
                     break;
                 case CRUD.READ:
                     Console.WriteLine("enter ID to be read");
@@ -99,7 +99,16 @@ namespace Program // Note: actual namespace depends on the project name.
                     email = Console.ReadLine();
                     cost = double.Parse(Console.ReadLine());
                     level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine());
-                    s_dal!.Engineer.Create(new Engineer(id, name, email, level, cost));
+                    try
+                    {
+                        s_dal!.Engineer.Create(new Engineer(id, name, email, level, cost));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+
 
                     break;
                 case CRUD.READ:
@@ -112,7 +121,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     catch (Exception ex)
                     {
 
-                        Console.WriteLine(ex.Source);
+                        Console.WriteLine(ex.Message);
                     }
 
                     break;
@@ -178,7 +187,7 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.BREAK:
                     break;
                 case CRUD.CREATE:
-                    Console.WriteLine("Enter id, description, alias, engineer ID, complexity Level, Date it was cerated at");
+                    Console.WriteLine("Enter description, alias, engineer ID, complexity Level, Date it was cerated at");
                     description = Console.ReadLine();
                     alias = Console.ReadLine();
                     engineerID = int.Parse(Console.ReadLine());

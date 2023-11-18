@@ -4,7 +4,6 @@ namespace Dal;
 internal static class DataSource
 {
 
-
     internal static class Config
     {
         internal const int startDependencyId = 1000;
@@ -17,7 +16,6 @@ internal static class DataSource
         internal static int NextTaskId { get => nextTaskId++; }
 
     }
-
 
 
     internal static List<DO.Dependency> Dependencys { get; } = new();

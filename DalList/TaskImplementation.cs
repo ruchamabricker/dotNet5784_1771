@@ -4,6 +4,7 @@ using DalApi;
 using DO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 internal class TaskImplementation : ITask
 {
@@ -18,38 +19,46 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        if (DataSource.Tasks.Find(item => item.id == id) == null)
+        if (DataSource.Tasks.FirstOrDefault(lk => lk.id == id) == null)
         {
-            throw new Exception($"there is no task with this id: {id}");
+            throw new DalDoesNotExistException($"there is no task with this id: {id}");
         }
-        if (DataSource.Dependencys.Find(item => item.dependsOnTask == id) != null)
+        if (DataSource.Dependencys.FirstOrDefault(lk => lk.dependsOnTask == id) != null)
         {
-            throw new Exception($"this task {id} has tasks depented on it, it can not be deleted!");
+            throw new DalDeletionImpossible($"this task {id} has tasks depented on it, it can not be deleted!");
         }
-        DataSource.Tasks.Remove(DataSource.Tasks.Find(item => item.id == id));
-        
-    }
-  
-    public Task? Read(int id)
-    {
-        return DataSource.Tasks.Find(lk => lk.id == id);
+        DataSource.Tasks.Remove(DataSource.Tasks.FirstOrDefault(lk => lk.id == id));
+
     }
 
-    public List<Task> ReadAll()
+    public Task? Read(int id)
     {
-        List<Task> listT = DataSource.Tasks;
-        return listT;
+        return DataSource.Tasks.FirstOrDefault(lk => lk.id == id);
+    }
+
+   public Task? Read(Func<Task, bool> filter) // stage 2
+    {
+        return DataSource.Tasks.FirstOrDefault(filter);
+    }
+
+    public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null) // stage 2
+    {
+        if (filter == null)
+            return DataSource.Tasks.Select(item => item);
+        else
+            return DataSource.Tasks.Where(filter);
     }
 
     public void Update(Task item)
     {
-        Task d = DataSource.Tasks.Find(lk => lk.id == item.id);
+        //Task d = DataSource.Tasks.Find(lk => lk.id == item.id);
+        Task d = DataSource.Tasks.FirstOrDefault(lk => lk.id == item.id);
         if (d != null)
         {
             DataSource.Tasks.Remove(d);
             DataSource.Tasks.Add(item);
         }
         else
-            throw new Exception($"no such item with {item.id} id in task");
+            throw new DalDoesNotExistException($"no such item with {item.id} id in task");
     }
 }

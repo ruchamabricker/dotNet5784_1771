@@ -59,10 +59,12 @@ public static class Initialization
             string _description = taskDescriptions[randNumber];
             string _alias = taskAlias[randNumber];
             //chooses a random engineer id, that he should do the task
-            int _engineerid = (s_dal!.Engineer!.ReadAll()[s_rand.Next(0, s_dal!.Task.ReadAll().Count())].id);
+            var engineers = s_dal!.Engineer!.ReadAll().ToList();
+            int randomIndex = s_rand.Next(0, engineers.Count);
+            int _engineerid = engineers[randomIndex]?.id ?? 0;
+
             EngineerExperience _complexityLevel = (EngineerExperience)(s_rand.Next(0, 3));
             DateTime _ceratedAt = new DateTime(s_rand.Next(2017, 2023), s_rand.Next(1, 13), s_rand.Next(1, 29));
-            //s_dalTask!.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
             s_dal!.Task.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
         }
 
