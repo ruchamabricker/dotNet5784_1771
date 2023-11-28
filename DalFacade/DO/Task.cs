@@ -27,11 +27,12 @@ public record Task(
     int engineerid,
     EngineerExperience complexityLevel,
     DateTime ceratedAt,
-    bool milestone=false,
-    DateTime? start=null,
+    bool milestone = false,
+    bool active = true,
+    DateTime? start = null,
     DateTime? scheduledDate = null,
     DateTime? deadline = null,
     DateTime? complete = null,
     string? deliverabels = null,
-    string? remarks=null
+    string? remarks = null
     );

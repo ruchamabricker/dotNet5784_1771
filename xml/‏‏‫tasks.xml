@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTask>
+	<Task>
+		<Id>1</Id>
+		<Description>Identify and resolve a software bug</Description>
+		<Alias>Fix a bug</Alias>
+		<EngineerId>123456789</EngineerId>
+		<ComplexityLevel>Intermediate</ComplexityLevel>
+		<CreatedAt>2022-01-01</CreatedAt>
+	</Task>
+
+	<Task>
+		<Id>2</Id>
+		<Description>Add a new functionality to the software</Description>
+		<Alias>Implement a feature</Alias>
+		<EngineerId>987654321</EngineerId>
+		<ComplexityLevel>Senior</ComplexityLevel>
+		<CreatedAt>2022-02-15</CreatedAt>
+	</Task>
+
+</ArrayOfTask>

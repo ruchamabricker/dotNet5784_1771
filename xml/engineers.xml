@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEngineer>
+	<!-- Engineer 1 -->
+	<Engineer>
+		<Id>123456789</Id>
+		<Name>John Doe</Name>
+		<Email>john.doe@gmail.com</Email>
+		<Experience>Intermediate</Experience>
+		<Cost>300.00</Cost>
+	</Engineer>
+
+	<!-- Engineer 2 -->
+	<Engineer>
+		<Id>987654321</Id>
+		<Name>Jane Smith</Name>
+		<Email>jane.smith@gmail.com</Email>
+		<Experience>Senior</Experience>
+		<Cost>500.00</Cost>
+	</Engineer>
+</ArrayOfEngineer>

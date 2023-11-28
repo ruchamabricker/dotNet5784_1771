@@ -13,6 +13,7 @@ public record Engineer(
     string name,
     string email,
     EngineerExperience level,
-    double cost
+    double cost,
+    bool active=true
 );
 

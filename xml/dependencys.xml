@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfDependency>
+	<!-- Dependency 1 -->
+	<Dependency>
+		<Id>1</Id>
+		<TaskId>1</TaskId>
+		<DependentTaskId>2</DependentTaskId>
+	</Dependency>
+
+	<!-- Dependency 2 -->
+	<Dependency>
+		<Id>2</Id>
+		<TaskId>2</TaskId>
+		<DependentTaskId>3</DependentTaskId>
+	</Dependency>
+</ArrayOfDependency>

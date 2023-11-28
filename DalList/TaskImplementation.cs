@@ -19,15 +19,17 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        if (DataSource.Tasks.FirstOrDefault(lk => lk.id == id) == null)
-        {
-            throw new DalDoesNotExistException($"there is no task with this id: {id}");
-        }
-        if (DataSource.Dependencys.FirstOrDefault(lk => lk.dependsOnTask == id) != null)
-        {
-            throw new DalDeletionImpossible($"this task {id} has tasks depented on it, it can not be deleted!");
-        }
-        DataSource.Tasks.Remove(DataSource.Tasks.FirstOrDefault(lk => lk.id == id));
+        throw new DalDeletionImpossible("can't delete tasks");
+
+        //if (DataSource.Tasks.FirstOrDefault(lk => lk.id == id) == null)
+        //{
+        //    throw new DalDoesNotExistException($"there is no task with this id: {id}");
+        //}
+        //if (DataSource.Dependencys.FirstOrDefault(lk => lk.dependsOnTask == id) != null)
+        //{
+        //    throw new DalDeletionImpossible($"this task {id} has tasks depented on it, it can not be deleted!");
+        //}
+        //DataSource.Tasks.Remove(DataSource.Tasks.FirstOrDefault(lk => lk.id == id));
 
     }
 

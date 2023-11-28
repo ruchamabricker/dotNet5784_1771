@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 internal class EngineerImplementation : IEngineer
 {
@@ -23,15 +24,17 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(int id)
     {
-        if (DataSource.Engineers.FirstOrDefault(item => item.id == id) == null)
-        {
-            throw new DalDoesNotExistException($"there is no enigeer with this id: {id}");
-        }
-        if (DataSource.Tasks.FirstOrDefault(item => item.engineerid == id) != null)
-        {
-            throw new DalDeletionImpossible($"this enigeer {id} has tasks, he can not be deleted!");
-        }
-        DataSource.Engineers.Remove(DataSource.Engineers.FirstOrDefault(item => item.id == id));
+        throw new DalDeletionImpossible("can't delete engineer");
+        //if (DataSource.Engineers.FirstOrDefault(item => item.id == id) == null)
+        //{
+        //    throw new DalDoesNotExistException($"there is no enigeer with this id: {id}");
+        //}
+        //if (DataSource.Tasks.FirstOrDefault(item => item.engineerid == id) != null)
+        //{
+        //    throw new DalDeletionImpossible($"this enigeer {id} has tasks, he can not be deleted!");
+        //}
+        ////DataSource.Engineers.Remove(DataSource.Engineers.FirstOrDefault(item => item.id == id));
+        ////DataSource.Engineers.FirstOrDefault(item => item.id == id).active = false;
     }
 
     public Engineer? Read(int id)
@@ -44,7 +47,7 @@ internal class EngineerImplementation : IEngineer
         return DataSource.Engineers.FirstOrDefault(filter);
     }
 
-    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null) // stage 2
+    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null) // stage 2S
     {
 
         if (filter == null)

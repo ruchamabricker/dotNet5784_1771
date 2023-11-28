@@ -21,7 +21,7 @@ internal class DependencyImplementation : IDependency
         {
             throw new DalDoesNotExistException($"there is no dependency with this id: {id}");
         }
-        DataSource.Engineers.Remove(DataSource.Engineers.FirstOrDefault(item => item.id == id));
+        DataSource.Engineers.RemoveAll(item => item.id == id);
     }
 
     public Dependency? Read(int id)
@@ -29,7 +29,7 @@ internal class DependencyImplementation : IDependency
         return DataSource.Dependencys.FirstOrDefault(lk => lk.id == id);
     }
 
-   public Dependency? Read(Func<Dependency, bool> filter) // stage 2
+    public Dependency? Read(Func<Dependency, bool> filter) // stage 2
     {
         return DataSource.Dependencys.FirstOrDefault(filter);
     }
