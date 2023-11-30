@@ -2,13 +2,40 @@
 namespace Dal;
 using DalApi;
 using DO;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 internal class TaskImplementation : ITask
 {
+
+    const string tasksFile = @"..\xml\tasks.xml";
+    //XDocument tasksDocument = XDocument.Load(tasksFile);
+    //public int Create(DO.Task item)
+    //{
+    //    XmlSerializer ser = new XmlSerializer(typeof(Task));
+    //    // מצביע לקובץ 
+    //    StreamWriter w = new StreamWriter(dependencysFile);
+    //    // הפעולה עצמה
+    //    ser.Serialize(w, item);
+    //    // שחרור המצביע
+    //    w.Close();
+
+    //    return item.id;
+    //    //throw new NotImplementedException();
+    //}
+
     public int Create(DO.Task item)
     {
-        throw new NotImplementedException();
+        XmlSerializer serializer = new XmlSerializer(typeof(DO.Task));
+        using (TextWriter writer = new StreamWriter(tasksFile))
+        {
+            serializer.Serialize(writer, item);
+        }
+
+        return item.id;
     }
+
+
 
     public void Delete(int id)
     {

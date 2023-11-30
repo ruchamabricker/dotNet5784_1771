@@ -1,6 +1,4 @@
-﻿
-
-namespace Dal;
+﻿namespace Dal;
 
 internal class Config
 {

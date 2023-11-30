@@ -1,7 +1,7 @@
 ﻿using DalApi;
 namespace Dal;
 
-internal class DalXml : IDal
+sealed public class DalXml : IDal
 {
     public IEngineer Engineer => new EngineerImplementation();
 

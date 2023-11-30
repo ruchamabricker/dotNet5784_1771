@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using Dal;
 using DalApi;
 using DalList;
 using DalTest;
 using DO;
+using DalXml;
 
 namespace Program // Note: actual namespace depends on the project name.
 {
@@ -17,7 +19,8 @@ namespace Program // Note: actual namespace depends on the project name.
         //private static IDependency? s_dalDependency = new DependencyImplementation(); //stage 1
         //private static IEngineer? s_dalEngineer = new EngineerImplementation(); //stage 1
 
-        static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        // static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        static readonly IDal s_dal = new Dal.DalXml(); //stage 3
 
 
         /// <summary>
@@ -42,7 +45,15 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.READ:
                     Console.WriteLine("enter ID to be read");
                     id = int.Parse(Console.ReadLine()!);
-                    Console.WriteLine(s_dal!.Dependency.Read(id));
+                    try
+                    {
+                        Console.WriteLine(s_dal!.Dependency.Read(id));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     break;
                 case CRUD.READALL:
                     foreach (Dependency dependency in s_dal!.Dependency.ReadAll())
@@ -51,7 +62,17 @@ namespace Program // Note: actual namespace depends on the project name.
                     }
                     break;
                 case CRUD.DELETE:
-                    Console.WriteLine("ERROR! Can't delete a dependency");
+                    Console.WriteLine("Enter ID");
+                    id = int.Parse(Console.ReadLine()!);
+                    try
+                    {
+                        s_dal!.Dependency.Delete(id);
+                        Console.WriteLine("deleted successfuly");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     break;
                 case CRUD.UPTADE:
                     Console.WriteLine("Enter id ");
@@ -253,7 +274,7 @@ namespace Program // Note: actual namespace depends on the project name.
         static void Main(string[] args)
         {
             //Initialization.DO(s_dalTask, s_dalDependency, s_dalEngineer);
-            Initialization.Do(s_dal); //stage 2
+            // Initialization.Do(s_dal); //stage 2
 
 
             int entityChoice;

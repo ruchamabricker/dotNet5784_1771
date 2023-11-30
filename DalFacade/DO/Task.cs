@@ -35,4 +35,7 @@ public record Task(
     DateTime? complete = null,
     string? deliverabels = null,
     string? remarks = null
-    );
+    )
+{
+    public Task() : this(0, "", "", 0, 0, DateTime.Now) { }
+}

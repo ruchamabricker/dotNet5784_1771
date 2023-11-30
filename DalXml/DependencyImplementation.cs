@@ -6,66 +6,127 @@ using System.Xml.Linq;
 
 internal class DependencyImplementation : IDependency
 {
-
     const string dependencysFile = @"..\xml\dependencys.xml";
     XDocument dependencysDocument = XDocument.Load(dependencysFile);
 
-
     public int Create(Dependency item)
     {
+        int newDependencyId = Config.NextDependencyId;
 
-        XElement dependencyElement = new XElement("Dependency", new XAttribute("id", item.id),
-            new XAttribute("DependentTask", item.dependentTask),
-            new XAttribute("DependsOnTask", item.dependsOnTask));
+        XElement? dependencyElement = new XElement("Dependency",
+            new XElement("Id", newDependencyId),
+            new XElement("DependentTask", item.dependentTask),
+            new XElement("DependsOnTask", item.dependsOnTask));
 
         dependencysDocument.Root?.Add(dependencyElement);
         dependencysDocument.Save(dependencysFile);
 
-        return item.id;
-        //throw new NotImplementedException();
+        return newDependencyId;
     }
 
     public void Delete(int id)
     {
-        XElement dependencyElement = dependencysDocument.Root!
-            .Elements("Dependency")
-            .FirstOrDefault(e => (int)e.Element("Id") == id);
-
-        if (dependencyElement != null)
+        if (dependencysDocument.Root != null)
         {
-            dependencyElement.Remove();
-            dependencysDocument.Save(dependencysFile);
+            XElement? dependencyElement = dependencysDocument.Root
+                .Elements("Dependency")
+                .FirstOrDefault(e => (int)e.Element("Id") == id);
+
+            if (dependencyElement != null)
+            {
+                dependencyElement.Remove();
+                dependencysDocument.Save(dependencysFile);
+            }
+            else
+            {
+                throw new DalDoesNotExistException("Dependency with the specified ID does not exist.");
+            }
         }
         else
         {
-            throw new DalDoesNotExistException("Dependency with the specified ID does not exist.");
+            throw new DalDoesNotExistException("Dependencies document is empty.");
         }
     }
+
 
     public Dependency? Read(int id)
     {
-        XElement dependencyElement = dependencysDocument.Root!
+        XElement? dependencyElement = dependencysDocument.Root?
             .Elements("Dependency")
-            .FirstOrDefault(e => (int)e.Element("Id") == id);
-        if( dependencyElement!=null)
+            ?.FirstOrDefault(e => (int)e.Element("Id") == id);
+
+        if (dependencyElement != null)
         {
-            Dependency dependency = new Dependency();
+            Dependency? dependency = new Dependency(
+                (int)dependencyElement.Element("Id")!,
+                (int)dependencyElement.Element("DependentTask")!,
+                (int)dependencyElement.Element("DependsOnTask")!
+            );
+
+            return dependency;
         }
-        throw new NotImplementedException();
+
+        throw new DalDoesNotExistException("Dependency with the specified ID does not exist.");
     }
+
+
 
     public Dependency? Read(Func<Dependency, bool> filter)
     {
-        throw new NotImplementedException();
+        Dependency? dependency = dependencysDocument.Root?
+            .Elements("Dependency")
+            ?.Select(e => new Dependency(
+                (int)e.Element("Id")!,
+                (int)e.Element("DependentTask")!,
+                (int)e.Element("DependsOnTask")!
+            ))
+            !.FirstOrDefault(filter);
+
+        return dependency;
     }
 
-    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
+
+
+
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        throw new NotImplementedException();
-    }
+        XElement? dependenciesElement = XMLTools.LoadListFromXMLElement("ArrayOfDependency");
 
+        IEnumerable<Dependency> dependencies = dependenciesElement
+            .Elements("Dependency")
+            .Select(e => new Dependency(
+                id: (int)e.Element("id")!,
+                dependentTask: (int)e.Element("dependentTask")!,
+                dependsOnTask: (int)e.Element("dependsOnTask")!
+            ));
+
+        if (filter != null)
+        {
+            dependencies = dependencies.Where(filter);
+        }
+
+        return dependencies.ToList(); // Convert to List before returning
+    }
     public void Update(Dependency item)
     {
-        throw new NotImplementedException();
+        XElement dependenciesElement = XMLTools.LoadListFromXMLElement("ArrayOfDependency");
+
+        XElement dependencyElement = dependenciesElement.Descendants("Dependency")
+            .FirstOrDefault(e => (int)e.Element("id") == Convert.ToInt32(item.id));
+
+        if (dependencyElement != null)
+        {
+            dependencyElement.Element("dependentTask").Value = item.dependentTask;
+            dependencyElement.Element("dependsOnTask").Value = item.dpendsOnTask;
+
+            XMLTools.SaveListToXMLElement(dependenciesElement, "ArrayOfDependency");
+        }
+        else
+        {
+            throw new InvalidOperationException("Dependency not found.");
+        }
     }
+
+
+
 }
