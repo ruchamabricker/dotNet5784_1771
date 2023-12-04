@@ -85,19 +85,16 @@ internal class DependencyImplementation : IDependency
         return dependency;
     }
 
-
-
-
     public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        XElement? dependenciesElement = XMLTools.LoadListFromXMLElement("ArrayOfDependency");
+        XElement? dependenciesElement = XMLTools.LoadListFromXMLElement("dependencys");
 
         IEnumerable<Dependency> dependencies = dependenciesElement
             .Elements("Dependency")
             .Select(e => new Dependency(
-                id: (int)e.Element("id")!,
-                dependentTask: (int)e.Element("dependentTask")!,
-                dependsOnTask: (int)e.Element("dependsOnTask")!
+                id: (int)e.Element("Id")!,
+                dependentTask: (int)e.Element("DependentTask")!,
+                dependsOnTask: (int)e.Element("DependsOnTask")!
             ));
 
         if (filter != null)
@@ -105,7 +102,7 @@ internal class DependencyImplementation : IDependency
             dependencies = dependencies.Where(filter);
         }
 
-        return dependencies.ToList(); // Convert to List before returning
+        return dependencies;//.ToList(); // Convert to List before returning
     }
     public void Update(Dependency item)
     {

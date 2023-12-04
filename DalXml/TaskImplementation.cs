@@ -9,27 +9,20 @@ internal class TaskImplementation : ITask
 {
 
     const string tasksFile = @"..\xml\tasks.xml";
-    //XDocument tasksDocument = XDocument.Load(tasksFile);
-    //public int Create(DO.Task item)
-    //{
-    //    XmlSerializer ser = new XmlSerializer(typeof(Task));
-    //    // מצביע לקובץ 
-    //    StreamWriter w = new StreamWriter(dependencysFile);
-    //    // הפעולה עצמה
-    //    ser.Serialize(w, item);
-    //    // שחרור המצביע
-    //    w.Close();
-
-    //    return item.id;
-    //    //throw new NotImplementedException();
-    //}
-
     public int Create(DO.Task item)
     {
-        XmlSerializer serializer = new XmlSerializer(typeof(DO.Task));
+        // הגדרת אוביקט= מכונה שיודעת להמיר אוביקטים מ ואל מחרוזת
+        XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
+        // מצביע לקובץ שיודע לקרוא
+        TextReader textReader = new StringReader(tasksFile);
+        // 
+        List<DO.Task> lst = (List<Task>?)serializer.Deserialize(textReader) ?? throw new Exception();
+        // הוספת הפריט החדש
+        lst.Add(item);
+
         using (TextWriter writer = new StreamWriter(tasksFile))
         {
-            serializer.Serialize(writer, item);
+            serializer.Serialize(writer, lst);
         }
 
         return item.id;
