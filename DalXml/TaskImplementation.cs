@@ -9,23 +9,49 @@ internal class TaskImplementation : ITask
 {
 
     const string tasksFile = @"..\xml\tasks.xml";
+    //public int Create(DO.Task item)
+    //{
+    //    // הגדרת אוביקט= מכונה שיודעת להמיר אוביקטים מ ואל מחרוזת
+    //    XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
+    //    // מצביע לקובץ שיודע לקרוא
+    //    TextReader textReader = new StringReader(tasksFile);
+    //    // 
+    //    List<DO.Task> lst = (List<DO.Task>?)serializer.Deserialize(textReader) ?? throw new Exception();
+    //    // הוספת הפריט החדש
+    //    lst.Add(item);
+
+    //    using (TextWriter writer = new StreamWriter(tasksFile))
+    //    {
+    //        serializer.Serialize(writer, lst);
+    //    }
+
+    //    return item.id;
+    //}
     public int Create(DO.Task item)
     {
-        // הגדרת אוביקט= מכונה שיודעת להמיר אוביקטים מ ואל מחרוזת
-        XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
-        // מצביע לקובץ שיודע לקרוא
-        TextReader textReader = new StringReader(tasksFile);
-        // 
-        List<DO.Task> lst = (List<Task>?)serializer.Deserialize(textReader) ?? throw new Exception();
-        // הוספת הפריט החדש
-        lst.Add(item);
-
-        using (TextWriter writer = new StreamWriter(tasksFile))
+        try
         {
-            serializer.Serialize(writer, lst);
-        }
+            XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
 
-        return item.id;
+            using (TextReader textReader = new StringReader(tasksFile))
+            {
+                List<DO.Task> lst = (List<DO.Task>)serializer.Deserialize(textReader) ?? new List<DO.Task>();
+                lst.Add(item);
+
+                using (TextWriter writer = new StreamWriter(tasksFile))
+                {
+                    serializer.Serialize(writer, lst);
+                }
+            }
+
+            return item.id;
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception, log it, or rethrow it based on your application's needs
+            Console.WriteLine($"Error in Create method: {ex.Message}");
+            throw;
+        }
     }
 
 
