@@ -29,29 +29,39 @@ internal class TaskImplementation : ITask
     //}
     public int Create(DO.Task item)
     {
-        try
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
+        //try
+        //{
+        //    XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
 
-            using (TextReader textReader = new StringReader(tasksFile))
-            {
-                List<DO.Task> lst = (List<DO.Task>)serializer.Deserialize(textReader) ?? new List<DO.Task>();
-                lst.Add(item);
+        //    using (TextReader textReader = new StringReader(tasksFile))
+        //    {
+        //        List<DO.Task> lst = (List<DO.Task>)serializer.Deserialize(textReader) ?? new List<DO.Task>();
+        //        lst.Add(item);
 
-                using (TextWriter writer = new StreamWriter(tasksFile))
-                {
-                    serializer.Serialize(writer, lst);
-                }
-            }
+        //        using (TextWriter writer = new StreamWriter(tasksFile))
+        //        {
+        //            serializer.Serialize(writer, lst);
+        //        }
+        //    }
 
-            return item.id;
-        }
-        catch (Exception ex)
-        {
-            // Handle the exception, log it, or rethrow it based on your application's needs
-            Console.WriteLine($"Error in Create method: {ex.Message}");
-            throw;
-        }
+        //    return item.id;
+        //}
+        //catch (Exception ex)
+        //{
+        //    // Handle the exception, log it, or rethrow it based on your application's needs
+        //    Console.WriteLine($"Error in Create method: {ex.Message}");
+        //    throw;
+        //}
+        // item.id = Config.NextDependencyId;
+        // DO.Task task = new DO.Task(Config.NextDependencyId);
+        int newid = Config.NextTaskId;
+        Task copy = item with { id = newid };
+
+        List<DO.Task> lst = XMLTools.LoadListFromXMLSerializer<DO.Task>("tasks");
+
+        lst.Add(copy);
+        XMLTools.SaveListToXMLSerializer<DO.Task>(lst, "tasks");
+        return item.id;
     }
 
 
