@@ -6,13 +6,8 @@
     <DependsOnTask>3</DependsOnTask>
   </Dependency>
   <Dependency>
-    <Id>5</Id>
-    <DependentTask>3</DependentTask>
-    <DependsOnTask>2</DependsOnTask>
-  </Dependency>
-  <Dependency>
     <Id>6</Id>
-    <DependentTask>3</DependentTask>
+    <DependentTask>8</DependentTask>
     <DependsOnTask>7</DependsOnTask>
   </Dependency>
   <Dependency>

@@ -106,24 +106,21 @@ internal class DependencyImplementation : IDependency
     }
     public void Update(Dependency item)
     {
-        //XElement dependenciesElement = XMLTools.LoadListFromXMLElement("ArrayOfDependency");
+        XElement dependenciesElement = XMLTools.LoadListFromXMLElement("dependencys");
 
-        //XElement dependencyElement = dependenciesElement.Descendants("Dependency")
-        //    .FirstOrDefault(e => (int)e.Element("id") == Convert.ToInt32(item.id));
+        XElement dependencyElement = dependenciesElement.Descendants("Dependency")
+            .FirstOrDefault(e => (int)e.Element("Id")! == Convert.ToInt32(item.id))!;
 
-        //if (dependencyElement != null)
-        //{
-        //    dependencyElement.Element("dependentTask").Value = item.dependentTask;
-        //    dependencyElement.Element("dependsOnTask").Value = item.dpendsOnTask;
+        if (dependencyElement != null)
+        {
+            dependencyElement.Element("DependentTask")!.Value = item.dependentTask.ToString();
+            dependencyElement.Element("DependsOnTask")!.Value = item.dependsOnTask.ToString();
 
-        //    XMLTools.SaveListToXMLElement(dependenciesElement, "ArrayOfDependency");
-        //}
-        //else
-        //{
-        //    throw new InvalidOperationException("Dependency not found.");
-        //}
+            XMLTools.SaveListToXMLElement(dependenciesElement, "dependencys");
+        }
+        else
+        {
+            throw new InvalidOperationException("Dependency not found.");
+        }
     }
-
-
-
 }

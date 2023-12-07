@@ -15,5 +15,9 @@ public record Engineer(
     EngineerExperience level,
     double cost,
     bool active=true
-);
+)
+{
+    public Engineer() : this(0, "", "", 0, 0) { }
+}
+
 

@@ -25,14 +25,15 @@ public record Task(
     string description,
     string alias,
     int engineerid,
-    EngineerExperience complexityLevel,
-    DateTime ceratedAt,
-    bool milestone = false,
-    bool active = true,
-    DateTime? start = null,
+    EngineerExperience complexityLevel,//change name???
+    DateTime ceratedAt,//change name???
+    bool milestone = false,//change name???
+    bool active = true,//delete??
+    TimeSpan? requiredEffortTime = null,//to add??? 
+    DateTime? start = null,//change name???
     DateTime? scheduledDate = null,
-    DateTime? deadline = null,
-    DateTime? complete = null,
+    DateTime? deadline = null,//change name???
+    DateTime? complete = null,//change name???
     string? deliverabels = null,
     string? remarks = null
     )

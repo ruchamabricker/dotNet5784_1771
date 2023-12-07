@@ -9,7 +9,6 @@ using DalXml;
 
 namespace Program // Note: actual namespace depends on the project name.
 {
-
     internal class Program
     {
         public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK };
@@ -18,8 +17,8 @@ namespace Program // Note: actual namespace depends on the project name.
         //private static ITask? s_dalTask = new TaskImplementation(); //stage 1
         //private static IDependency? s_dalDependency = new DependencyImplementation(); //stage 1
         //private static IEngineer? s_dalEngineer = new EngineerImplementation(); //stage 1
-
         // static readonly IDal s_dal = new Dal.DalList(); //stage 2
+
         static readonly IDal s_dal = new Dal.DalXml(); //stage 3
 
 
@@ -275,7 +274,6 @@ namespace Program // Note: actual namespace depends on the project name.
         {
             //Initialization.DO(s_dalTask, s_dalDependency, s_dalEngineer);
             // Initialization.Do(s_dal); //stage 2
-
 
             int entityChoice;
             Console.WriteLine("choose: 1-dependency, 2-engineer, 3-task, 4-exit");
