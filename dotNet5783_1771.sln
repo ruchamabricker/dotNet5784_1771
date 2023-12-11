@@ -16,7 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{9961E74D-0013-46D4-A131-83A8208901B8}"
 	ProjectSection(SolutionItems) = preProject
 		xml\data-config.xml = xml\data-config.xml
-		xml\dependencys.xml = xml\dependencys.xml
+		xml\dependencies.xml = xml\dependencies.xml
 		xml\engineers.xml = xml\engineers.xml
 		xml\‏‏‫tasks.xml = xml\‏‏‫tasks.xml
 	EndProjectSection

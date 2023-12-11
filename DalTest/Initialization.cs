@@ -11,10 +11,6 @@ using System.Xml.Linq;
 /// </summary>
 public static class Initialization
 {
-    //private static ITask? s_dalTask;
-    //private static IEngineer? s_dalEngineer;
-    //private static IDependency? s_dalDependency;
-
     private static IDal? s_dal; //stage 2
 
 
@@ -61,7 +57,7 @@ public static class Initialization
             //chooses a random engineer id, that he should do the task
             var engineers = s_dal!.Engineer!.ReadAll().ToList();
             int randomIndex = s_rand.Next(0, engineers.Count);
-            int _engineerid = engineers[randomIndex]?.id ?? 0;
+            int _engineerid = engineers[randomIndex]?.Id ?? 0;
 
             EngineerExperience _complexityLevel = (EngineerExperience)(s_rand.Next(0, 3));
             DateTime _ceratedAt = new DateTime(s_rand.Next(2017, 2023), s_rand.Next(1, 13), s_rand.Next(1, 29));
@@ -136,9 +132,9 @@ public static class Initialization
 
     }
     /// <summary>
-    /// fills the list of the dependencys
+    /// fills the list of the dependencies
     /// </summary>
-    private static void createDependencys()
+    private static void createdependencies()
     {
         for (int i = 0; i < 25; i++)
         {
@@ -168,6 +164,6 @@ public static class Initialization
 
         createEngineers();
         createTasks();
-        createDependencys();
+        createdependencies();
     }
 }

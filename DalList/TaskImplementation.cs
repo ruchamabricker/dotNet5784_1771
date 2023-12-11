@@ -10,9 +10,8 @@ internal class TaskImplementation : ITask
 {
     public int Create(Task item)
     {
-        //for entities with auto id
         int newid = DataSource.Config.NextTaskId;
-        Task copy = item with { id = newid };
+        Task copy = item with { Id = newid };
         DataSource.Tasks.Add(copy);
         return newid;
     }
@@ -25,7 +24,7 @@ internal class TaskImplementation : ITask
         //{
         //    throw new DalDoesNotExistException($"there is no task with this id: {id}");
         //}
-        //if (DataSource.Dependencys.FirstOrDefault(lk => lk.dependsOnTask == id) != null)
+        //if (DataSource.dependencies.FirstOrDefault(lk => lk.dependsOnTask == id) != null)
         //{
         //    throw new DalDeletionImpossible($"this task {id} has tasks depented on it, it can not be deleted!");
         //}
@@ -35,7 +34,7 @@ internal class TaskImplementation : ITask
 
     public Task? Read(int id)
     {
-        return DataSource.Tasks.FirstOrDefault(lk => lk.id == id);
+        return DataSource.Tasks.FirstOrDefault(lk => lk.Id == id);
     }
 
    public Task? Read(Func<Task, bool> filter) // stage 2
@@ -54,13 +53,13 @@ internal class TaskImplementation : ITask
     public void Update(Task item)
     {
         //Task d = DataSource.Tasks.Find(lk => lk.id == item.id);
-        Task d = DataSource.Tasks.FirstOrDefault(lk => lk.id == item.id);
+        Task d = DataSource.Tasks.FirstOrDefault(lk => lk.Id == item.Id)!;
         if (d != null)
         {
             DataSource.Tasks.Remove(d);
             DataSource.Tasks.Add(item);
         }
         else
-            throw new DalDoesNotExistException($"no such item with {item.id} id in task");
+            throw new DalDoesNotExistException($"no such item with {item.Id} id in task");
     }
 }

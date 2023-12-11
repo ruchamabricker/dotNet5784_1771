@@ -8,7 +8,7 @@ namespace DO;
 /// <param name="dependentTask"> ID number of pending task </param>
 /// <param name="dependsOnTask"> Previous assignment ID number </param>
 public record Dependency(
-    int id,
-    int dependentTask,
-    int dependsOnTask
+    int Id,
+    int DependentTask,
+    int DependsOnTask
     );

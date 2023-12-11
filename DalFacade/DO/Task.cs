@@ -1,6 +1,4 @@
-﻿
-
-//using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿//using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DO;
 /// <summary>
@@ -21,21 +19,21 @@ namespace DO;
 /// <param name="complexityLevel"> level of coplexity </param>
 
 public record Task(
-    int id,
-    string description,
-    string alias,
-    int engineerid,
-    EngineerExperience complexityLevel,//change name???
-    DateTime ceratedAt,//change name???
-    bool milestone = false,//change name???
-    bool active = true,//delete??
-    TimeSpan? requiredEffortTime = null,//to add??? 
-    DateTime? start = null,//change name???
-    DateTime? scheduledDate = null,
-    DateTime? deadline = null,//change name???
-    DateTime? complete = null,//change name???
-    string? deliverabels = null,
-    string? remarks = null
+    int Id,
+    string Description,
+    string Alias,
+    int Engineerid,
+    EngineerExperience Complexity,
+    DateTime CeratedAtDate,
+    bool IsMilestone = false,
+    bool Active = true,//delete??
+    TimeSpan? RequiredEffortTime = null,
+    DateTime? StartDate = null,
+    DateTime? ScheduledDate = null,
+    DateTime? DeadlineDate = null,
+    DateTime? CompleteDate = null,
+    string? Deliverables = null,
+    string? Remarks = null
     )
 {
     public Task() : this(0, "", "", 0, 0, DateTime.Now) { }
