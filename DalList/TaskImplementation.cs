@@ -62,4 +62,8 @@ internal class TaskImplementation : ITask
         else
             throw new DalDoesNotExistException($"no such item with {item.Id} id in task");
     }
+    public void Reset()
+    {
+        DataSource.Tasks.Clear();
+    }
 }

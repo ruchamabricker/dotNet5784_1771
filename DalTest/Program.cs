@@ -12,7 +12,7 @@ namespace Program // Note: actual namespace depends on the project name.
     internal class Program
     {
         public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK };
-        public enum CRUD { BREAK, CREATE, READ, READALL, UPTADE, DELETE };
+        public enum CRUD { BREAK, CREATE, READ, READALL, UPTADE, DELETE, RESET };
 
         static readonly IDal s_dal = new Dal.DalXml();
 
@@ -24,7 +24,7 @@ namespace Program // Note: actual namespace depends on the project name.
         {
             int crudChoice;
             int id;
-            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 0-exit");
+            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 6-reset, 0-exit");
             crudChoice = int.Parse(Console.ReadLine()!);
             int dependsOn, dependent;
 
@@ -104,6 +104,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                case CRUD.RESET:
+                    s_dal!.Dependency.Reset();
+                    break;
                 default:
                     break;
             }
@@ -114,7 +117,7 @@ namespace Program // Note: actual namespace depends on the project name.
         /// </summary>
         public static void EngineerFunction()
         {
-            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 0-exit");
+            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 6-reset, 0-exit");
             int crudChoice = int.Parse(Console.ReadLine()!);
             int id;
             string name, email;
@@ -131,8 +134,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         id = int.Parse(Console.ReadLine()!);
                         name = Console.ReadLine()!;
                         email = Console.ReadLine()!;
-                        cost = double.Parse(Console.ReadLine()!);
                         level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
+                        cost = double.Parse(Console.ReadLine()!);
+                       
                         s_dal!.Engineer.Create(new Engineer(id, name, email, level, cost));
                     }
                     catch (Exception ex)
@@ -204,6 +208,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                case CRUD.RESET:
+                    s_dal!.Engineer.Reset();
+                    break;
                 default:
                     break;
             }
@@ -218,7 +225,7 @@ namespace Program // Note: actual namespace depends on the project name.
             int engineerID;
             EngineerExperience complexityLevel;
             DateTime createdAt;
-            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 0-exit");
+            Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete,  6-reset, 0-exit");
             int crudChoice = int.Parse(Console.ReadLine()!);
             int id;
             switch ((CRUD)crudChoice)
@@ -305,6 +312,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine(ex.Message);
                     }
 
+                    break;
+                case CRUD.RESET:
+                    s_dal!.Task.Reset();
                     break;
                 default:
                     break;

@@ -64,4 +64,8 @@ internal class EngineerImplementation : IEngineer
         else
             throw new DalDoesNotExistException($"no such item with {item.Id} id in Engineers");
     }
+    public void Reset()
+    {
+        DataSource.Engineers.Clear();
+    }
 }
