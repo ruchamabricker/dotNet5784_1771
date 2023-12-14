@@ -123,13 +123,20 @@ internal class DependencyImplementation : IDependency
             throw new InvalidOperationException("Dependency not found.");
         }
     }
+    //public void Reset()
+    //{
+    //    dependenciesDocument.Root?.RemoveAll();
+    //    dependenciesDocument.Save(dependenciesFile);
+    //}
     public void Reset()
     {
-        XElement? dependencyElement = dependenciesDocument.Root?.Elements("ArrayOfDependency").FirstOrDefault();
-        if (dependencyElement != null)
+        XElement arrayOfDependencyElement = dependenciesDocument.Root;
+        if (arrayOfDependencyElement != null)
         {
-            Dependency? dependency = null;
+            arrayOfDependencyElement.Elements().Remove();
+            dependenciesDocument.Save(dependenciesFile);
         }
     }
+
 
 }
