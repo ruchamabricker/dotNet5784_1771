@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfEngineer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfEngineer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Engineer>
+    <Id>123456789</Id>
+    <Name>dd</Name>
+    <Email>dd@dd.d</Email>
+    <Level>Proficient</Level>
+    <Cost>125</Cost>
+    <Active>true</Active>
+  </Engineer>
+  <Engineer>
+    <Id>123456741</Id>
+    <Name>ggg</Name>
+    <Email>ggg@ga.xx</Email>
+    <Level>Proficient</Level>
+    <Cost>540</Cost>
+    <Active>true</Active>
+  </Engineer>
+</ArrayOfEngineer>

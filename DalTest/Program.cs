@@ -11,8 +11,8 @@ namespace Program // Note: actual namespace depends on the project name.
 {
     internal class Program
     {
-        public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK };
-        public enum CRUD { BREAK, CREATE, READ, READALL, UPTADE, DELETE, RESET };
+        public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK, RESET };
+        public enum CRUD { BREAK, CREATE, READ, READALL, UPTADE, DELETE };
 
         static readonly IDal s_dal = new Dal.DalXml();
 
@@ -104,9 +104,6 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine(ex.Message);
                     }
                     break;
-                case CRUD.RESET:
-                    s_dal!.Dependency.Reset();
-                    break;
                 default:
                     break;
             }
@@ -136,7 +133,7 @@ namespace Program // Note: actual namespace depends on the project name.
                         email = Console.ReadLine()!;
                         level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         cost = double.Parse(Console.ReadLine()!);
-                       
+
                         s_dal!.Engineer.Create(new Engineer(id, name, email, level, cost));
                     }
                     catch (Exception ex)
@@ -208,9 +205,6 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine(ex.Message);
                     }
                     break;
-                case CRUD.RESET:
-                    s_dal!.Engineer.Reset();
-                    break;
                 default:
                     break;
             }
@@ -241,9 +235,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         engineerID = int.Parse(Console.ReadLine()!);
                         complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         createdAt = DateTime.Parse(Console.ReadLine()!);
-                      int newID=  s_dal!.Task.Create(new DO.Task(0, description, alias, engineerID, complexityLevel, createdAt));
+                        int newID = s_dal!.Task.Create(new DO.Task(0, description, alias, engineerID, complexityLevel, createdAt));
                         Console.WriteLine("created successfuly");
-                        Console.WriteLine("id is of the new task is: "+newID);
+                        Console.WriteLine("id is of the new task is: " + newID);
                     }
                     catch (Exception ex)
                     {
@@ -282,7 +276,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     {
                         id = int.Parse(Console.ReadLine()!);
                         Console.WriteLine(s_dal!.Task.Read(id));
-                        Console.WriteLine("if you want to update, enter description, alias, engineer ID, complexity Level, Date it was cerated at");
+                        Console.WriteLine("if you want to update, enter description, alias, engineer ID, Level, Date it was cerated at");
                         description = Console.ReadLine()!;
                         alias = Console.ReadLine()!;
                         engineerID = int.Parse(Console.ReadLine()!);
@@ -313,12 +307,17 @@ namespace Program // Note: actual namespace depends on the project name.
                     }
 
                     break;
-                case CRUD.RESET:
-                    s_dal!.Task.Reset();
-                    break;
                 default:
                     break;
             }
+        }
+
+        public static void ResetFunction()
+        {
+            Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
+            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+            if (ans == "Y") //stage 3
+                s_dal.Reset();
         }
 
 
@@ -328,7 +327,7 @@ namespace Program // Note: actual namespace depends on the project name.
             // Initialization.Do(s_dal); //stage 2
 
             int entityChoice;
-            Console.WriteLine("choose: 1-dependency, 2-engineer, 3-task, 4-exit");
+            Console.WriteLine("choose: 0-exit 1-dependency, 2-engineer, 3-task, 4-reset all");
             entityChoice = int.Parse(Console.ReadLine()!);
 
             while (entityChoice != null)
@@ -348,6 +347,9 @@ namespace Program // Note: actual namespace depends on the project name.
                         TaskFunction();
                         break;
 
+                    case ENTITY.RESET:
+                        ResetFunction();
+                        break;
                     default:
                         break;
                 }

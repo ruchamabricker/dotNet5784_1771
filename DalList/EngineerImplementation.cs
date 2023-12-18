@@ -66,6 +66,7 @@ internal class EngineerImplementation : IEngineer
     }
     public void Reset()
     {
-        DataSource.Engineers.Clear();
+        if (!DataSource.Engineers.Any())
+            DataSource.Engineers.Clear();
     }
 }

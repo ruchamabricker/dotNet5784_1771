@@ -86,7 +86,11 @@ internal class TaskImplementation : ITask
     public void Reset()
     {
         List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
-        tasksList.Clear();
-        XMLTools.SaveListToXMLSerializer<Task>(tasksList, "tasks");
+        if (tasksList.Count > 0)
+        {
+            tasksList.Clear();
+            XMLTools.SaveListToXMLSerializer<Task>(tasksList, "tasks");
+        }
     }
 }
+

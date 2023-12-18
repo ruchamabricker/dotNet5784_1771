@@ -37,7 +37,7 @@ internal class TaskImplementation : ITask
         return DataSource.Tasks.FirstOrDefault(lk => lk.Id == id);
     }
 
-   public Task? Read(Func<Task, bool> filter) // stage 2
+    public Task? Read(Func<Task, bool> filter) // stage 2
     {
         return DataSource.Tasks.FirstOrDefault(filter);
     }
@@ -64,6 +64,7 @@ internal class TaskImplementation : ITask
     }
     public void Reset()
     {
-        DataSource.Tasks.Clear();
+        if (DataSource.Tasks.Count > 0)
+            DataSource.Tasks.Clear();
     }
 }

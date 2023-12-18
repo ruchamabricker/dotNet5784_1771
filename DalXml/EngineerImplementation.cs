@@ -100,7 +100,8 @@ internal class EngineerImplementation : IEngineer
     public void Reset()
     {
         List<Engineer> engineersList = XMLTools.LoadListFromXMLSerializer<Engineer>("engineers");
+        if(engineersList.Count > 0) { 
         engineersList.Clear();
-        XMLTools.SaveListToXMLSerializer<Engineer>(engineersList, "engineers");
+        XMLTools.SaveListToXMLSerializer<Engineer>(engineersList, "engineers");}
     }
 }
