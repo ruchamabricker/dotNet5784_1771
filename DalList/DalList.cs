@@ -15,7 +15,7 @@ sealed public class DalList : IDal
         Dependency.Reset();
     }
 
-    DateTime? IDal.startProjectDate => DataSource.Config.startProjectDate;
+    public DateTime? startProjectDate => DataSource.Config.startProjectDate;
 
     public DateTime? endProjectDate => DataSource.Config.endProjectDate;
 }

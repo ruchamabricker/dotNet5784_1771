@@ -179,8 +179,8 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine("if you want to update please enter: name, email address, experience level, cost");
                         name = Console.ReadLine()!;
                         email = Console.ReadLine()!;
-                        cost = double.Parse(Console.ReadLine()!);
                         level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
+                        cost = double.Parse(Console.ReadLine()!);
                         if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(email) && cost == 0 && level == null)
                             break;
                         s_dal!.Engineer.Update(new Engineer(id, name, email, level, cost));
@@ -324,7 +324,7 @@ namespace Program // Note: actual namespace depends on the project name.
         static void Main(string[] args)
         {
             //Initialization.DO(s_dalTask, s_dalDependency, s_dalEngineer);
-            // Initialization.Do(s_dal); //stage 2
+            Initialization.Do(s_dal); //stage 2
 
             int entityChoice;
             Console.WriteLine("choose: 0-exit 1-dependency, 2-engineer, 3-task, 4-reset all");

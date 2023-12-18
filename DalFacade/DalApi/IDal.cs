@@ -14,6 +14,7 @@ namespace DalApi
         IDependency Dependency { get; }
 
         DateTime? startProjectDate { get; }
+
         DateTime? endProjectDate { get; }
 
         public void Reset();

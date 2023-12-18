@@ -10,9 +10,8 @@ sealed public class DalXml : IDal
 
     public IDependency Dependency => new DependencyImplementation();
 
-    public DateTime? startProjectDate => throw new NotImplementedException();
-
-    public DateTime? endProjectDate => throw new NotImplementedException();
+    public DateTime? startProjectDate => Config.startProjectDate;
+    public DateTime? endProjectDate => Config.endProjectDate;
 
     public void Reset()
     {
