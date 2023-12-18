@@ -1,57 +1,92 @@
-﻿
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
 internal class TaskImplementation : ITask
 {
-
-    const string tasksFile = @"..\xml\tasks.xml";
     public int Create(DO.Task item)
     {
-        // הגדרת אוביקט= מכונה שיודעת להמיר אוביקטים מ ואל מחרוזת
-        XmlSerializer serializer = new XmlSerializer(typeof(List<DO.Task>));
-        // מצביע לקובץ שיודע לקרוא
-        TextReader textReader = new StringReader(tasksFile);
-        // 
-        List<DO.Task> lst = (List<DO.Task>?)serializer.Deserialize(textReader) ?? throw new Exception();
-        // הוספת הפריט החדש
-        lst.Add(item);
+        int newid = Config.NextTaskId;
+        Task copy = item with { Id = newid };
 
-        using (TextWriter writer = new StreamWriter(tasksFile))
-        {
-            serializer.Serialize(writer, lst);
-        }
+        List<DO.Task> lst = XMLTools.LoadListFromXMLSerializer<DO.Task>("tasks");
 
-        return item.id;
+        lst.Add(copy);
+        XMLTools.SaveListToXMLSerializer<DO.Task>(lst, "tasks");
+        return newid;
     }
-
-
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+        if (Read(id) is null)
+            throw new DalDoesNotExistException($"Task with ID {id} does not exists");
+        tasksList.RemoveAll(t => t.Id == id);
+        XMLTools.SaveListToXMLSerializer<Task>(tasksList, "tasks");
     }
 
-    public DO.Task? Read(int id)
+    public Task? Read(int id)
     {
-        throw new NotImplementedException();
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+        Task? task = tasksList.FirstOrDefault(e => e.Id == id);
+        if (task != null)
+        {
+            return task;
+        }
+        throw new DalDoesNotExistException($"Cannot find task with ID:{id}.");
     }
 
     public DO.Task? Read(Func<DO.Task, bool> filter)
     {
-        throw new NotImplementedException();
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+        Task? task = tasksList.FirstOrDefault(filter);
+        if (task != null)
+        {
+            return task;
+        }
+        throw new DalDoesNotExistException($"Cannot find Task with given filter");
     }
 
     public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+
+        if (filter != null)
+        {
+            List<Task> tasks = tasksList.Where(filter).ToList();
+            if (tasks.Count > 0)
+                return tasks;
+            throw new DalDoesNotExistException($"There is no tasks");
+        }
+        else
+        {
+            if (tasksList.Count > 0)
+                return tasksList;
+            throw new DalDoesNotExistException($"There is no tasks");
+        }
     }
 
     public void Update(DO.Task item)
     {
-        throw new NotImplementedException();
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+        Task? existingEngineer = tasksList.FirstOrDefault(e => e.Id == item.Id);
+        if (existingEngineer == null)
+            throw new DalDoesNotExistException($"There is no task with ID {item.Id}");
+        tasksList.Remove(existingEngineer);
+        tasksList.Add(item);
+        XMLTools.SaveListToXMLSerializer<Task>(tasksList, "tasks");
+    }
+    /// <summary>
+    /// resets the array of tasks
+    /// </summary>
+    public void Reset()
+    {
+        List<Task> tasksList = XMLTools.LoadListFromXMLSerializer<Task>("tasks");
+        tasksList.Clear();
+        XMLTools.SaveListToXMLSerializer<Task>(tasksList, "tasks");
     }
 }

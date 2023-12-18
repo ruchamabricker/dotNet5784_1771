@@ -6,8 +6,8 @@ using System.Xml.Linq;
 
 internal class DependencyImplementation : IDependency
 {
-    const string dependencysFile = @"..\xml\dependencys.xml";
-    XDocument dependencysDocument = XDocument.Load(dependencysFile);
+    const string dependenciesFile = @"..\xml\dependencies.xml";
+    XDocument dependenciesDocument = XDocument.Load(dependenciesFile);
 
     public int Create(Dependency item)
     {
@@ -15,27 +15,27 @@ internal class DependencyImplementation : IDependency
 
         XElement? dependencyElement = new XElement("Dependency",
             new XElement("Id", newDependencyId),
-            new XElement("DependentTask", item.dependentTask),
-            new XElement("DependsOnTask", item.dependsOnTask));
+            new XElement("DependentTask", item.DependentTask),
+            new XElement("DependsOnTask", item.DependsOnTask));
 
-        dependencysDocument.Root?.Add(dependencyElement);
-        dependencysDocument.Save(dependencysFile);
+        dependenciesDocument.Root?.Add(dependencyElement);
+        dependenciesDocument.Save(dependenciesFile);
 
         return newDependencyId;
     }
 
     public void Delete(int id)
     {
-        if (dependencysDocument.Root != null)
+        if (dependenciesDocument.Root != null)
         {
-            XElement? dependencyElement = dependencysDocument.Root
+            XElement? dependencyElement = dependenciesDocument.Root
                 .Elements("Dependency")
                 .FirstOrDefault(e => (int)e.Element("Id") == id);
 
             if (dependencyElement != null)
             {
                 dependencyElement.Remove();
-                dependencysDocument.Save(dependencysFile);
+                dependenciesDocument.Save(dependenciesFile);
             }
             else
             {
@@ -51,7 +51,7 @@ internal class DependencyImplementation : IDependency
 
     public Dependency? Read(int id)
     {
-        XElement? dependencyElement = dependencysDocument.Root?
+        XElement? dependencyElement = dependenciesDocument.Root?
             .Elements("Dependency")
             ?.FirstOrDefault(e => (int)e.Element("Id") == id);
 
@@ -73,7 +73,7 @@ internal class DependencyImplementation : IDependency
 
     public Dependency? Read(Func<Dependency, bool> filter)
     {
-        Dependency? dependency = dependencysDocument.Root?
+        Dependency? dependency = dependenciesDocument.Root?
             .Elements("Dependency")
             ?.Select(e => new Dependency(
                 (int)e.Element("Id")!,
@@ -87,14 +87,14 @@ internal class DependencyImplementation : IDependency
 
     public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        XElement? dependenciesElement = XMLTools.LoadListFromXMLElement("dependencys");
+        XElement? dependenciesElement = XMLTools.LoadListFromXMLElement("dependencies");
 
         IEnumerable<Dependency> dependencies = dependenciesElement
             .Elements("Dependency")
             .Select(e => new Dependency(
-                id: (int)e.Element("Id")!,
-                dependentTask: (int)e.Element("DependentTask")!,
-                dependsOnTask: (int)e.Element("DependsOnTask")!
+                Id: (int)e.Element("Id")!,
+                DependentTask: (int)e.Element("DependentTask")!,
+                DependsOnTask: (int)e.Element("DependsOnTask")!
             ));
 
         if (filter != null)
@@ -106,24 +106,37 @@ internal class DependencyImplementation : IDependency
     }
     public void Update(Dependency item)
     {
-        //XElement dependenciesElement = XMLTools.LoadListFromXMLElement("ArrayOfDependency");
+        XElement dependenciesElement = XMLTools.LoadListFromXMLElement("dependencies");
 
-        //XElement dependencyElement = dependenciesElement.Descendants("Dependency")
-        //    .FirstOrDefault(e => (int)e.Element("id") == Convert.ToInt32(item.id));
+        XElement dependencyElement = dependenciesElement.Descendants("Dependency")
+            .FirstOrDefault(e => (int)e.Element("Id")! == Convert.ToInt32(item.Id))!;
 
-        //if (dependencyElement != null)
-        //{
-        //    dependencyElement.Element("dependentTask").Value = item.dependentTask;
-        //    dependencyElement.Element("dependsOnTask").Value = item.dpendsOnTask;
+        if (dependencyElement != null)
+        {
+            dependencyElement.Element("DependentTask")!.Value = item.DependentTask.ToString();
+            dependencyElement.Element("DependsOnTask")!.Value = item.DependsOnTask.ToString();
 
-        //    XMLTools.SaveListToXMLElement(dependenciesElement, "ArrayOfDependency");
-        //}
-        //else
-        //{
-        //    throw new InvalidOperationException("Dependency not found.");
-        //}
+            XMLTools.SaveListToXMLElement(dependenciesElement, "dependencies");
+        }
+        else
+        {
+            throw new InvalidOperationException("Dependency not found.");
+        }
     }
-
+    //public void Reset()
+    //{
+    //    dependenciesDocument.Root?.RemoveAll();
+    //    dependenciesDocument.Save(dependenciesFile);
+    //}
+    public void Reset()
+    {
+        XElement arrayOfDependencyElement = dependenciesDocument.Root;
+        if (arrayOfDependencyElement != null)
+        {
+            arrayOfDependencyElement.Elements().Remove();
+            dependenciesDocument.Save(dependenciesFile);
+        }
+    }
 
 
 }

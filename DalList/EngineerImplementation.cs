@@ -12,14 +12,11 @@ internal class EngineerImplementation : IEngineer
         if (item == null)
             throw new DalNoArgumentPassedException("there is item passed to be added");
 
-        if (Read(item.id) is not null)
-            throw new DalAlreadyExistsException($"Student with ID={item.id} already exists");
+        if (Read(item.Id) is not null)
+            throw new DalAlreadyExistsException($"Student with ID={item.Id} already exists");
 
         DataSource.Engineers.Add(item);
-        return item.id;
-        // Assuming DataSource.Engineers is a List<T> or any collection that implements IEnumerable<T>
-        // DataSource.Engineers.Concat(new[] { item }).ToList();
-
+        return item.Id;
     }
 
     public void Delete(int id)
@@ -39,7 +36,7 @@ internal class EngineerImplementation : IEngineer
 
     public Engineer? Read(int id)
     {
-        return DataSource.Engineers.FirstOrDefault(lk => lk.id == id);
+        return DataSource.Engineers.FirstOrDefault(lk => lk.Id == id);
     }
 
     public Engineer? Read(Func<Engineer, bool> filter) // stage 2
@@ -56,21 +53,19 @@ internal class EngineerImplementation : IEngineer
             return DataSource.Engineers.Where(filter);
     }
 
-    //public List<Engineer> ReadAll()
-    //{
-    //    List<Engineer> listE = DataSource.Engineers;
-    //    return listE;
-    //}
-
     public void Update(Engineer item)
     {
-        Engineer e = DataSource.Engineers.FirstOrDefault(lk => lk.id == item.id);
+        Engineer e = DataSource.Engineers.FirstOrDefault(lk => lk.Id == item.Id)!;
         if (e != null)
         {
             DataSource.Engineers.Remove(e);
             DataSource.Engineers.Add(item);
         }
         else
-            throw new DalDoesNotExistException($"no such item with {item.id} id in Engineers");
+            throw new DalDoesNotExistException($"no such item with {item.Id} id in Engineers");
+    }
+    public void Reset()
+    {
+        DataSource.Engineers.Clear();
     }
 }
