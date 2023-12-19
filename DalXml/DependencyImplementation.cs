@@ -123,11 +123,7 @@ internal class DependencyImplementation : IDependency
             throw new InvalidOperationException("Dependency not found.");
         }
     }
-    //public void Reset()
-    //{
-    //    dependenciesDocument.Root?.RemoveAll();
-    //    dependenciesDocument.Save(dependenciesFile);
-    //}
+   
     public void Reset()
     {
         XElement arrayOfDependencyElement = dependenciesDocument.Root;

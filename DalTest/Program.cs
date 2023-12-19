@@ -14,7 +14,8 @@ namespace Program // Note: actual namespace depends on the project name.
         public enum ENTITY { BREAK, DEPENDENCY, ENGINEER, TASK, RESET };
         public enum CRUD { BREAK, CREATE, READ, READALL, UPTADE, DELETE };
 
-        static readonly IDal s_dal = new Dal.DalXml();
+        //static readonly IDal s_dal = new Dal.DalXml;
+        static readonly IDal s_dal = Factory.Get; //stage 4
 
 
         /// <summary>
@@ -317,14 +318,16 @@ namespace Program // Note: actual namespace depends on the project name.
             Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
             string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
             if (ans == "Y") //stage 3
-                s_dal.Reset();
+                //s_dal.Reset();
+                Initialization.Do(); //stage 4
+
         }
 
 
         static void Main(string[] args)
         {
             //Initialization.DO(s_dalTask, s_dalDependency, s_dalEngineer);
-            Initialization.Do(s_dal); //stage 2
+           // Initialization.Do(s_dal); //stage 2
 
             int entityChoice;
             Console.WriteLine("choose: 0-exit 1-dependency, 2-engineer, 3-task, 4-reset all");
