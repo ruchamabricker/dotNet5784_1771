@@ -1,5 +1,4 @@
-﻿
-namespace DO;
+﻿namespace DO;
 /// <summary>
 /// Engineer Entity, represents a engineer with all its props
 /// </summary>

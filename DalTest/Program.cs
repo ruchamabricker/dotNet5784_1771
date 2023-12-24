@@ -2,10 +2,8 @@
 using System.Data.SqlTypes;
 using Dal;
 using DalApi;
-using DalList;
 using DalTest;
 using DO;
-using DalXml;
 
 namespace Program // Note: actual namespace depends on the project name.
 {

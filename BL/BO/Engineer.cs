@@ -1,11 +1,4 @@
-﻿using DO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BO;
+﻿namespace BO;
 
 /// <summary>
 /// builds an object of engineer
@@ -17,5 +10,5 @@ public class Engineer
     public string Email { get; set; }
     public EngineerExperience Level { get; set; }
     public double Cost { get; set; }
-    public TaskInEngineer? Task { get; set; }=null;
+    public TaskInEngineer? Task { get; set; } = null;
 }
