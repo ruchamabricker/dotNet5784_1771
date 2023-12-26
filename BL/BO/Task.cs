@@ -7,7 +7,7 @@ public class Task
     public string Alias { get; set; }
     public DateTime CreatedAtDate { get; set; }
     public Status? Status { get; set; } = null;
-    public int[] dependenciesList { get; set; } = null;
+    public TaskInList[] dependenciesList { get; set; } = null;
     public MilestoneInTask? Milestone { get; set; } = null;
     public DateTime? BaselineStartDate { get; set; } = null;
     public DateTime? StartDate { get; set; } = null;

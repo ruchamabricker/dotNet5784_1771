@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 
 namespace BlImplementation;
 
@@ -13,10 +14,14 @@ internal class TaskImplementation : ITask
         if (task.Alias.Length < 0)
             throw new BO.BlInValidDataException("In valid length of alias");
 
-
         DO.Task doTask = new DO.Task(task.Id, task.Description, task.Alias, task.Engineer!.Id, (DO.EngineerExperience)task.ComplexityLevel!, task.CreatedAtDate);
         try
         {
+            foreach (var dependency in task.dependenciesList)
+            {
+                _dal.Dependency.Create(new DO.Dependency(0, task.Id, dependency.Id));
+            }
+
             int id = _dal.Task.Create(doTask);
             return id;
         }
@@ -33,6 +38,23 @@ internal class TaskImplementation : ITask
 
     public BO.Task Read(int id)
     {
+        DO.Task doTask = _dal.Task.Read(id) ?? throw new BO.BlDoesNotExistException($"task with id: {id} does not exist"); ;
+        BO.Task boTask = new BO.Task
+        {
+            Id = doTask.Id,
+            Description = doTask.Description,
+            Alias = doTask.Alias,
+            CreatedAtDate = doTask.CeratedAtDate,
+            Milestone = new MilestoneInTask() { Id = id },
+
+            Engineer = new BO.EngineerInTask()
+            {
+               Id= doTask.Engineerid,
+                Name=_dal.Engineer.Read(doTask.Id)!.Name
+            },
+            ComplexityLevel=(BO.EngineerExperience)doTask.Complexity
+        };
+
         throw new NotImplementedException();
     }
 

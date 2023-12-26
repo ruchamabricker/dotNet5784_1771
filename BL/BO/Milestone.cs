@@ -11,7 +11,7 @@ public class Milestone
     public Status? Status { get; set; } = null;
     public DateTime? ForecastDate { get; set; } = null;
     public DateTime? DeadlineDate { get; set; } = null;
-    public DateTime? CompleteDate { get; set; } = null;
+    public DateTime? CompleteDate { get; set; } = null;)
     public double? CompletionPercentage { get; set; } = null;
     public string? Remarks { get; set; } = null;
     public TaskInList Dependencies { get; set; }
