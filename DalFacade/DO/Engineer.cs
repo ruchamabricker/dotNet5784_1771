@@ -13,7 +13,7 @@ public record Engineer(
     string Email,
     EngineerExperience Level,
     double Cost,
-    bool Active=true
+    bool Active=true//not sure if to delete.....
 )
 {
     public Engineer() : this(0, "", "", 0, 0) { }
