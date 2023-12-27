@@ -1,7 +1,5 @@
 ﻿
 using BlApi;
-using BO;
-using DO;
 
 namespace BlImplementation;
 
@@ -31,14 +29,16 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(int id)
     {
+        if (_dal.Task.ReadAll(task => task.Id == id) is not null)
+        {
+            throw new BO.BlDeletionImpossibleException($"engineer with id: {id} cant be deleted, it has task that are dependend on him");
+        }
         try
         {
             _dal.Engineer.Delete(id);
-
         }
         catch (Exception ex)
         {
-
             throw new BO.BlDoesNotExistException($"Engineer with ID={id} already exists", ex);
         }
     }
@@ -51,14 +51,14 @@ internal class EngineerImplementation : IEngineer
             throw new BO.BlDoesNotExistException($"engineer with id: {id} does not exist");
 
         //finds if it has an task that has this engineer's id
-        DO.Task doTask = _dal.Task.ReadAll((task) => task.Engineerid == id).FirstOrDefault() ?? null;
+        DO.Task? doTask = _dal.Task.ReadAll((task) => task.Engineerid == id).FirstOrDefault() ?? null;
         //builds the task
         BO.TaskInEngineer taskInEngineer;
 
         if (doTask == null)
-            taskInEngineer = new BO.TaskInEngineer();
+            taskInEngineer = null!;
         else
-            taskInEngineer = new TaskInEngineer() { Id = doTask.Id, Alias = doTask.Alias };
+            taskInEngineer = new BO.TaskInEngineer() { Id = doTask.Id, Alias = doTask.Alias };
 
         return new BO.Engineer()
         {
@@ -82,10 +82,10 @@ internal class EngineerImplementation : IEngineer
                     Email = doEngineer.Email,
                     Level = (BO.EngineerExperience)doEngineer.Level,
                     Cost = doEngineer.Cost,
-                    Task = new TaskInEngineer()
+                    Task = new BO.TaskInEngineer()
                     {
-                        Id = _dal.Task.ReadAll().FirstOrDefault(task => task?.Id == doEngineer.Id)!.Id!,
-                        Alias = _dal.Task.ReadAll().FirstOrDefault(task => task?.Id == doEngineer.Id)?.Alias!
+                        Id = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()!.Id!,
+                        Alias = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()?.Alias!
                     }
                 });
     }

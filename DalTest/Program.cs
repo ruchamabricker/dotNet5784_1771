@@ -157,7 +157,7 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.READALL:
                     try
                     {
-                        foreach (Engineer engineer in s_dal!.Engineer.ReadAll())
+                        foreach (Engineer? engineer in s_dal!.Engineer.ReadAll())
                         {
                             Console.WriteLine(engineer);
                         }

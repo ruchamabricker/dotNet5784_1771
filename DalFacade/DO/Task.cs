@@ -1,5 +1,4 @@
-﻿//using static System.Runtime.InteropServices.JavaScript.JSType;
-
+﻿
 namespace DO;
 /// <summary>
 /// task entity represents a task with all its props

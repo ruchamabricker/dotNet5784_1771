@@ -24,3 +24,8 @@ public class BlInValidDataException : Exception
     public BlInValidDataException(string? message) : base(message) { }
 }
 
+public class BlDeletionImpossibleException : Exception
+{
+    public BlDeletionImpossibleException(string? message) : base(message) { }
+}
+
