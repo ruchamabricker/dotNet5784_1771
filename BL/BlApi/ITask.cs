@@ -9,9 +9,8 @@ namespace BlApi;
 /// functions that can be done on tasks
 /// </summary>
 public interface ITask
-
-    //create lu"z
 {
+
     /// <summary>
     /// creates new task
     /// </summary>

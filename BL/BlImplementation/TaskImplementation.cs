@@ -2,9 +2,27 @@
 
 namespace BlImplementation;
 
+
 internal class TaskImplementation : ITask
 {
     private DalApi.IDal _dal = Factory.Get;
+
+    private BO.Status calculateStatus(DO.Task doTask)
+    {
+        BO.Status status;
+        if (doTask.ScheduledDate == null)//עדיין לא התחיל
+            status = 0;
+        else if (doTask.StartDate > DateTime.Now)//מתוכנן כבר, עדין לא התחיל
+            status = (BO.Status)2;
+        else if (doTask.CompleteDate > DateTime.Now)//התחיל, עדין לא נגמר
+            status = (BO.Status)3;
+        else if (doTask.DeadlineDate < DateTime.Now)//עבר את תאריך הסיום המתוכנן
+            status = (BO.Status)4;
+        else
+            status = (BO.Status)0;
+
+        return status;
+    }
 
     public int Create(BO.Task task)
     {
@@ -30,10 +48,11 @@ internal class TaskImplementation : ITask
             task.Remarks);
         try
         {
-            foreach (var dependency in task.DependenciesList)
-            {
-                _dal.Dependency.Create(new DO.Dependency(0, task.Id, dependency.Id));
-            }
+            if (task.DependenciesList != null)
+                foreach (var dependency in task.DependenciesList)
+                {
+                    _dal.Dependency.Create(new DO.Dependency(0, task.Id, dependency.Id));
+                }
 
             int id = _dal.Task.Create(doTask);
             return id;
@@ -46,7 +65,14 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _dal.Task.Delete(id);
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException(ex.Message, ex);
+        }
     }
 
     public BO.Task Read(int id)
@@ -60,20 +86,25 @@ internal class TaskImplementation : ITask
                                                Id = dependency.DependsOnTask,
                                                Description = _dal.Task.Read(dependency.DependsOnTask)!.Description,
                                                Alias = _dal.Task.Read(dependency.DependsOnTask)!.Alias,
-                                               // Status = _dal.Task.Read(dependency.DependsOnTask)!.
+                                               Status = calculateStatus(_dal.Task.Read(dependency.DependsOnTask)!)
                                            }).ToList();
+
+        BO.Status status = calculateStatus(doTask);
+
+
+
         BO.Task boTask = new BO.Task
         {
             Id = doTask.Id,
             Description = doTask.Description,
             Alias = doTask.Alias,
             CreatedAtDate = doTask.CeratedAtDate,
-            //Status=??(task) => task.Engineerid == id
+            Status = status,
             DependenciesList = taskInLists,
             Milestone = new BO.MilestoneInTask() { Id = id },//very not sure what to do here
             BaselineStartDate = doTask.ScheduledDate,
             StartDate = doTask.StartDate,
-            //ForecastDate=??  in what stage they are at????
+            ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
             DeadlineDate = doTask.DeadlineDate,
             CompleteDate = doTask.CompleteDate,
             Deliverables = doTask.Deliverables,
@@ -88,9 +119,9 @@ internal class TaskImplementation : ITask
         return boTask;
     }
 
-    public IEnumerable<BO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
+    public IEnumerable<BO.Task?> ReadAll(Func<BO.Task, bool>? filter = null)
     {
-        return _dal.Task.ReadAll(filter).Select(doTask =>
+        IEnumerable<BO.Task?> tasks = _dal.Task.ReadAll().Select(doTask =>
         {
             if (doTask == null)
                 return null;
@@ -108,12 +139,11 @@ internal class TaskImplementation : ITask
                 Description = doTask.Description,
                 Alias = doTask.Alias,
                 CreatedAtDate = doTask.CeratedAtDate,
-                //Status = ?? (task) => task.Engineerid == id
+                Status = calculateStatus(doTask),
                 DependenciesList = tasksInList,
-
                 BaselineStartDate = doTask.ScheduledDate,
                 StartDate = doTask.StartDate,
-                //ForecastDate=?? in what stage are they at????
+                ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
                 DeadlineDate = doTask.DeadlineDate,
                 CompleteDate = doTask.CompleteDate,
                 Deliverables = doTask.Deliverables,
@@ -126,6 +156,9 @@ internal class TaskImplementation : ITask
                 ComplexityLevel = (BO.EngineerExperience)doTask.Complexity
             };
         });
+        if (filter == null)
+            return tasks;
+        return tasks.Where(filter!);
     }
 
 
@@ -156,10 +189,11 @@ internal class TaskImplementation : ITask
                    task.Remarks);
         try
         {
-            foreach (var dependency in task.DependenciesList)
-            {
-                _dal.Dependency.Update(new DO.Dependency(0, task.Id, dependency.Id));
-            }
+            if (task.DependenciesList != null)
+                foreach (var dependency in task.DependenciesList!)
+                {
+                    _dal.Dependency.Create(new DO.Dependency(0, task.Id, dependency.Id));
+                }
             _dal.Task.Update(doTask);
         }
         catch (DO.DalAlreadyExistsException ex)

@@ -23,14 +23,14 @@ public record Task(
     string Alias,
     int Engineerid,
     EngineerExperience Complexity,
-    DateTime CeratedAtDate,
+    DateTime CeratedAtDate,//תאריך יצירת משימה
     bool IsMilestone = false,
     bool Active = true,//delete??
     TimeSpan? RequiredEffortTime = null,
-    DateTime? StartDate = null,
-    DateTime? ScheduledDate = null,
-    DateTime? DeadlineDate = null,
-    DateTime? CompleteDate = null,
+    DateTime? StartDate = null,//תאריך התחלה
+    DateTime? ScheduledDate = null,//תאריך מתוכנן להתחלה
+    DateTime? DeadlineDate = null,//תאריך סיום אחרון אפשרי
+    DateTime? CompleteDate = null,//תאריך סיום
     string? Deliverables = null,
     string? Remarks = null
     )

@@ -2,6 +2,8 @@
 
 public interface IMilestone
 {
+    void BuildSchdual();
+
     /// <summary>
     /// returns milestone by given id
     /// </summary>
@@ -14,6 +16,6 @@ public interface IMilestone
     /// </summary>
     /// <param name="milestone"></param>
     /// <returns>updated milestone</returns>
-    BO.Milestone Update(int id); 
+    BO.Milestone Update(BO.Milestone milestone); 
 
 }

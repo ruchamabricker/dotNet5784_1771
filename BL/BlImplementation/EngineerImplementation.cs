@@ -16,6 +16,7 @@ internal class EngineerImplementation : IEngineer
             throw new BO.BlInValidDataException("no such cost, must be positive");
 
         DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email, (DO.EngineerExperience)engineer.Level, engineer.Cost);
+        
         try
         {
             int id = _dal.Engineer.Create(doEngineer);
@@ -72,26 +73,30 @@ internal class EngineerImplementation : IEngineer
 
     }
 
-    public IEnumerable<BO.Engineer?> ReadAll(Func<DO.Engineer, bool>? filter = null)
+    public IEnumerable<BO.Engineer?> ReadAll(Func<BO.Engineer, bool>? filter = null)
     {
-        return (from DO.Engineer doEngineer in _dal.Engineer.ReadAll(filter)
-                select new BO.Engineer
-                {
-                    Id = doEngineer.Id,
-                    Name = doEngineer.Name,
-                    Email = doEngineer.Email,
-                    Level = (BO.EngineerExperience)doEngineer.Level,
-                    Cost = doEngineer.Cost,
-                    Task = new BO.TaskInEngineer()
-                    {
-                        Id = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()!.Id!,
-                        Alias = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()?.Alias!
-                    }
-                });
+        IEnumerable<BO.Engineer?> engineers = from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
+                                              select new BO.Engineer
+                                              {
+                                                  Id = doEngineer.Id,
+                                                  Name = doEngineer.Name,
+                                                  Email = doEngineer.Email,
+                                                  Level = (BO.EngineerExperience)doEngineer.Level,
+                                                  Cost = doEngineer.Cost,
+                                                  Task = new BO.TaskInEngineer()
+                                                  {
+                                                      Id = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()!.Id!,
+                                                      Alias = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()?.Alias!
+                                                  }
+                                              };
+        if (filter == null)
+            return engineers;
+        return engineers.Where(filter!);
     }
 
     public void Update(BO.Engineer engineer)
     {
+
         if (Read(engineer.Id) == null)
             throw new BO.BlDoesNotExistException($"There is no engineer with id: {engineer.Id}");
         if (engineer.Id <= 0)
@@ -100,7 +105,9 @@ internal class EngineerImplementation : IEngineer
             throw new BO.BlInValidDataException("In valid name");
         if (engineer.Cost <= 0)
             throw new BO.BlInValidDataException("no such cost, must be positive");
+
         DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email, (DO.EngineerExperience)engineer.Level, engineer.Cost);
+       
         try
         {
             _dal.Engineer.Update(doEngineer);
