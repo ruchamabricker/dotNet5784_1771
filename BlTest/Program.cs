@@ -407,6 +407,11 @@ namespace Program // Note: actual namespace depends on the project name.
 
         static void Main(string[] args)
         {
+            Console.Write("Would you like to create Initial data? (Y/N)");
+            string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
+            if (ans == "Y") { }
+                //DalTest.Initialization.Do();
+
             int entityChoice;
             Console.WriteLine("choose: 0-exit 1-milestone, 2-engineer, 3-task");
             entityChoice = int.Parse(Console.ReadLine()!);

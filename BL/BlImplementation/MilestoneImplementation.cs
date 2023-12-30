@@ -12,13 +12,13 @@ internal class MilestoneImplementation : IMilestone
     private BO.Status calculateStatus(DO.Task doTask)
     {
         BO.Status status;
-        if (doTask.ScheduledDate == null)//עדיין לא התחיל
+        if (doTask.ScheduledDate == null || doTask.StartDate == null)//עדיין לא התחיל
             status = 0;
-        else if (doTask.StartDate > DateTime.Now)//מתוכנן כבר, עדין לא התחיל
+        else if ((doTask.StartDate != null && doTask.StartDate > DateTime.Now) || doTask.CompleteDate == null)//מתוכנן כבר, עדין לא התחיל
             status = (BO.Status)2;
-        else if (doTask.CompleteDate > DateTime.Now)//התחיל, עדין לא נגמר
+        else if ((doTask.CompleteDate != null && doTask.CompleteDate > DateTime.Now) || doTask.DeadlineDate == null)//התחיל, עדין לא נגמר
             status = (BO.Status)3;
-        else if (doTask.DeadlineDate < DateTime.Now)//עבר את תאריך הסיום המתוכנן
+        else if (doTask.DeadlineDate != null && doTask.DeadlineDate < DateTime.Now)//עבר את תאריך הסיום המתוכנן
             status = (BO.Status)4;
         else
             status = (BO.Status)0;

@@ -10,18 +10,26 @@ internal class TaskImplementation : ITask
     private BO.Status calculateStatus(DO.Task doTask)
     {
         BO.Status status;
-        if (doTask.ScheduledDate == null)//עדיין לא התחיל
+        if (doTask.ScheduledDate == null || doTask.StartDate == null)//עדיין לא התחיל
             status = 0;
-        else if (doTask.StartDate > DateTime.Now)//מתוכנן כבר, עדין לא התחיל
+        else if ((doTask.StartDate != null && doTask.StartDate > DateTime.Now) || doTask.CompleteDate == null)//מתוכנן כבר, עדין לא התחיל
             status = (BO.Status)2;
-        else if (doTask.CompleteDate > DateTime.Now)//התחיל, עדין לא נגמר
+        else if ((doTask.CompleteDate != null && doTask.CompleteDate > DateTime.Now) || doTask.DeadlineDate == null)//התחיל, עדין לא נגמר
             status = (BO.Status)3;
-        else if (doTask.DeadlineDate < DateTime.Now)//עבר את תאריך הסיום המתוכנן
+        else if (doTask.DeadlineDate != null && doTask.DeadlineDate < DateTime.Now)//עבר את תאריך הסיום המתוכנן
             status = (BO.Status)4;
         else
             status = (BO.Status)0;
 
         return status;
+    }
+
+    private BO.MilestoneInTask? calculateMilestone(List<BO.TaskInList> tasksInList)
+    {
+        if (tasksInList.Count == 0) return null;
+        BO.TaskInList? task = tasksInList.Where(task => _dal.Task.Read(task.Id)!.IsMilestone == true).FirstOrDefault();
+        if (task == null) return null;
+        return new BO.MilestoneInTask() { Id = task.Id };
     }
 
     public int Create(BO.Task task)
@@ -79,19 +87,32 @@ internal class TaskImplementation : ITask
     {
         DO.Task doTask = _dal.Task.Read(id) ?? throw new BO.BlDoesNotExistException($"task with id: {id} does not exist");
 
-        List<DO.Dependency> dependencyList = new List<DO.Dependency>(_dal.Dependency.ReadAll(dependency => dependency.Id == id)!);
-        List<BO.TaskInList> taskInLists = (from dependency in dependencyList
-                                           select new BO.TaskInList
-                                           {
-                                               Id = dependency.DependsOnTask,
-                                               Description = _dal.Task.Read(dependency.DependsOnTask)!.Description,
-                                               Alias = _dal.Task.Read(dependency.DependsOnTask)!.Alias,
-                                               Status = calculateStatus(_dal.Task.Read(dependency.DependsOnTask)!)
-                                           }).ToList();
+        List<DO.Dependency?>? dependencyList = new List<DO.Dependency?>(_dal.Dependency.ReadAll(dependency => dependency.Id == id));
+        List<BO.TaskInList>? tasksInList = (from dependency in dependencyList
+                                            select new BO.TaskInList
+                                            {
+                                                Id = dependency.DependsOnTask,
+                                                Description = _dal.Task.Read(dependency.DependsOnTask)!.Description,
+                                                Alias = _dal.Task.Read(dependency.DependsOnTask)!.Alias,
+                                                Status = calculateStatus(_dal.Task.Read(dependency.DependsOnTask)!)
+                                            }).ToList();
+
+        List<BO.TaskInList?>? taskInLists2 = new List<BO.TaskInList?>(dependencyList.Select(dependency =>
+        {
+            if (dependency?.DependentTask != null)
+                return new BO.TaskInList
+                {
+                    Id = dependency.DependsOnTask,
+                    Description = _dal.Task.Read(dependency.DependsOnTask)!.Description,
+                    Alias = _dal.Task.Read(dependency.DependsOnTask)!.Alias,
+                    Status = calculateStatus(_dal.Task.Read(dependency.DependsOnTask)!)
+                };
+            return null;
+        }) 
+        );
+
 
         BO.Status status = calculateStatus(doTask);
-
-
 
         BO.Task boTask = new BO.Task
         {
@@ -100,8 +121,8 @@ internal class TaskImplementation : ITask
             Alias = doTask.Alias,
             CreatedAtDate = doTask.CeratedAtDate,
             Status = status,
-            DependenciesList = taskInLists,
-            Milestone = new BO.MilestoneInTask() { Id = id },//very not sure what to do here
+            DependenciesList = tasksInList,
+            Milestone = calculateMilestone(tasksInList),
             BaselineStartDate = doTask.ScheduledDate,
             StartDate = doTask.StartDate,
             ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
@@ -141,6 +162,7 @@ internal class TaskImplementation : ITask
                 CreatedAtDate = doTask.CeratedAtDate,
                 Status = calculateStatus(doTask),
                 DependenciesList = tasksInList,
+                Milestone = calculateMilestone(tasksInList),
                 BaselineStartDate = doTask.ScheduledDate,
                 StartDate = doTask.StartDate,
                 ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
