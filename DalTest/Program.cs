@@ -60,9 +60,10 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.READALL:
                     try
                     {
-                        foreach (Dependency dependency in s_dal!.Dependency.ReadAll())
+                        foreach (Dependency? dependency in s_dal!.Dependency.ReadAll())
                         {
-                            Console.WriteLine(dependency);
+                            if (dependency != null)
+                                Console.WriteLine(dependency);
                         }
                     }
                     catch (Exception ex)
@@ -258,8 +259,9 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.READALL:
                     try
                     {
-                        foreach (DO.Task task in s_dal!.Task.ReadAll())
+                        foreach (DO.Task? task in s_dal!.Task.ReadAll())
                         {
+                            if (task != null)
                             Console.WriteLine(task);
                         }
                     }
@@ -325,7 +327,7 @@ namespace Program // Note: actual namespace depends on the project name.
         static void Main(string[] args)
         {
             //Initialization.DO(s_dalTask, s_dalDependency, s_dalEngineer);
-           // Initialization.Do(s_dal); //stage 2
+            // Initialization.Do(s_dal); //stage 2
 
             int entityChoice;
             Console.WriteLine("choose: 0-exit 1-dependency, 2-engineer, 3-task, 4-reset all");

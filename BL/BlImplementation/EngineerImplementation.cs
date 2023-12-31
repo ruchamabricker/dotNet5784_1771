@@ -38,7 +38,7 @@ internal class EngineerImplementation : IEngineer
         {
             _dal.Engineer.Delete(id);
         }
-        catch (Exception ex)
+        catch (DO.DalDoesNotExistException ex)
         {
             throw new BO.BlDoesNotExistException($"Engineer with ID={id} already exists", ex);
         }
@@ -70,12 +70,13 @@ internal class EngineerImplementation : IEngineer
             Cost = doEngineer.Cost,
             Task = taskInEngineer
         };
-
     }
 
     public IEnumerable<BO.Engineer?> ReadAll(Func<BO.Engineer, bool>? filter = null)
     {
+
         IEnumerable<BO.Engineer?> engineers = from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
+                                              let task = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()
                                               select new BO.Engineer
                                               {
                                                   Id = doEngineer.Id,
@@ -83,12 +84,13 @@ internal class EngineerImplementation : IEngineer
                                                   Email = doEngineer.Email,
                                                   Level = (BO.EngineerExperience)doEngineer.Level,
                                                   Cost = doEngineer.Cost,
-                                                  Task = new BO.TaskInEngineer()
+                                                  Task = task != null ? new BO.TaskInEngineer
                                                   {
-                                                      Id = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()!.Id!,
-                                                      Alias = _dal.Task.ReadAll(task => task?.Id == doEngineer.Id).FirstOrDefault()?.Alias!
-                                                  }
+                                                      Id = task.Id,
+                                                      Alias = task.Alias
+                                                  } : null
                                               };
+
         if (filter == null)
             return engineers;
         return engineers.Where(filter!);
@@ -112,9 +114,9 @@ internal class EngineerImplementation : IEngineer
         {
             _dal.Engineer.Update(doEngineer);
         }
-        catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Engineer with ID={engineer.Id} already exists", ex);
+            throw new BO.BlDoesNotExistException($"Engineer with ID={engineer.Id} already exists", ex);
         }
     }
 }

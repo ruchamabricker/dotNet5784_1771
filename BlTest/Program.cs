@@ -99,7 +99,8 @@ namespace Program // Note: actual namespace depends on the project name.
                     try
                     {
                         id = int.Parse(Console.ReadLine()!);
-                        Console.WriteLine(s_bl.Engineer.Read(id));
+                        BO.Engineer engineer = s_bl.Engineer.Read(id);
+                        Console.WriteLine("ID: " + engineer?.Id + ", Name: " + engineer?.Name + ", Email: " + engineer?.Email + ", Level: " + engineer?.Level + ", Cost: " + engineer?.Cost);
                     }
                     catch (Exception ex)
                     {
@@ -111,7 +112,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     {
                         foreach (Engineer? engineer in s_bl!.Engineer.ReadAll())
                         {
-                            Console.WriteLine(engineer);
+                            Console.WriteLine("ID: " + engineer?.Id + ", Name: " + engineer?.Name + ", Email: " + engineer?.Email + ", Level: " + engineer?.Level + ", Cost: " + engineer?.Cost);
                         }
                     }
                     catch (Exception ex)
@@ -174,7 +175,7 @@ namespace Program // Note: actual namespace depends on the project name.
             EngineerExperience complexityLevel;
             DateTime createdAt;
             DateTime? baseLineStartDate = null, startDate = null, forcastDate = null, deadlineDate = null, completeDate = null;
-            List<BO.TaskInList>? tasksInList = new List<TaskInList> { };
+            List<BO.TaskInList?>? tasksInList = new List<TaskInList?> { };
             MilestoneInTask? mileStone = new MilestoneInTask();
             bool isMilestone;
             EngineerInTask? engineerInTask = null;
@@ -234,16 +235,26 @@ namespace Program // Note: actual namespace depends on the project name.
                             });
                             Console.WriteLine("enter another task, your task is dependent on it");
 
+                            dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         }
 
                         //engineer of this task
-                        if (engineerID > 0)
+                        if (engineerID > 0 && s_bl.Engineer.Read(engineerID)?.Id != null)
                         {
-                            engineerInTask = new BO.EngineerInTask()
+                            try
                             {
-                                Id = engineerID,
-                                Name = s_bl.Engineer.Read(engineerID)!.Name
-                            };
+                                s_bl.Engineer.Read(engineerID);
+                                engineerInTask = new BO.EngineerInTask()
+                                {
+                                    Id = engineerID,
+                                    Name = s_bl.Engineer.Read(engineerID).Name
+                                };
+                            }
+                            catch (Exception)
+                            {
+                                engineerInTask = null;
+                            }
+
                         }
 
                         //the task that was build now
@@ -279,7 +290,15 @@ namespace Program // Note: actual namespace depends on the project name.
                     try
                     {
                         id = int.Parse(Console.ReadLine()!);
-                        Console.WriteLine(s_bl!.task.Read(id));
+                        BO.Task task = s_bl!.task.Read(id);
+                        Console.WriteLine("ID: " + task?.Id + ", Alias: " + task?.Alias + ", Description: " + task?.Description + ", Created at: " + task?.CreatedAtDate + ", Status: " + task?.Status + ", Dependencies List: ");
+                        foreach (var dependencyTask in task?.DependenciesList!)
+                        {
+                            if (dependencyTask != null)
+                                Console.Write("ID: " + dependencyTask.Id + ", Alias: " + dependencyTask.Alias + ", Description: " + dependencyTask.Description + ", Status: " + dependencyTask.Status);
+                        }
+                        Console.WriteLine(" Milestone: " + task?.Milestone + ", BaseLine start date:" + task?.BaselineStartDate + ", Start date: " + task?.StartDate + ", Forcast date: " + task?.ForecastDate + ", Deadline date: " + task?.DeadlineDate + ", Complete date: " + task?.CompleteDate + ", Deliverables: " + task?.Deliverables + ", Remarks: " + task?.Remarks + ", Engineer: " + task?.Engineer + ", Complexity level: " + task?.ComplexityLevel);
+
                     }
                     catch (Exception ex)
                     {
@@ -291,7 +310,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     {
                         foreach (BO.Task? task in s_bl!.task.ReadAll())
                         {
-                            Console.WriteLine(task);
+                            Console.WriteLine("ID: " + task?.Id + ", Alias: " + task?.Alias + ", Description: " + task?.Description + ", Created at: " + task?.CreatedAtDate + ", Status: " + task?.Status + ", Dependencies List: " + task?.DependenciesList + ", Milestone: " + task?.Milestone + ", BaseLine start date:" + task?.BaselineStartDate + ", Start date: " + task?.StartDate + ", Forcast date: " + task?.ForecastDate + ", Deadline date: " + task?.DeadlineDate + ", Complete date: " + task?.CompleteDate + ", Deliverables: " + task?.Deliverables + ", Remarks: " + task?.Remarks + ", Engineer: " + task?.Engineer + ", Complexity level: " + task?.ComplexityLevel);
                         }
                     }
                     catch (Exception ex)
@@ -409,8 +428,8 @@ namespace Program // Note: actual namespace depends on the project name.
         {
             Console.Write("Would you like to create Initial data? (Y/N)");
             string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
-            if (ans == "Y") { }
-                //DalTest.Initialization.Do();
+            if (ans == "Y")
+                DalTest.Initialization.Do();
 
             int entityChoice;
             Console.WriteLine("choose: 0-exit 1-milestone, 2-engineer, 3-task");
