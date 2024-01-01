@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using BO;
 using DalApi;
 
 namespace BlImplementation;
@@ -57,7 +56,7 @@ internal class MilestoneImplementation : IMilestone
             ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
             DeadlineDate = doTask.DeadlineDate,
             CompleteDate = doTask.CompleteDate,
-            CompletionPercentage= (taskInLists.Count(t => t.Status == Status.OnTrack) / (double)taskInLists.Count) * 100,//checks how many tasks were done already
+            CompletionPercentage= (taskInLists.Count(t => t.Status == BO.Status.OnTrack) / (double)taskInLists.Count) * 100,//checks how many tasks were done already
             Remarks = doTask.Remarks,
             Dependencies = taskInLists,
 

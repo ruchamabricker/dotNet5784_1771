@@ -61,7 +61,7 @@ namespace Program // Note: actual namespace depends on the project name.
         {
             Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete, 6-reset, 0-exit");
             int crudChoice = int.Parse(Console.ReadLine()!);
-            int id;
+            int id, taskId;
             string name, email;
             double cost;
             EngineerExperience level;
@@ -78,6 +78,7 @@ namespace Program // Note: actual namespace depends on the project name.
                         email = Console.ReadLine()!;
                         level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         cost = double.Parse(Console.ReadLine()!);
+                        taskId = int.Parse(Console.ReadLine()!);
 
                         int returnedId = s_bl!.Engineer.Create(new BO.Engineer()
                         {
@@ -99,8 +100,8 @@ namespace Program // Note: actual namespace depends on the project name.
                     try
                     {
                         id = int.Parse(Console.ReadLine()!);
-                        BO.Engineer engineer = s_bl.Engineer.Read(id);
-                        Console.WriteLine("ID: " + engineer?.Id + ", Name: " + engineer?.Name + ", Email: " + engineer?.Email + ", Level: " + engineer?.Level + ", Cost: " + engineer?.Cost);
+                        //BO.Engineer engineer = s_bl.Engineer.Read(id);
+                        Console.WriteLine(s_bl.Engineer.Read(id));
                     }
                     catch (Exception ex)
                     {
@@ -112,7 +113,7 @@ namespace Program // Note: actual namespace depends on the project name.
                     {
                         foreach (Engineer? engineer in s_bl!.Engineer.ReadAll())
                         {
-                            Console.WriteLine("ID: " + engineer?.Id + ", Name: " + engineer?.Name + ", Email: " + engineer?.Email + ", Level: " + engineer?.Level + ", Cost: " + engineer?.Cost);
+                            Console.WriteLine(engineer);
                         }
                     }
                     catch (Exception ex)
@@ -171,6 +172,7 @@ namespace Program // Note: actual namespace depends on the project name.
         public static void TaskFunction()
         {
             string description, alias, deliverables, remarks;
+            //string? checkNotNull;
             int engineerID, dependencyId;
             EngineerExperience complexityLevel;
             DateTime createdAt;
@@ -197,16 +199,37 @@ namespace Program // Note: actual namespace depends on the project name.
                         complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         createdAt = DateTime.Parse(Console.ReadLine()!);
 
-                        Console.WriteLine("Enter base line start date, start date, forcast date, complete date");
-                        baseLineStartDate = DateTime.Parse(Console.ReadLine() ?? "");
-                        startDate = DateTime.Parse(Console.ReadLine()!);
-                        forcastDate = DateTime.Parse(Console.ReadLine() ?? "");
-                        deadlineDate = DateTime.Parse(Console.ReadLine() ?? "");
-                        completeDate = DateTime.Parse(Console.ReadLine() ?? "");
+                        //Console.WriteLine("Enter base line start date, start date, forcast date, deadline date, complete date");
+                        //checkNotNull = Console.ReadLine();
+                        //if (checkNotNull != null&&checkNotNull != "")
+                        //    baseLineStartDate = DateTime.Parse(checkNotNull);
+                        //else baseLineStartDate = null;
+
+                        //checkNotNull = Console.ReadLine();
+                        //if (checkNotNull != null && checkNotNull != "")
+                        //    startDate = DateTime.Parse(checkNotNull);
+                        //else startDate = null;
+
+                        //checkNotNull = Console.ReadLine();
+                        //if (checkNotNull != null && checkNotNull != "")
+                        //    forcastDate = DateTime.Parse(checkNotNull);
+                        //else forcastDate = null;
+
+                        //checkNotNull = Console.ReadLine();
+                        //if (checkNotNull != null && checkNotNull != "")
+                        //    deadlineDate = DateTime.Parse(checkNotNull);
+                        //else deadlineDate = null;
+
+                        //checkNotNull = Console.ReadLine();
+                        //if (checkNotNull != null && checkNotNull != "")
+                        //    completeDate = DateTime.Parse(checkNotNull);
+                        //else completeDate = null;
+
+                        //DateTime.TryParse(Console.ReadLine() ?? throw new Exception(""), out completeDate);
 
                         Console.WriteLine("Enter deliverables, ramarks");
-                        deliverables = Console.ReadLine() ?? "";
-                        remarks = Console.ReadLine() ?? "";
+                        deliverables = Console.ReadLine()!;
+                        remarks = Console.ReadLine()!;
 
                         //is a milestone
                         Console.WriteLine("enter y if it is a milestone otherwise press any key");
@@ -217,7 +240,6 @@ namespace Program // Note: actual namespace depends on the project name.
                             Console.WriteLine("Enter id of milestone");
                             int milestoneId = int.Parse(Console.ReadLine()!);
                             mileStone = new MilestoneInTask() { Id = milestoneId, Alias = s_bl.milestone.Read(milestoneId).Alias };
-
                         }
 
                         //dependencies this task is dependent on
@@ -226,28 +248,30 @@ namespace Program // Note: actual namespace depends on the project name.
                         while (dependencyId > 0)
                         {
                             BO.Task task = s_bl.task.Read(dependencyId);
+                            if (task != null) { 
                             tasksInList.Add(new TaskInList()
                             {
                                 Id = task.Id,
-                                Alias = task.Alias,
-                                Description = task.Description,
+                                Alias = task.Alias!,
+                                Description = task.Description!,
                                 Status = task.Status
-                            });
+                            });}
                             Console.WriteLine("enter another task, your task is dependent on it");
 
                             dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         }
 
+                        BO.Engineer engineer = s_bl.Engineer.Read(engineerID);
+
                         //engineer of this task
-                        if (engineerID > 0 && s_bl.Engineer.Read(engineerID)?.Id != null)
+                        if (engineer != null)
                         {
                             try
                             {
-                                s_bl.Engineer.Read(engineerID);
                                 engineerInTask = new BO.EngineerInTask()
                                 {
                                     Id = engineerID,
-                                    Name = s_bl.Engineer.Read(engineerID).Name
+                                    Name = engineer.Name!
                                 };
                             }
                             catch (Exception)
@@ -263,20 +287,20 @@ namespace Program // Note: actual namespace depends on the project name.
                             Id = 0,
                             Description = description,
                             Alias = alias,
-                            CreatedAtDate = createdAt,
+                            CreatedAtDate = DateTime.Now,
                             Status = (Status)0,//every task status starts from the beggining
                             DependenciesList = tasksInList,
-                            Milestone = mileStone,
-                            BaselineStartDate = baseLineStartDate,
-                            StartDate = startDate,
-                            ForecastDate = forcastDate,
-                            DeadlineDate = deadlineDate,
-                            CompleteDate = completeDate,
+                            Milestone = null,
+                            BaselineStartDate = null,
+                            StartDate = null,
+                            ForecastDate = null,
+                            DeadlineDate = null,
+                            CompleteDate = null,
                             Deliverables = deliverables,
                             Remarks = remarks,
                             Engineer = engineerInTask,
                             ComplexityLevel = complexityLevel
-                        });
+                        }); ; ;
                         Console.WriteLine("created successfuly");
                         Console.WriteLine("id is of the new task is: " + newID);
                     }
@@ -360,8 +384,8 @@ namespace Program // Note: actual namespace depends on the project name.
                             tasksInList.Add(new TaskInList()
                             {
                                 Id = task.Id,
-                                Alias = task.Alias,
-                                Description = task.Description,
+                                Alias = task.Alias!,
+                                Description = task.Description!,
                                 Status = task.Status
                             });
                             Console.WriteLine("enter another task, your task is dependent on it");
@@ -374,7 +398,7 @@ namespace Program // Note: actual namespace depends on the project name.
                             engineerInTask = new BO.EngineerInTask()
                             {
                                 Id = engineerID,
-                                Name = s_bl.Engineer.Read(engineerID)!.Name
+                                Name = s_bl.Engineer.Read(engineerID).Name!
                             };
                         }
 

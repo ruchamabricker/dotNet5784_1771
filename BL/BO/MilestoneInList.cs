@@ -8,4 +8,5 @@ public class MilestoneInList
     public string Alias { get; set; }
     public Status? Status { get; set; } = null;
     public double? CompletionPercentage { get; set; } = null;
+    public override string ToString() => this.ToStringProperty();
 }

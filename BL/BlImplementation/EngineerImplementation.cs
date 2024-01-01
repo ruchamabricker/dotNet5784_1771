@@ -10,12 +10,12 @@ internal class EngineerImplementation : IEngineer
     {
         if (engineer.Id <= 0)
             throw new BO.BlInValidDataException("In valid id");
-        if (engineer.Name.Length < 0)
+        if (engineer.Name!.Length < 0)
             throw new BO.BlInValidDataException("In valid name");
         if (engineer.Cost <= 0)
             throw new BO.BlInValidDataException("no such cost, must be positive");
 
-        DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email, (DO.EngineerExperience)engineer.Level, engineer.Cost);
+        DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email!, (DO.EngineerExperience)engineer.Level, engineer.Cost);
         
         try
         {
@@ -49,8 +49,7 @@ internal class EngineerImplementation : IEngineer
         DO.Engineer? doEngineer = _dal.Engineer.Read(id);
 
         if (doEngineer == null)
-            throw new BO.BlDoesNotExistException($"engineer with id: {id} does not exist");
-
+            return null!;
         //finds if it has an task that has this engineer's id
         DO.Task? doTask = _dal.Task.ReadAll((task) => task.Engineerid == id).FirstOrDefault() ?? null;
         //builds the task
@@ -103,12 +102,12 @@ internal class EngineerImplementation : IEngineer
             throw new BO.BlDoesNotExistException($"There is no engineer with id: {engineer.Id}");
         if (engineer.Id <= 0)
             throw new BO.BlInValidDataException("In valid id");
-        if (engineer.Name.Length < 0)
+        if (engineer.Name!.Length < 0)
             throw new BO.BlInValidDataException("In valid name");
         if (engineer.Cost <= 0)
             throw new BO.BlInValidDataException("no such cost, must be positive");
 
-        DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email, (DO.EngineerExperience)engineer.Level, engineer.Cost);
+        DO.Engineer doEngineer = new DO.Engineer(engineer.Id, engineer.Name, engineer.Email!, (DO.EngineerExperience)engineer.Level, engineer.Cost);
        
         try
         {

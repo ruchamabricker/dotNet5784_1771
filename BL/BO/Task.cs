@@ -3,8 +3,8 @@
 public class Task
 {
     public int Id { get; init; }
-    public string Description { get; set; }
-    public string Alias { get; set; }
+    public string? Description { get; set; }
+    public string? Alias { get; set; }
     public DateTime CreatedAtDate { get; set; }
     public Status? Status { get; set; } = null;
     public List<BO.TaskInList?>? DependenciesList { get; set; } = null;
@@ -19,4 +19,6 @@ public class Task
     public string? Remarks { get; set; } = null;//הערות
     public EngineerInTask? Engineer { get; set; } = null;
     public EngineerExperience? ComplexityLevel { get; set; } = null;
+    public override string ToString() => this.ToStringProperty();
+
 }

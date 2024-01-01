@@ -79,11 +79,11 @@ internal class TaskImplementation : ITask
     {
         if (task.Id <= 0)
             throw new BO.BlInValidDataException("In valid value of id");
-        if (task.Alias.Length < 0)
+        if (task.Alias!.Length < 0)
             throw new BO.BlInValidDataException("In valid length of alias");
 
         DO.Task doTask = new DO.Task(task.Id,
-            task.Description,
+            task.Description!,
             task.Alias,
             task.Engineer!.Id,
             (DO.EngineerExperience)task.ComplexityLevel!,
@@ -127,10 +127,11 @@ internal class TaskImplementation : ITask
         }
     }
 
-    public BO.Task Read(int id)
+    public BO.Task? Read(int id)
     {
-        DO.Task doTask = _dal.Task.Read(id) ?? throw new BO.BlDoesNotExistException($"task with id: {id} does not exist");
-
+        DO.Task? doTask = _dal.Task.Read(id);// ?? throw new BO.BlDoesNotExistException($"task with id: {id} does not exist");
+        if (doTask == null)
+            return null;
 
 
         BO.Status status = calculateStatus(doTask);
@@ -198,11 +199,11 @@ internal class TaskImplementation : ITask
         {
             throw new BO.BlDoesNotExistException($"There is no task with id:{task.Id}");
         }
-        if (task.Alias.Length < 0)
+        if (task.Alias!.Length < 0)
             throw new BO.BlInValidDataException("In valid length of alias");
 
         DO.Task doTask = new DO.Task(task.Id,
-                   task.Description,
+                   task.Description!,
                    task.Alias,
                    task.Engineer!.Id,
                    (DO.EngineerExperience)task.ComplexityLevel!,
