@@ -25,7 +25,47 @@ internal class MilestoneImplementation : IMilestone
         return status;
     }
 
-    public void BuildSchdual() { }
+    public void Create()
+    {
+        IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll();
+
+        //המערך עם התלויות בקבוצות על פי המשימה שהם תלויות בה
+        var groupedByDependencies = _dal.Dependency.ReadAll()
+              .OrderBy(dependency => dependency?.DependsOnTask)
+              .GroupBy(dependency => dependency?.DependsOnTask, dependency => dependency?.DependentTask, (id, dependency) =>
+              new { Id = id, Dependency = dependency })
+              .ToList();
+
+        //יוצר רשימה שכל אחד מופיע רק פעם אחת
+        var distinctDependencies = groupedByDependencies
+               .SelectMany(dependencyGroup => dependencyGroup.Dependency)
+               .Where(dependency => dependency != null)
+               .Distinct()
+               .ToList();
+
+        int indexMilestone = 1;
+
+        distinctDependencies.Select(dependency => new BO.Milestone()
+        {
+            Id = indexMilestone++,
+            Description = $"Milestone{indexMilestone}",
+            Alias = $"M{indexMilestone}",
+            CreatedAtDate = DateTime.Now,
+            Status = (BO.Status)1,
+            StartDate = null,
+            ForecastDate=null,
+            DeadlineDate=null,
+            CompleteDate=null,
+            CompletionPercentage=0,
+            Remarks=null,//maybe should have some reamarks if he wants....
+            //Dependencies= groupedByDependencies.Where(dependency =>dependency.Dependency)
+        }
+
+
+            ) ;
+
+
+    }
 
     public BO.Milestone Read(int id)
     {
@@ -42,7 +82,7 @@ internal class MilestoneImplementation : IMilestone
                                                Id = dependency.DependsOnTask,
                                                Description = _dal.Task.Read(dependency.DependsOnTask)!.Description,
                                                Alias = _dal.Task.Read(dependency.DependsOnTask)!.Alias,
-                                               Status = calculateStatus( _dal.Task.Read(dependency.DependsOnTask)!)
+                                               Status = calculateStatus(_dal.Task.Read(dependency.DependsOnTask)!)
                                            }).ToList();
 
         BO.Milestone boTask = new BO.Milestone
@@ -51,12 +91,12 @@ internal class MilestoneImplementation : IMilestone
             Description = doTask.Description,
             Alias = doTask.Alias,
             CreatedAtDate = doTask.CeratedAtDate,
-            Status=  calculateStatus(doTask),
+            Status = calculateStatus(doTask),
             StartDate = doTask.StartDate,
             ForecastDate = doTask.StartDate + doTask.RequiredEffortTime,
             DeadlineDate = doTask.DeadlineDate,
             CompleteDate = doTask.CompleteDate,
-            CompletionPercentage= (taskInLists.Count(t => t.Status == BO.Status.OnTrack) / (double)taskInLists.Count) * 100,//checks how many tasks were done already
+            CompletionPercentage = (taskInLists.Count(t => t.Status == BO.Status.OnTrack) / (double)taskInLists.Count) * 100,//checks how many tasks were done already
             Remarks = doTask.Remarks,
             Dependencies = taskInLists,
 

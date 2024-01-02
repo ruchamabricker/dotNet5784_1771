@@ -5,8 +5,8 @@
 public class Milestone
 {
     public int Id { get; init; }
-    public string Description { get; set; }
-    public string Alias { get; set; }
+    public string? Description { get; set; }
+    public string? Alias { get; set; }
     public DateTime CreatedAtDate { get; set; }
     public Status? Status { get; set; } = null;
     public DateTime? StartDate { get; set; } = null;//תאריך התחלה בפועל

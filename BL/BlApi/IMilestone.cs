@@ -2,7 +2,7 @@
 
 public interface IMilestone
 {
-    void BuildSchdual();
+    void Create();
 
     /// <summary>
     /// returns milestone by given id
