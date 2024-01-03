@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using DalApi;
+using DO;
 
 namespace BlImplementation;
 
@@ -29,43 +30,70 @@ internal class MilestoneImplementation : IMilestone
     {
         IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll();
 
-        //המערך עם התלויות בקבוצות על פי המשימה שהם תלויות בה
-        var groupedByDependencies = _dal.Dependency.ReadAll()
-              .OrderBy(dependency => dependency?.DependsOnTask)
-              .GroupBy(dependency => dependency?.DependsOnTask, dependency => dependency?.DependentTask, (id, dependency) =>
-              new { Id = id, Dependency = dependency })
-              .ToList();
+        // Step 1: Create a grouped list with dependent tasks as keys and previous tasks as values
+        var groupedDependencies = _dal.Dependency.ReadAll().GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() });
+        //כל משימה והמשימות שהיא תלויה בהם
 
-        //יוצר רשימה שכל אחד מופיע רק פעם אחת
-        var distinctDependencies = groupedByDependencies
-               .SelectMany(dependencyGroup => dependencyGroup.Dependency)
-               .Where(dependency => dependency != null)
-               .Distinct()
-               .ToList();
+
+        // Step 2: Sort the list of values
+        var sortedValues = groupedDependencies.Select(g => g.Dependencies.OrderBy(v => v)).ToList();
+
+        // Step 3: Create a filtered list with distinct values
+        var distinctDependencies = sortedValues.SelectMany(v => v).Distinct().ToList();
 
         int indexMilestone = 1;
 
-        distinctDependencies.Select(dependency => new BO.Milestone()
+        var listOfMilestones = distinctDependencies.SelectMany(dependency =>
         {
-            Id = indexMilestone++,
-            Description = $"Milestone{indexMilestone}",
-            Alias = $"M{indexMilestone}",
-            CreatedAtDate = DateTime.Now,
-            Status = (BO.Status)1,
-            StartDate = null,
-            ForecastDate=null,
-            DeadlineDate=null,
-            CompleteDate=null,
-            CompletionPercentage=0,
-            Remarks=null,//maybe should have some reamarks if he wants....
-            //Dependencies= groupedByDependencies.Where(dependency =>dependency.Dependency)
+            if (dependency != null)
+            {
+
+                DO.Task task = new DO.Task
+                (
+                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true
+                );
+                int id = _dal.Task.Create(task);
+
+                foreach (var value in dependency.Dependencies)
+                {
+                    _dal.Dependency.Create(new DO.Dependency(0, id, value));
+                }
+
+                return task;
+            }
+            return null;
+        }
+        );
+
+        //resets all dependencys it had before
+        _dal.Dependency.Reset();
+
+        //creates new dependencies that are of the milestone
+        foreach (var groupOfDependency in groupedDependencies)
+        {
+            foreach (var dependency in groupOfDependency.Dependencies)
+            {
+                if (dependency != null)
+                {
+                    //adds all dependencies for milestone to all the tasks that it depends on
+                    _dal.Dependency.Create(new DO.Dependency(0, (int)groupOfDependency.Id!, (int)dependency.Value));
+
+                    //adds a dependency for each task to a milestone
+                    var task = _dal.Task.Read(dependency.Value);
+                    if (task != null)
+                        _dal.Dependency.Create(new DO.Dependency(0, dependency.Value, (int)groupOfDependency.Id!));
+                }
+            }
         }
 
 
-            ) ;
+        //first milestone
+        _dal.Task.Create(new DO.Task(0, "M0", "MileStone0", DateTime.Now, true));
 
+        var dependenciesNotInDependencies = _dal.Dependency.ReadAll().Where(dependency => !distinctDependencies.Contains(dependency?.Id));
 
     }
+
 
     public BO.Milestone Read(int id)
     {
@@ -134,3 +162,6 @@ internal class MilestoneImplementation : IMilestone
         return Read(milestone.Id);
     }
 }
+
+
+

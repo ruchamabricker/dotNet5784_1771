@@ -20,11 +20,11 @@ namespace DO;
 public record Task(
     int Id,
     string Description,
-    string Alias,
-    int Engineerid,
-    EngineerExperience Complexity,
+    string Alias,   
     DateTime CeratedAtDate,//תאריך יצירת משימה
     bool IsMilestone = false,
+    int? Engineerid=null,
+    EngineerExperience? Complexity=null,
     bool Active = true,//delete??
     TimeSpan? RequiredEffortTime = null,
     DateTime? StartDate = null,//תאריך התחלה
@@ -35,5 +35,5 @@ public record Task(
     string? Remarks = null
     )
 {
-    public Task() : this(0, "", "", 0, 0, DateTime.Now) { }
+    public Task() : this(0, "", "", DateTime.Now) { }
 }
