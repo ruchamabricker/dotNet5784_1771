@@ -41,20 +41,30 @@ internal class MilestoneImplementation : IMilestone
         // Step 3: Create a filtered list with distinct values
         var distinctDependencies = sortedValues.SelectMany(v => v).Distinct().ToList();
 
+
+        //var groupedDependencies2 = _dal.Dependency.ReadAll()
+        //    .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+        //    .Select(g => g.Dependencies.OrderBy(v => v)).SelectMany(v => v).Distinct().ToList();
+
+
+        var groupedDependencies2 = _dal.Dependency.ReadAll()
+            .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+            .Select(g => g.Dependencies.OrderBy(v => v).ToArray())
+            .SelectMany(v => v)
+            .Distinct()
+            .ToArray();
+
         int indexMilestone = 1;
 
-        var listOfMilestones = distinctDependencies.SelectMany(dependency =>
+        var listOfMilestones = groupedDependencies2.SelectMany(dependency =>
         {
             if (dependency != null)
             {
-
-                DO.Task task = new DO.Task
-                (
-                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true
-                );
+                DO.Task task = new DO.Task(
+                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
                 int id = _dal.Task.Create(task);
 
-                foreach (var value in dependency.Dependencies)
+                foreach (var value in dependency)
                 {
                     _dal.Dependency.Create(new DO.Dependency(0, id, value));
                 }
@@ -62,7 +72,8 @@ internal class MilestoneImplementation : IMilestone
                 return task;
             }
             return null;
-        }
+        });
+
         );
 
         //resets all dependencys it had before
