@@ -49,14 +49,20 @@ internal class MilestoneImplementation : IMilestone
 
         var groupedDependencies2 = _dal.Dependency.ReadAll()
             .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+            .ToArray()
             .Select(g => g.Dependencies.OrderBy(v => v).ToArray())
             .SelectMany(v => v)
             .Distinct()
             .ToArray();
 
+       // var groupedDependencies2 = _dal.Dependency.ReadAll()
+       //.GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+       //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
+       //.ToArray();
+
         int indexMilestone = 1;
 
-        var listOfMilestones = groupedDependencies2.SelectMany(dependency =>
+        var listOfMilestones = groupedDependencies2.SelectMany(dependency => 
         {
             if (dependency != null)
             {
@@ -64,17 +70,53 @@ internal class MilestoneImplementation : IMilestone
                     indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
                 int id = _dal.Task.Create(task);
 
-                foreach (var value in dependency)
+                foreach (var value in dependency.Dependencies)
                 {
-                    _dal.Dependency.Create(new DO.Dependency(0, id, value));
+                    _dal.Dependency.Create(new DO.Dependency(0, id, value.Value));
                 }
 
                 return task;
             }
             return null;
-        });
+        }
 
         );
+
+
+        //var groupedDependencies2 = _dal.Dependency.ReadAll()
+        //    .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+        //    .ToList();
+
+        //int indexMilestone = 1;
+        //var listOfMilestones = groupedDependencies2.SelectMany(dependency =>
+        //{
+        //    if (dependency != null)
+        //    {
+        //        DO.Task task = new DO.Task(
+        //            indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
+        //        int id = _dal.Task.Create(task);
+
+        //        foreach (var value in dependency.Dependencies)
+        //        {
+        //            if (int.TryParse(value, out int intValue))
+        //            {
+        //                _dal.Dependency.Create(new DO.Dependency(0, id, intValue));
+        //            }
+        //            else
+        //            {
+        //                // Handle the case where the value cannot be converted to an int
+        //            }
+        //        }
+
+        //        return new List<DO.Task> { task };
+        //    }
+
+        //    return null!;
+        //});
+
+
+
+
 
         //resets all dependencys it had before
         _dal.Dependency.Reset();
@@ -155,10 +197,10 @@ internal class MilestoneImplementation : IMilestone
         DO.Task doTask = new DO.Task(milestone.Id,
                   milestone.Description,
                   milestone.Alias,
-                  milestoneToUpdate.Engineerid,
-                  (DO.EngineerExperience)milestoneToUpdate.Complexity!,
                   milestoneToUpdate.CeratedAtDate,
                   milestoneToUpdate.IsMilestone,
+                  milestoneToUpdate.Engineerid,
+                  (DO.EngineerExperience)milestoneToUpdate.Complexity!,
                   milestoneToUpdate.Active,
                   milestoneToUpdate.RequiredEffortTime,
                   milestoneToUpdate.StartDate,
