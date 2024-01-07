@@ -235,7 +235,7 @@ namespace Program // Note: actual namespace depends on the project name.
                         engineerID = int.Parse(Console.ReadLine()!);
                         complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         createdAt = DateTime.Parse(Console.ReadLine()!);
-                        int newID = s_dal!.Task.Create(new DO.Task(0, description, alias, engineerID, complexityLevel, createdAt));
+                        int newID = s_dal!.Task.Create(new DO.Task(0, description, alias, createdAt, false, engineerID, complexityLevel));
                         Console.WriteLine("created successfuly");
                         Console.WriteLine("id is of the new task is: " + newID);
                     }
@@ -286,7 +286,7 @@ namespace Program // Note: actual namespace depends on the project name.
 
                         if (string.IsNullOrEmpty(description) && string.IsNullOrEmpty(alias) && engineerID == 0 && complexityLevel == null)
                             break;
-                        s_dal!.Task.Update(new DO.Task(id, description, alias, engineerID, complexityLevel, createdAt));
+                        s_dal!.Task.Update(new DO.Task(id, description, alias, createdAt, false, engineerID, complexityLevel));
                         Console.WriteLine("updated successfuly");
                     }
                     catch (Exception ex)

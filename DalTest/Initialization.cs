@@ -61,7 +61,7 @@ public static class Initialization
 
             EngineerExperience _complexityLevel = (EngineerExperience)(s_rand.Next(0, 3));
             DateTime _ceratedAt = new DateTime(s_rand.Next(2017, 2023), s_rand.Next(1, 13), s_rand.Next(1, 29));
-            s_dal!.Task.Create(new Task(0, _description, _alias, _engineerid, _complexityLevel, _ceratedAt));
+            s_dal!.Task.Create(new Task(0, _description, _alias, _ceratedAt, false, _engineerid, _complexityLevel));
         }
 
     }

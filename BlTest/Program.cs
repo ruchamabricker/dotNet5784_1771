@@ -20,7 +20,9 @@ namespace Program // Note: actual namespace depends on the project name.
             {
                 case CRUD.BREAK:
                     break;
-
+                case CRUD.CREATE:
+                    s_bl.milestone.Create();
+                    break;
                 case CRUD.READ:
                     Console.WriteLine("Enter ID");
                     try
@@ -380,7 +382,8 @@ namespace Program // Note: actual namespace depends on the project name.
                         dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         while (dependencyId > 0)
                         {
-                            BO.Task task = s_bl.task.Read(dependencyId);
+                            BO.Task? task = s_bl.task.Read(dependencyId);
+                            if (task != null)
                             tasksInList.Add(new TaskInList()
                             {
                                 Id = task.Id,

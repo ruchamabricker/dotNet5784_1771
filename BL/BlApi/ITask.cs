@@ -23,7 +23,7 @@ public interface ITask
     /// </summary>
     /// <param name="id">id of task that should be returned</param>
     /// <returns>id of the new task</returns>
-    public BO.Task Read(int id);
+    public BO.Task? Read(int id);
 
     /// <summary>
     /// returns all the tasks that pass the condition

@@ -1,6 +1,5 @@
 ﻿using BlApi;
 using DalApi;
-using DO;
 
 namespace BlImplementation;
 
@@ -31,7 +30,7 @@ internal class MilestoneImplementation : IMilestone
         IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll();
 
         // Step 1: Create a grouped list with dependent tasks as keys and previous tasks as values
-        var groupedDependencies = _dal.Dependency.ReadAll().GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() });
+        var groupedDependencies = _dal.Dependency.ReadAll().GroupBy(dependency => dependency?.Id, dependency => dependency?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() });
         //כל משימה והמשימות שהיא תלויה בהם
 
 
@@ -47,22 +46,25 @@ internal class MilestoneImplementation : IMilestone
         //    .Select(g => g.Dependencies.OrderBy(v => v)).SelectMany(v => v).Distinct().ToList();
 
 
+
         var groupedDependencies2 = _dal.Dependency.ReadAll()
             .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
-            .ToArray()
-            .Select(g => g.Dependencies.OrderBy(v => v).ToArray())
-            .SelectMany(v => v)
-            .Distinct()
-            .ToArray();
+            .OrderBy(dep => dep.Id)
+            .GroupBy(d => d.Dependencies, (Dependencies, Ids) => new { Dependencies = Dependencies, Ids = Ids.ToList() })
+            .ToList();
+        //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
+        //.SelectMany(v => v)
+        //.Distinct()
+        //.ToList();
 
-       // var groupedDependencies2 = _dal.Dependency.ReadAll()
-       //.GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
-       //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
-       //.ToArray();
+        // var groupedDependencies2 = _dal.Dependency.ReadAll()
+        //.GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+        //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
+        //.ToArray();
 
         int indexMilestone = 1;
 
-        var listOfMilestones = groupedDependencies2.SelectMany(dependency => 
+        var listOfMilestones = groupedDependencies2.Select(dependency =>
         {
             if (dependency != null)
             {
@@ -72,7 +74,8 @@ internal class MilestoneImplementation : IMilestone
 
                 foreach (var value in dependency.Dependencies)
                 {
-                    _dal.Dependency.Create(new DO.Dependency(0, id, value.Value));
+                    if (value != null)
+                        _dal.Dependency.Create(new DO.Dependency(0, id, value.Value));
                 }
 
                 return task;

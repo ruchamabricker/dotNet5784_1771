@@ -1,5 +1,4 @@
 ﻿using BlApi;
-
 namespace BlImplementation;
 
 
@@ -35,11 +34,11 @@ internal class TaskImplementation : ITask
     private BO.EngineerInTask? calculateEngineer(DO.Task doTask)
     {
         BO.EngineerInTask engineer;
-        if (doTask?.Engineerid == null)
+        if (doTask.Engineerid != null)
         {
             engineer = new BO.EngineerInTask()
             {
-                Id = doTask!.Engineerid,
+                Id = (int)doTask.Engineerid,
                 Name = _dal.Engineer.Read(doTask.Id)?.Name ?? string.Empty
             };
         }
@@ -85,10 +84,10 @@ internal class TaskImplementation : ITask
         DO.Task doTask = new DO.Task(task.Id,
             task.Description!,
             task.Alias,
-            task.Engineer!.Id,
-            (DO.EngineerExperience)task.ComplexityLevel!,
             task.CreatedAtDate,
             false,
+            task.Engineer!.Id,
+            (DO.EngineerExperience)task.ComplexityLevel!,
             true,
             (TimeSpan)(task.CompleteDate - task.StartDate)!,
             task.StartDate,
@@ -135,6 +134,7 @@ internal class TaskImplementation : ITask
 
 
         BO.Status status = calculateStatus(doTask);
+        BO.EngineerExperience? complexityLevel = doTask.Complexity!=null ? (BO.EngineerExperience)doTask.Complexity : null;
 
         BO.Task boTask = new BO.Task
         {
@@ -153,7 +153,7 @@ internal class TaskImplementation : ITask
             Deliverables = doTask.Deliverables,
             Remarks = doTask.Remarks,
             Engineer = calculateEngineer(doTask),
-            ComplexityLevel = (BO.EngineerExperience)doTask.Complexity
+            ComplexityLevel = complexityLevel
         };
         return boTask;
     }
@@ -207,10 +207,10 @@ internal class TaskImplementation : ITask
         DO.Task doTask = new DO.Task(task.Id,
                    task.Description!,
                    task.Alias,
-                   task.Engineer!.Id,
-                   (DO.EngineerExperience)task.ComplexityLevel!,
                    task.CreatedAtDate,
                    false,
+                   task.Engineer!.Id,
+                   (DO.EngineerExperience)task.ComplexityLevel!,
                    true,
                    (TimeSpan)(task.CompleteDate - task.StartDate)!,
                    task.StartDate,
