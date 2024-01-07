@@ -29,6 +29,8 @@ internal class TaskImplementation : ITask
         BO.TaskInList? task = tasksInList.Where(task => task != null && _dal.Task.Read(task.Id)!.IsMilestone == true).FirstOrDefault();
         if (task == null) return null;
         return new BO.MilestoneInTask() { Id = task.Id, Alias = task.Alias };
+
+
     }
 
     private BO.EngineerInTask? calculateEngineer(DO.Task doTask)

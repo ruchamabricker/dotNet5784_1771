@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using DalApi;
+using DO;
 
 namespace BlImplementation;
 
@@ -29,125 +30,95 @@ internal class MilestoneImplementation : IMilestone
     {
         IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll();
 
-        // Step 1: Create a grouped list with dependent tasks as keys and previous tasks as values
-        var groupedDependencies = _dal.Dependency.ReadAll().GroupBy(dependency => dependency?.Id, dependency => dependency?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() });
-        //כל משימה והמשימות שהיא תלויה בהם
-
-
-        // Step 2: Sort the list of values
-        var sortedValues = groupedDependencies.Select(g => g.Dependencies.OrderBy(v => v)).ToList();
-
-        // Step 3: Create a filtered list with distinct values
-        var distinctDependencies = sortedValues.SelectMany(v => v).Distinct().ToList();
-
-
-        //var groupedDependencies2 = _dal.Dependency.ReadAll()
-        //    .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
-        //    .Select(g => g.Dependencies.OrderBy(v => v)).SelectMany(v => v).Distinct().ToList();
-
-
-
-        var groupedDependencies2 = _dal.Dependency.ReadAll()
-            .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
+        var groupedDependencies = _dal.Dependency.ReadAll()
+            .GroupBy(d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
             .OrderBy(dep => dep.Id)
-            .GroupBy(d => d.Dependencies, (Dependencies, Ids) => new { Dependencies = Dependencies, Ids = Ids.ToList() })
+            .GroupBy(d => d.Dependencies, (Dependencies, Ids) => new { Dependencies = Dependencies, Ids = Ids.ToList() })//each 2 tasks that are dependent on the same tasks, are together now
             .ToList();
-        //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
-        //.SelectMany(v => v)
-        //.Distinct()
-        //.ToList();
-
-        // var groupedDependencies2 = _dal.Dependency.ReadAll()
-        //.GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
-        //.Select(g => g.Dependencies.OrderBy(v => v).ToArray())
-        //.ToArray();
 
         int indexMilestone = 1;
 
-        var listOfMilestones = groupedDependencies2.Select(dependency =>
+        foreach (var x in groupedDependencies)
         {
-            if (dependency != null)
+            foreach (var y in x.Dependencies)
             {
-                DO.Task task = new DO.Task(
-                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
-                int id = _dal.Task.Create(task);
-
-                foreach (var value in dependency.Dependencies)
-                {
-                    if (value != null)
-                        _dal.Dependency.Create(new DO.Dependency(0, id, value.Value));
-                }
-
-                return task;
+                Console.WriteLine(y);
             }
-            return null;
+            foreach (var z in x.Ids)
+            {
+                Console.WriteLine(z);
+            }
         }
-
-        );
-
-
-        //var groupedDependencies2 = _dal.Dependency.ReadAll()
-        //    .GroupBy(d => d?.Id, d => d?.DependentTask, (Id, Dependencies) => new { Id = Id, Dependencies = Dependencies.ToList() })
-        //    .ToList();
-
-        //int indexMilestone = 1;
-        //var listOfMilestones = groupedDependencies2.SelectMany(dependency =>
-        //{
-        //    if (dependency != null)
-        //    {
-        //        DO.Task task = new DO.Task(
-        //            indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
-        //        int id = _dal.Task.Create(task);
-
-        //        foreach (var value in dependency.Dependencies)
-        //        {
-        //            if (int.TryParse(value, out int intValue))
-        //            {
-        //                _dal.Dependency.Create(new DO.Dependency(0, id, intValue));
-        //            }
-        //            else
-        //            {
-        //                // Handle the case where the value cannot be converted to an int
-        //            }
-        //        }
-
-        //        return new List<DO.Task> { task };
-        //    }
-
-        //    return null!;
-        //});
-
-
-
-
-
         //resets all dependencys it had before
         _dal.Dependency.Reset();
 
-        //creates new dependencies that are of the milestone
-        foreach (var groupOfDependency in groupedDependencies)
+        foreach (var groupOfTasks in groupedDependencies)
         {
-            foreach (var dependency in groupOfDependency.Dependencies)
-            {
-                if (dependency != null)
-                {
-                    //adds all dependencies for milestone to all the tasks that it depends on
-                    _dal.Dependency.Create(new DO.Dependency(0, (int)groupOfDependency.Id!, (int)dependency.Value));
 
-                    //adds a dependency for each task to a milestone
-                    var task = _dal.Task.Read(dependency.Value);
-                    if (task != null)
-                        _dal.Dependency.Create(new DO.Dependency(0, dependency.Value, (int)groupOfDependency.Id!));
+            //}
+
+            //var listOfMilestones = groupedDependencies2.Select(groupOfTasks =>
+            //{
+            if (groupOfTasks != null)
+            {
+                DO.Task task = new DO.Task(
+                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
+                int idOfNewMilestone = _dal.Task.Create(task);
+
+                //creating new dependencies, so that each task dependes on the mileston that was just created
+
+                //goes threw all the task that depend on the same dependencies 
+                foreach (var dependency in groupOfTasks.Dependencies)
+                {
+                    if (dependency != null)
+                        _dal.Dependency.Create(new DO.Dependency(0, idOfNewMilestone, dependency.Id));
                 }
+
+                //goes threw all the tasks that the milestone depends on them
+                foreach (var idOfTask in groupOfTasks.Ids)
+                {
+                    if (idOfTask != null)
+                        _dal.Dependency.Create(new DO.Dependency(0, idOfTask.Id!.Value, idOfNewMilestone));
+                }
+
+                //return task;
             }
+            //  return null;
+        }
+
+        var d = _dal.Task.ReadAll();
+        foreach (var dependency in d)
+        {
+            Console.WriteLine(dependency);
+            Console.WriteLine("***");
         }
 
 
         //first milestone
-        _dal.Task.Create(new DO.Task(0, "M0", "MileStone0", DateTime.Now, true));
+        int firstMilestoneId = _dal.Task.Create(new DO.Task(0, "M0", "MileStone0", DateTime.Now, true));
 
-        var dependenciesNotInDependencies = _dal.Dependency.ReadAll().Where(dependency => !distinctDependencies.Contains(dependency?.Id));
+        //returns all the task that don't depend on any other tasks
+        var tasksNotDependent = _dal.Task.ReadAll()
+            .Where(task => !_dal.Dependency.ReadAll().Any(dependency => dependency?.DependentTask == task?.Id))
+            .ToList();
 
+        //builds new dependencies for these tasks
+        tasksNotDependent.Select(task =>
+           _dal.Dependency.Create(new DO.Dependency(0, task!.Id, firstMilestoneId))
+        );
+
+        //last milestone
+        int lastMilestoneId = _dal.Task.Create(new DO.Task(0, $"M{indexMilestone}", $"MileStone{indexMilestone}", DateTime.Now, true));
+
+        //returns all task that no other tasks depend on them
+        var tasksNotDependensOn = _dal.Task.ReadAll()
+           .Where(task => !_dal.Dependency.ReadAll().Any(dependency => dependency?.DependsOnTask == task?.Id))
+           .ToList();
+
+        //builds new dependencies for these tasks
+        tasksNotDependensOn.Select(task =>
+           _dal.Dependency.Create(new DO.Dependency(0, lastMilestoneId, task!.Id))
+        );
     }
 
 
@@ -192,7 +163,7 @@ internal class MilestoneImplementation : IMilestone
     {
         if (Read(milestone.Id) is null)
             throw new BO.BlDoesNotExistException($"There is no milestone with id:{milestone.Id}");
-        if (milestone.Alias.Length < 0)
+        if (milestone.Alias?.Length < 0)
             throw new BO.BlInValidDataException("In valid length of alias");
 
         DO.Task milestoneToUpdate = _dal.Task.Read(milestone.Id)!;
