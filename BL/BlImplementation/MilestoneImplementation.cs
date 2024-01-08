@@ -1,6 +1,7 @@
 ﻿using BlApi;
 using DalApi;
 using DO;
+using System.Runtime.Intrinsics.Arm;
 
 namespace BlImplementation;
 
@@ -46,9 +47,13 @@ internal class MilestoneImplementation : IMilestone
             }
             foreach (var z in x.Ids)
             {
-                Console.WriteLine(z);
+                Console.WriteLine("IN SIDE" + z);
             }
         }
+
+        foreach (var task in _dal.Dependency.ReadAll())
+            Console.WriteLine(task);
+        Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         //resets all dependencys it had before
         _dal.Dependency.Reset();
 
@@ -86,12 +91,12 @@ internal class MilestoneImplementation : IMilestone
             //  return null;
         }
 
-        var d = _dal.Task.ReadAll();
-        foreach (var dependency in d)
-        {
-            Console.WriteLine(dependency);
-            Console.WriteLine("***");
-        }
+        //var d = _dal.Task.ReadAll();
+        //foreach (var dependency in d)
+        //{
+        //    Console.WriteLine(dependency);
+        //    Console.WriteLine("***");
+        //}
 
 
         //first milestone
@@ -119,6 +124,10 @@ internal class MilestoneImplementation : IMilestone
         tasksNotDependensOn.Select(task =>
            _dal.Dependency.Create(new DO.Dependency(0, lastMilestoneId, task!.Id))
         );
+
+    //   .Select(dep => Console.WriteLine(dep));
+        foreach (var task in _dal.Dependency.ReadAll())
+            Console.WriteLine(task);
     }
 
 
