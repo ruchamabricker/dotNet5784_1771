@@ -80,7 +80,7 @@ namespace Program // Note: actual namespace depends on the project name.
                         email = Console.ReadLine()!;
                         level = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
                         cost = double.Parse(Console.ReadLine()!);
-                        taskId = int.Parse(Console.ReadLine()!);
+                       // taskId = int.Parse(Console.ReadLine()!);
 
                         int returnedId = s_bl!.Engineer.Create(new BO.Engineer()
                         {
@@ -234,30 +234,32 @@ namespace Program // Note: actual namespace depends on the project name.
                         remarks = Console.ReadLine()!;
 
                         //is a milestone
-                        Console.WriteLine("enter y if it is a milestone otherwise press any key");
-                        string isMilestoneYN = Console.ReadLine()!;
-                        isMilestone = isMilestoneYN == "y" ? true : false;
-                        if (isMilestoneYN == "y")
-                        {
-                            Console.WriteLine("Enter id of milestone");
-                            int milestoneId = int.Parse(Console.ReadLine()!);
-                            mileStone = new MilestoneInTask() { Id = milestoneId, Alias = s_bl.milestone.Read(milestoneId).Alias };
-                        }
+                        //Console.WriteLine("enter y if it is a milestone otherwise press any key");
+                        //string isMilestoneYN = Console.ReadLine()!;
+                        //isMilestone = isMilestoneYN == "y" ? true : false;
+                        //if (isMilestoneYN == "y")
+                        //{
+                        //    Console.WriteLine("Enter id of milestone");
+                        //    int milestoneId = int.Parse(Console.ReadLine()!);
+                        //    mileStone = new MilestoneInTask() { Id = milestoneId, Alias = s_bl.milestone.Read(milestoneId).Alias };
+                        //}
 
                         //dependencies this task is dependent on
                         Console.WriteLine("Enter dependency id");
                         dependencyId = int.Parse(Console.ReadLine() ?? "-1");
                         while (dependencyId > 0)
                         {
-                            BO.Task task = s_bl.task.Read(dependencyId);
-                            if (task != null) { 
-                            tasksInList.Add(new TaskInList()
+                            BO.Task? task = s_bl.task.Read(dependencyId);
+                            if (task != null)
                             {
-                                Id = task.Id,
-                                Alias = task.Alias!,
-                                Description = task.Description!,
-                                Status = task.Status
-                            });}
+                                tasksInList.Add(new TaskInList()
+                                {
+                                    Id = task.Id,
+                                    Alias = task.Alias!,
+                                    Description = task.Description!,
+                                    Status = task.Status
+                                });
+                            }
                             Console.WriteLine("enter another task, your task is dependent on it");
 
                             dependencyId = int.Parse(Console.ReadLine() ?? "-1");
@@ -302,7 +304,7 @@ namespace Program // Note: actual namespace depends on the project name.
                             Remarks = remarks,
                             Engineer = engineerInTask,
                             ComplexityLevel = complexityLevel
-                        }); ; ;
+                        });
                         Console.WriteLine("created successfuly");
                         Console.WriteLine("id is of the new task is: " + newID);
                     }
@@ -374,7 +376,6 @@ namespace Program // Note: actual namespace depends on the project name.
                             Console.WriteLine("Enter id of milestone");
                             int milestoneId = int.Parse(Console.ReadLine()!);
                             mileStone = new MilestoneInTask() { Id = milestoneId, Alias = s_bl.milestone.Read(milestoneId).Alias };
-
                         }
 
                         //dependencies this task is dependent on
@@ -384,13 +385,13 @@ namespace Program // Note: actual namespace depends on the project name.
                         {
                             BO.Task? task = s_bl.task.Read(dependencyId);
                             if (task != null)
-                            tasksInList.Add(new TaskInList()
-                            {
-                                Id = task.Id,
-                                Alias = task.Alias!,
-                                Description = task.Description!,
-                                Status = task.Status
-                            });
+                                tasksInList.Add(new TaskInList()
+                                {
+                                    Id = task.Id,
+                                    Alias = task.Alias!,
+                                    Description = task.Description!,
+                                    Status = task.Status
+                                });
                             Console.WriteLine("enter another task, your task is dependent on it");
 
                         }

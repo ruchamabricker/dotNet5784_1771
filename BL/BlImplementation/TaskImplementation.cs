@@ -77,7 +77,7 @@ internal class TaskImplementation : ITask
 
     public int Create(BO.Task task)
     {
-        if (task.Id <= 0)
+        if (task.Id < 0)
             throw new BO.BlInValidDataException("In valid value of id");
         if (task.Alias!.Length < 0)
             throw new BO.BlInValidDataException("In valid length of alias");
