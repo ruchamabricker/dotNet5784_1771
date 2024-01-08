@@ -90,13 +90,13 @@ internal class TaskImplementation : ITask
             task.Engineer!.Id,
             (DO.EngineerExperience)task.ComplexityLevel!,
             true,
-            (TimeSpan)(task.CompleteDate - task.StartDate)!,
+           null, //(TimeSpan)(task.CompleteDate - task.StartDate)!,
             task.StartDate,
             task.BaselineStartDate,
             task.DeadlineDate,
             task.CompleteDate,
             task.Deliverables,
-            task.Remarks);
+            task.Remarks) ;
         try
         {
             if (task.DependenciesList != null)

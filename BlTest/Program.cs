@@ -179,7 +179,7 @@ namespace Program // Note: actual namespace depends on the project name.
             EngineerExperience complexityLevel;
             DateTime createdAt;
             DateTime? baseLineStartDate = null, startDate = null, forcastDate = null, deadlineDate = null, completeDate = null;
-            List<BO.TaskInList?>? tasksInList = new List<TaskInList?> { };
+            List<BO.TaskInList?>? tasksInList = new List<TaskInList?> ();
             MilestoneInTask? mileStone = new MilestoneInTask();
             bool isMilestone;
             EngineerInTask? engineerInTask = null;
