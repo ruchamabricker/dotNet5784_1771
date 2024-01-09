@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Diagnostics.Tracing;
 
 namespace PL;
 
-internal class Enums
+internal class EngineerCollection : IEnumerable
 {
-    internal class EngineersCollection : IEnumerable
-    {
-        static readonly IEnumerable<BO.Engineer> e_enums =
-        (Enum.GetValues(typeof(BO.Engineer)) as IEnumerable<BO.Engineer>)!;
-        public IEnumerator<BO.Engineer> GetEnumerator() => e_enums.GetEnumerator();
-    }
+    static readonly IEnumerable<BO.EngineerExperience> e_enums =
+    (Enum.GetValues(typeof(BO.EngineerExperience)) as IEnumerable<BO.EngineerExperience>)!;
+    public IEnumerator GetEnumerator() => e_enums.GetEnumerator();
+   // public BO.EngineerExperience EngineerLevel { get; set; } = BO.EngineerExperience.Novice;
 
 }
+

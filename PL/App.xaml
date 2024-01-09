@@ -4,6 +4,7 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:local="clr-namespace:PL"
 StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <local:EngineersCollection x:Key="EngineersCollection" />
+        <local:EngineerCollection x:Key="EngineerCollectionKey" />
+        <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
     </Application.Resources>
-</Application>
+</Application>

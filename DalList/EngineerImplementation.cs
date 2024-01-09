@@ -13,7 +13,7 @@ internal class EngineerImplementation : IEngineer
             throw new DalNoArgumentPassedException("there is item passed to be added");
 
         if (Read(item.Id) is not null)
-            throw new DalAlreadyExistsException($"Student with ID={item.Id} already exists");
+            throw new DalAlreadyExistsException($"Engineer with ID={item.Id} already exists");
 
         DataSource.Engineers.Add(item);
         return item.Id;

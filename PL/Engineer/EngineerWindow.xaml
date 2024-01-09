@@ -4,29 +4,84 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Engineer"
+        xmlns:converters="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="EngineerWindow" Height="640" Width="800">
-    
+        Title="EngineerWindow" Height="640" Width="800"
+        DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
+    <Window.Resources>
+        <converters:ConvertIdToContent x:Key="ConvertIdToContent" />
+    </Window.Resources>
+
+
+
     <!--Extrnal Grid-->
     <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <!--label for choosing by what to search-->
-            <Label Grid.Column="0"></Label>
-            <!--comboBox by what to choose by what to search-->
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ComboBox>
-        </Grid>
-        <ListView Grid.Row="1"></ListView>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <TextBox TextWrapping="Wrap" Margin="276,62,311,519"
+         Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+         IsEnabled="{Binding Path=CurrentEngineer[0].Id, Converter={StaticResource ConvertIdToContent}}" />
+        <TextBox TextWrapping="Wrap" 
+                 Text="{Binding Path=CurrentEngineer[0].Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,152,311,429"/>
+        <TextBox TextWrapping="Wrap" 
+                 Text="{Binding Path=CurrentEngineer[0].Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,237,311,344"/>
+        <ComboBox Margin="276,312,311,278"
+                  ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                  SelectedValue="{Binding Path=CurrentEngineer[0].Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+        <TextBox TextWrapping="Wrap"
+                 Text="{Binding Path=CurrentEngineer[0].Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,386,311,195"/>
+        <Label Content="ID" Margin="206,62,529,519" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Name" Margin="206,152,524,429" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Email" Margin="206,237,529,344" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Level" Margin="206,312,529,278" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Cost" Margin="206,386,524,195" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Button Margin="317,527,352,51" Click="SaveButton_Click"></Button>
 
     </Grid>
 </Window>

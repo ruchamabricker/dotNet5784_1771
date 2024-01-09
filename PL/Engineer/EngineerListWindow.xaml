@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="EngineerListWindow" Height="450" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -23,8 +24,13 @@
             <!--label for combobox-->
             <Label Content="Label" Grid.Column="0" HorizontalAlignment="Left" Margin="33,0,0,0" VerticalAlignment="Center"/>
             <!--ComboBox for choosing how to search-->
-            <ComboBox ItemsSource="{Binding Source={StaticResource EngineersCollection}}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>        </Grid>
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}">
+            <ComboBox ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+          SelectedValue="{Binding Path=EngineerLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          SelectionChanged="cbEngineerExperience_SelectionChanged"/>
+        </Grid>
+        <ListView x:Name="mouse" Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" 
+                  MouseDoubleClick="engineerClicked_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -32,6 +38,7 @@
             </ListView.View>
         </ListView>
         <!--Button to add a new engineer???-->
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}"
+                Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="handleNewEngineer_Click" />
     </Grid>
 </Window>
