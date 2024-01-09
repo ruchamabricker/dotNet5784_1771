@@ -16,21 +16,21 @@
 
     <!--Extrnal Grid-->
     <Grid>
-        <TextBox TextWrapping="Wrap" Margin="276,62,311,519"
-         Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-         IsEnabled="{Binding Path=CurrentEngineer[0].Id, Converter={StaticResource ConvertIdToContent}}" />
+        <TextBox TextWrapping="Wrap" Margin="276,36,311,519"
+                 Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                 IsEnabled="{Binding Path=CurrentEngineer[0].Id, Converter={StaticResource ConvertIdToContent}}" />
         <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Path=CurrentEngineer[0].Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,152,311,429"/>
+                 Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,126,311,429"/>
         <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Path=CurrentEngineer[0].Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,237,311,344"/>
-        <ComboBox Margin="276,312,311,278"
+                 Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,216,311,344"/>
+        <ComboBox Margin="276,312,311,256"
                   ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
-                  SelectedValue="{Binding Path=CurrentEngineer[0].Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                  SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
         <TextBox TextWrapping="Wrap"
-                 Text="{Binding Path=CurrentEngineer[0].Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,386,311,195"/>
+                 Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,386,311,170"/>
         <Label Content="ID" Margin="206,62,529,519" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
                 <TransformGroup>
