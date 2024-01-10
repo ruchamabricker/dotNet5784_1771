@@ -58,6 +58,15 @@ public partial class EngineerListWindow : Window
         InitializeComponent();
         var temp = s_bl?.Engineer.ReadAll();
         EngineerList = temp == null ? new() : new(temp!);
+
+        Activated += EngineerListWindow_Activated;
+    }
+    private void EngineerListWindow_Activated(object sender, EventArgs e)
+    {
+        // Execute the query and update the list
+        var temp = EngineerLevel == BO.EngineerExperience.None ? s_bl?.Engineer.ReadAll() :
+            s_bl?.Engineer.ReadAll(item => item.Level == EngineerLevel);
+        EngineerList = (temp == null) ? new() : new(temp!);
     }
 
     private void engineerClicked_MouseDoubleClick(object sender, MouseButtonEventArgs e)
