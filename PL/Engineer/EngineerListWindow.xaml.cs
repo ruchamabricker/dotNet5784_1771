@@ -52,14 +52,13 @@ public partial class EngineerListWindow : Window
         }
     }
 
-
     public EngineerListWindow()
     {
         InitializeComponent();
         var temp = s_bl?.Engineer.ReadAll();
         EngineerList = temp == null ? new() : new(temp!);
 
-        Activated += EngineerListWindow_Activated;
+        Activated += EngineerListWindow_Activated!;
     }
     private void EngineerListWindow_Activated(object sender, EventArgs e)
     {
@@ -79,6 +78,5 @@ public partial class EngineerListWindow : Window
     private void handleNewEngineer_Click(object sender, RoutedEventArgs e)
     {
         new EngineerWindow().ShowDialog();
-
     }
 }

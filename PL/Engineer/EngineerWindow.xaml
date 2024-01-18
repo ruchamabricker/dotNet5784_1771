@@ -18,7 +18,7 @@
     <Grid>
         <TextBox TextWrapping="Wrap" Margin="276,36,311,519"
                  Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                 IsEnabled="{Binding Id, Converter={StaticResource ConvertIdToContent}}" />
+                 IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnableKey}}" />
         <TextBox TextWrapping="Wrap" 
                  Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
                  Margin="276,126,311,429"/>

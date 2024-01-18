@@ -10,6 +10,5 @@
         <!--will show all engineers-->
         <Button Content="Handle Engineers" HorizontalAlignment="Left" Height="89" Margin="54,68,0,0" VerticalAlignment="Top" Width="689" Click="btnEngineers_Click"/>
         <Button Content="Data Initialization" HorizontalAlignment="Left" Height="89" Margin="54,217,0,0" VerticalAlignment="Top" Width="689" Click="btnDataInitialization_Click"/>
-
     </Grid>
 </Window>
