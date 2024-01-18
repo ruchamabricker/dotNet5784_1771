@@ -7,6 +7,7 @@ public class Task
     public string? Alias { get; set; }
     public DateTime CreatedAtDate { get; set; }
     public Status? Status { get; set; } = null;
+    public TimeSpan? RequiredEffortTime { get; set; } = null;
     public List<BO.TaskInList?>? DependenciesList { get; set; } = null;
     public MilestoneInTask? Milestone { get; set; } = null;
     public DateTime? BaselineStartDate { get; set; } = null;//תאריך התחלה משעור

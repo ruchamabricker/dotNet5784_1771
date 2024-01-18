@@ -90,13 +90,13 @@ internal class TaskImplementation : ITask
             task.Engineer!.Id,
             (DO.EngineerExperience)task.ComplexityLevel!,
             true,
-           null, //(TimeSpan)(task.CompleteDate - task.StartDate)!,
+            task.RequiredEffortTime,
             task.StartDate,
             task.BaselineStartDate,
             task.DeadlineDate,
             task.CompleteDate,
             task.Deliverables,
-            task.Remarks) ;
+            task.Remarks);
         try
         {
             if (task.DependenciesList != null)
@@ -135,7 +135,7 @@ internal class TaskImplementation : ITask
 
 
         BO.Status status = calculateStatus(doTask);
-        BO.EngineerExperience? complexityLevel = doTask.Complexity!=null ? (BO.EngineerExperience)doTask.Complexity : null;
+        BO.EngineerExperience? complexityLevel = doTask.Complexity != null ? (BO.EngineerExperience)doTask.Complexity : null;
 
         BO.Task boTask = new BO.Task
         {
@@ -144,6 +144,7 @@ internal class TaskImplementation : ITask
             Alias = doTask.Alias,
             CreatedAtDate = doTask.CeratedAtDate,
             Status = status,
+            RequiredEffortTime = doTask.RequiredEffortTime,
             DependenciesList = calculateTaskInList(id),
             Milestone = calculateMilestone(calculateTaskInList(id)),
             BaselineStartDate = doTask.ScheduledDate,
@@ -166,9 +167,6 @@ internal class TaskImplementation : ITask
             if (doTask == null)
                 return null;
 
-
-
-
             return new BO.Task
             {
                 Id = doTask.Id,
@@ -176,6 +174,7 @@ internal class TaskImplementation : ITask
                 Alias = doTask.Alias,
                 CreatedAtDate = doTask.CeratedAtDate,
                 Status = calculateStatus(doTask),
+                RequiredEffortTime = doTask.RequiredEffortTime,
                 DependenciesList = calculateTaskInList(doTask.Id),
                 Milestone = calculateMilestone(calculateTaskInList(doTask.Id)),
                 BaselineStartDate = doTask.ScheduledDate,
@@ -213,7 +212,7 @@ internal class TaskImplementation : ITask
                    task.Engineer!.Id,
                    (DO.EngineerExperience)task.ComplexityLevel!,
                    true,
-                   (TimeSpan)(task.CompleteDate - task.StartDate)!,
+                   task.RequiredEffortTime,
                    task.StartDate,
                    task.BaselineStartDate,
                    task.DeadlineDate,

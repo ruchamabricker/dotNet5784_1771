@@ -183,6 +183,7 @@ namespace Program // Note: actual namespace depends on the project name.
             MilestoneInTask? mileStone = new MilestoneInTask();
             bool isMilestone;
             EngineerInTask? engineerInTask = null;
+            TimeSpan requeredEffortTime;
 
             Console.WriteLine("choose: 1-create, 2-read, 3-read all, 4-update, 5-delete,  6-reset, 0-exit");
             int crudChoice = int.Parse(Console.ReadLine()!);
@@ -194,13 +195,12 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.CREATE:
                     try
                     {
-                        Console.WriteLine("Enter description, alias, engineer ID, complexity Level, Date it was cerated at");
+                        Console.WriteLine("Enter description, alias, engineer ID, complexity Level, required effort time");
                         description = Console.ReadLine()!;
                         alias = Console.ReadLine()!;
                         engineerID = int.Parse(Console.ReadLine()!);
                         complexityLevel = (EngineerExperience)Enum.Parse(typeof(EngineerExperience), Console.ReadLine()!);
-                        createdAt = DateTime.Parse(Console.ReadLine()!);
-
+                        requeredEffortTime=TimeSpan.Parse(Console.ReadLine()!);
                         //Console.WriteLine("Enter base line start date, start date, forcast date, deadline date, complete date");
                         //checkNotNull = Console.ReadLine();
                         //if (checkNotNull != null&&checkNotNull != "")
@@ -232,17 +232,6 @@ namespace Program // Note: actual namespace depends on the project name.
                         Console.WriteLine("Enter deliverables, ramarks");
                         deliverables = Console.ReadLine()!;
                         remarks = Console.ReadLine()!;
-
-                        //is a milestone
-                        //Console.WriteLine("enter y if it is a milestone otherwise press any key");
-                        //string isMilestoneYN = Console.ReadLine()!;
-                        //isMilestone = isMilestoneYN == "y" ? true : false;
-                        //if (isMilestoneYN == "y")
-                        //{
-                        //    Console.WriteLine("Enter id of milestone");
-                        //    int milestoneId = int.Parse(Console.ReadLine()!);
-                        //    mileStone = new MilestoneInTask() { Id = milestoneId, Alias = s_bl.milestone.Read(milestoneId).Alias };
-                        //}
 
                         //dependencies this task is dependent on
                         Console.WriteLine("Enter dependency id");
@@ -293,6 +282,7 @@ namespace Program // Note: actual namespace depends on the project name.
                             Alias = alias,
                             CreatedAtDate = DateTime.Now,
                             Status = (Status)0,//every task status starts from the beggining
+                            RequiredEffortTime= requeredEffortTime,
                             DependenciesList = tasksInList,
                             Milestone = null,
                             BaselineStartDate = null,
