@@ -145,8 +145,9 @@ internal class MilestoneImplementation : IMilestone
         foreach (var task in _dal.Dependency.ReadAll())
             Console.WriteLine(task);
 
+        //create dates for all tasks:
 
-
+        //I have all the dependencies, and their I know what task is dependent on what task....
 
     }
 
