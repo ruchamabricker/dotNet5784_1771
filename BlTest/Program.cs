@@ -21,7 +21,10 @@ namespace Program // Note: actual namespace depends on the project name.
                 case CRUD.BREAK:
                     break;
                 case CRUD.CREATE:
-                    s_bl.milestone.Create();
+        //                internal static DateTime? startProjectDate = XMLTools.LoadListFromXMLElement(@"data-config").ToDateTimeNullable("startProjectDate");
+
+        //internal static DateTime? endProjectDate = XMLTools.LoadListFromXMLElement(@"data-config").ToDateTimeNullable("endProjectDate");
+        s_bl.milestone.Create();
                     break;
                 case CRUD.READ:
                     Console.WriteLine("Enter ID");

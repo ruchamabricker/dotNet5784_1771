@@ -30,7 +30,7 @@ internal class DependencyImplementation : IDependency
         {
             XElement? dependencyElement = dependenciesDocument.Root
                 .Elements("Dependency")
-                .FirstOrDefault(e => (int)e.Element("Id") == id);
+                .FirstOrDefault(e => (int)e.Element("Id")! == id);
 
             if (dependencyElement != null)
             {

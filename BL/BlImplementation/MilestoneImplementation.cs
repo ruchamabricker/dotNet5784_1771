@@ -26,6 +26,53 @@ internal class MilestoneImplementation : IMilestone
         return status;
     }
 
+    private void updatingDeadLineDates(int currentTaskId)
+    {
+        //The task we are just working on
+        var currentMilestone = _dal.Task.Read(currentTaskId);
+        TimeSpan maxTime = TimeSpan.Parse("0");
+        if (currentMilestone != null)
+        {
+            var dependenciesList = _dal.Dependency.ReadAll(dependency => dependency.DependentTask == currentTaskId);
+            //going threw all the tasks that this task depends on them
+            foreach (var dependency in _dal.Dependency.ReadAll(dependency => dependency.DependentTask == currentTaskId))
+            {
+                if (dependency != null)
+                {
+                    var taskToUpdateDates = _dal.Task.Read(dependency.DependsOnTask);
+                    if (taskToUpdateDates != null)
+                    {
+                        _dal.Task.Update(new DO.Task(
+                            taskToUpdateDates.Id,
+                            taskToUpdateDates.Description,
+                            taskToUpdateDates.Alias,
+                            taskToUpdateDates.CeratedAtDate,
+                            taskToUpdateDates.IsMilestone,
+                            taskToUpdateDates.Engineerid,
+                            taskToUpdateDates.Complexity,
+                            taskToUpdateDates.Active,
+                            taskToUpdateDates.RequiredEffortTime,
+                            taskToUpdateDates.StartDate,
+                            taskToUpdateDates.ScheduledDate,
+                            currentMilestone.DeadlineDate - taskToUpdateDates.RequiredEffortTime,
+                            taskToUpdateDates.CompleteDate,
+                            taskToUpdateDates.Deliverables,
+                            taskToUpdateDates.Remarks));
+                        Console.WriteLine("**************************************************************************");
+                        Console.WriteLine(currentMilestone.DeadlineDate);
+                        Console.WriteLine(_dal.Task.Read(taskToUpdateDates.Id));
+                        var somethingnn = _dal.Dependency.ReadAll(dependency => dependency.DependentTask == taskToUpdateDates.Id);
+                      //  var prevMilestone = _dal.Task.Read(somethingnn[0].DependsOnTask);
+
+                      //  Console.WriteLine("##########################this is the previous milestone: \n" + prevMilestone);
+                        //if (prevMilestone != null)
+                        //    updatingDeadLineDates(prevMilestone.Id);
+                    }
+                }
+            }
+        }
+    }
+
     public void Create()
     {
         _dal.Engineer.Create(new Engineer(123456789, "e1", "e1@gmail.com", (EngineerExperience)5, 250));
@@ -36,33 +83,33 @@ internal class MilestoneImplementation : IMilestone
         _dal.Engineer.Create(new Engineer(123456784, "e6", "e6@gmail.com", (EngineerExperience)4, 280));
         _dal.Engineer.Create(new Engineer(123456783, "e7", "e5@gmail.com", (EngineerExperience)5, 250));
         _dal.Engineer.Create(new Engineer(123456782, "e8", "e6@gmail.com", (EngineerExperience)4, 280));
-        _dal.Task.Create(new DO.Task(0, "t1", "t1", DateTime.Now, false, 123456789, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t2", "t2", DateTime.Now, false, 123456788, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t3", "t3", DateTime.Now, false, 123456787, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t4", "t4", DateTime.Now, false, 123456786, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t5", "t5", DateTime.Now, false, 123456785, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t6", "t6", DateTime.Now, false, 123456784, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t7", "t7", DateTime.Now, false, 123456783, (EngineerExperience)3));
-        _dal.Task.Create(new DO.Task(0, "t8", "t8", DateTime.Now, false, 123456782, (EngineerExperience)3));
+        _dal.Task.Create(new DO.Task(0, "t1", "t1", DateTime.Now, false, 123456789, (EngineerExperience)3, true, TimeSpan.Parse("20")));
+        _dal.Task.Create(new DO.Task(0, "t2", "t2", DateTime.Now, false, 123456788, (EngineerExperience)3, true, TimeSpan.Parse("30")));
+        _dal.Task.Create(new DO.Task(0, "t3", "t3", DateTime.Now, false, 123456787, (EngineerExperience)3, true, TimeSpan.Parse("21")));
+        _dal.Task.Create(new DO.Task(0, "t4", "t4", DateTime.Now, false, 123456786, (EngineerExperience)3, true, TimeSpan.Parse("14")));
+        _dal.Task.Create(new DO.Task(0, "t5", "t5", DateTime.Now, false, 123456785, (EngineerExperience)3, true, TimeSpan.Parse("7")));
+        //_dal.Task.Create(new DO.Task(0, "t6", "t6", DateTime.Now, false, 123456784, (EngineerExperience)3));
+        //_dal.Task.Create(new DO.Task(0, "t7", "t7", DateTime.Now, false, 123456783, (EngineerExperience)3));
+        //_dal.Task.Create(new DO.Task(0, "t8", "t8", DateTime.Now, false, 123456782, (EngineerExperience)3));
         _dal.Dependency.Create(new Dependency(1000, 1002, 1000));
-        _dal.Dependency.Create(new Dependency(1001, 1003, 1000));
-        _dal.Dependency.Create(new Dependency(1002, 1004, 1000));
+        _dal.Dependency.Create(new Dependency(1001, 1003, 1002));
+        _dal.Dependency.Create(new Dependency(1002, 1004, 1002));
         _dal.Dependency.Create(new Dependency(1003, 1002, 1001));
-        _dal.Dependency.Create(new Dependency(1004, 1003, 1001));
-        _dal.Dependency.Create(new Dependency(1005, 1004, 1001));
-        _dal.Dependency.Create(new Dependency(1006, 1005, 1002));
-        _dal.Dependency.Create(new Dependency(1007, 1006, 1002));
-        _dal.Dependency.Create(new Dependency(1008, 1005, 1003));
-        _dal.Dependency.Create(new Dependency(1009, 1006, 1003));
-        _dal.Dependency.Create(new Dependency(1010, 1007, 1005));
-        _dal.Dependency.Create(new Dependency(1011, 1007, 1006));
-        _dal.Dependency.Create(new Dependency(1012, 1007, 1004));
+        //_dal.Dependency.Create(new Dependency(1004, 1003, 1001));
+        //_dal.Dependency.Create(new Dependency(1005, 1004, 1001));
+        //_dal.Dependency.Create(new Dependency(1006, 1005, 1002));
+        //_dal.Dependency.Create(new Dependency(1007, 1006, 1002));
+        //_dal.Dependency.Create(new Dependency(1008, 1005, 1003));
+        //_dal.Dependency.Create(new Dependency(1009, 1006, 1003));
+        //_dal.Dependency.Create(new Dependency(1010, 1007, 1005));
+        //_dal.Dependency.Create(new Dependency(1011, 1007, 1006));
+        //_dal.Dependency.Create(new Dependency(1012, 1007, 1004));
 
 
         IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll();
 
         var firstGrouped = _dal.Dependency.ReadAll()
-          .GroupBy(d => d.DependentTask, (dependentTask, dependencies) => new
+          .GroupBy(d => d?.DependentTask, (dependentTask, dependencies) => new
           {
               Id = dependentTask,
               Dependencies = dependencies.Select(dep => dep?.DependsOnTask).ToList()
@@ -88,7 +135,7 @@ internal class MilestoneImplementation : IMilestone
             if (groupOfTasks != null)
             {
                 DO.Task task = new DO.Task(
-                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true);
+                    indexMilestone++, $"Milestone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true, null, null, true, TimeSpan.Parse("0"));
                 int idOfNewMilestone = _dal.Task.Create(task);
 
                 //creating new dependencies, so that each task dependes on the mileston that was just created
@@ -102,7 +149,7 @@ internal class MilestoneImplementation : IMilestone
                 //goes threw all the tasks that the milestone depends on them
                 foreach (var idOfTask in groupOfTasks.Ids)
                 {
-                    _dal.Dependency.Create(new DO.Dependency(0, idOfTask, idOfNewMilestone));
+                    _dal.Dependency.Create(new DO.Dependency(0, (int)idOfTask!, idOfNewMilestone));
                 }
 
             }
@@ -119,11 +166,20 @@ internal class MilestoneImplementation : IMilestone
            .Where(task => !_dal.Dependency.ReadAll().Any(dependency => dependency?.DependsOnTask == task?.Id))
            .ToList();
 
+        DateTime projectBeginDate = DateTime.Parse("1 / 1 / 2022");
+        DateTime projectEndDate = DateTime.Parse("1 / 1 / 2023");
+
         //first milestone
-        int firstMilestoneId = _dal.Task.Create(new DO.Task(0, "MileStone0", "M0", DateTime.Now, true));
+        int firstMilestoneId = _dal.Task.Create(new DO.Task(0, "MileStone0", "M0", DateTime.Now, true, null, null, true, TimeSpan.Parse("0"), DateTime.Now));
 
         //last milestone
-        int lastMilestoneId = _dal.Task.Create(new DO.Task(indexMilestone++, $"MileStone{indexMilestone}", $"M{indexMilestone}", DateTime.Now, true));
+        int lastMilestoneId = _dal.Task.Create(new DO.Task
+            (indexMilestone++,
+            $"MileStone{indexMilestone}",
+            $"M{indexMilestone}",
+            DateTime.Now,
+            true, null, null, true, TimeSpan.Parse("0"), null, null,
+            projectEndDate));
 
         //builds new dependencies for these tasks
         foreach (var task in tasksNotDependent)
@@ -132,22 +188,24 @@ internal class MilestoneImplementation : IMilestone
         }
 
         //builds new dependencies for these tasks
-        foreach (var task in tasksNotDependensOn )
+        foreach (var task in tasksNotDependensOn)
         {
             _dal.Dependency.Create(new DO.Dependency(0, lastMilestoneId, task!.Id));
         }
 
-
-        Console.WriteLine("ALL TASKS AND MILESTONE: ");
-        foreach (var task in _dal.Task.ReadAll())
-            Console.WriteLine(task);
-        Console.WriteLine("ALL DEPENDENCIES: ");
-        foreach (var task in _dal.Dependency.ReadAll())
-            Console.WriteLine(task);
-
         //create dates for all tasks:
 
-        //I have all the dependencies, and their I know what task is dependent on what task....
+        updatingDeadLineDates(lastMilestoneId);
+
+
+
+        //Console.WriteLine("ALL TASKS AND MILESTONE: ");
+        //foreach (var task in _dal.Task.ReadAll())
+        //    Console.WriteLine(task);
+        //Console.WriteLine("ALL DEPENDENCIES: ");
+        //foreach (var task in _dal.Dependency.ReadAll())
+        //    Console.WriteLine(task);
+
 
     }
 
