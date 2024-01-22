@@ -67,6 +67,8 @@ internal class MilestoneImplementation : IMilestone
                       //  Console.WriteLine("##########################this is the previous milestone: \n" + prevMilestone);
                         //if (prevMilestone != null)
                         //    updatingDeadLineDates(prevMilestone.Id);
+
+                        //to do here a new list of all the milestones that we should go back to, in the recusive function.....
                     }
                 }
             }
@@ -196,6 +198,7 @@ internal class MilestoneImplementation : IMilestone
         //create dates for all tasks:
 
         updatingDeadLineDates(lastMilestoneId);
+
 
 
 

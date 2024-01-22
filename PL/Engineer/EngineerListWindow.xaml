@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--label for combobox-->
-            <Label Content="Label" Grid.Column="0" HorizontalAlignment="Left" Margin="33,0,0,0" VerticalAlignment="Center"/>
+            <Label Content="search by level" Grid.Column="0" HorizontalAlignment="Left" Margin="33,0,0,0" VerticalAlignment="Center"/>
             <!--ComboBox for choosing how to search-->
             <ComboBox ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
           SelectedValue="{Binding Path=EngineerLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -38,7 +38,7 @@
             </ListView.View>
         </ListView>
         <!--Button to add a new engineer???-->
-        <Button Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}"
+        <Button Content="Add new engineer"
                 Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="handleNewEngineer_Click" />
     </Grid>
 </Window>

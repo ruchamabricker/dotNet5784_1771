@@ -1,0 +1,39 @@
+﻿<Window x:Class="PL.Task.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Task"
+        mc:Ignorable="d"
+        Title="TaskWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="261*"/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Created at:" HorizontalAlignment="Left" Height="31" Margin="120,114,0,0" VerticalAlignment="Top" Width="93"/>
+        <Label Content="Status" HorizontalAlignment="Left" Height="31" Margin="120,150,0,0" VerticalAlignment="Top" Width="49"/>
+        <Label Content="Required effort time" HorizontalAlignment="Left" Height="31" Margin="120,186,0,0" VerticalAlignment="Top" Width="126"/>
+        <Label Content="Depndencies list" HorizontalAlignment="Left" Height="31" Margin="120,222,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Milestone" HorizontalAlignment="Left" Height="31" Margin="181,3,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
+        <Label Content="Baseline start date" HorizontalAlignment="Left" Height="31" Margin="181,34,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
+        <Label Content="Start date" HorizontalAlignment="Left" Height="31" Margin="181,65,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
+        <Label Content="Forcast date" HorizontalAlignment="Left" Height="31" Margin="181,96,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
+        <Label Content="Deadline date" HorizontalAlignment="Left" Height="31" Margin="181,127,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
+        <Label Content="Description" HorizontalAlignment="Left" Height="31" Margin="120,42,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Alias" HorizontalAlignment="Left" Height="31" Margin="120,78,0,0" VerticalAlignment="Top" Width="49"/>
+        <Label Content="Id" HorizontalAlignment="Left" Height="31" Margin="120,11,0,0" VerticalAlignment="Top" Width="49"/>
+        <TextBox HorizontalAlignment="Left" Height="16" Margin="256,18,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+        <TextBox HorizontalAlignment="Left" Height="16" Margin="256,50,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+        <TextBox HorizontalAlignment="Left" Height="16" Margin="256,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="256,223,422,101" Grid.ColumnSpan="2"/>
+        <DatePicker HorizontalAlignment="Left" Height="31" Margin="256,114,0,0" VerticalAlignment="Top" Width="122" Grid.ColumnSpan="2"/>
+        <ComboBox HorizontalAlignment="Left" Height="23" Margin="256,150,0,0" VerticalAlignment="Top" Width="122" Grid.ColumnSpan="2"/>
+        <TextBox HorizontalAlignment="Left" Height="16" Margin="256,194,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+        <Label Content="Remarks" HorizontalAlignment="Left" Height="31" Margin="181,247,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
+        <Label Content="Complete date" HorizontalAlignment="Left" Height="30" Margin="181,166,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
+        <Label Content="Deliverables" HorizontalAlignment="Left" Height="31" Margin="181,205,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
+
+    </Grid>
+</Window>

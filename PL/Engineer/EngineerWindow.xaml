@@ -10,78 +10,92 @@
         DataContext="{Binding CurrentEngineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
     <Window.Resources>
         <converters:ConvertIdToContent x:Key="ConvertIdToContent" />
+        <DataTemplate x:Key="MyDataTemplate" DataType="local:MyData">
+            <Grid>
+                <TextBox TextWrapping="Wrap" Margin="276,36,311,519"
+                 Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                 IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnableKey}}" />
+                <TextBox TextWrapping="Wrap" 
+                 Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,126,311,429"/>
+                <TextBox TextWrapping="Wrap" 
+                 Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,216,311,344"/>
+                <ComboBox Margin="276,312,311,256"
+                  ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                  SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                <TextBox TextWrapping="Wrap"
+                 Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                 Margin="276,386,311,170"/>
+                <Label Content="ID" Margin="206,62,529,519" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Label Content="Name" Margin="206,152,524,429" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Label Content="Email" Margin="206,237,529,344" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Label Content="Level" Margin="206,312,529,278" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Label Content="Cost" Margin="206,386,524,195" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
 
 
     <!--Extrnal Grid-->
     <Grid>
-        <TextBox TextWrapping="Wrap" Margin="276,36,311,519"
-                 Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                 IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnableKey}}" />
-        <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,126,311,429"/>
-        <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,216,311,344"/>
-        <ComboBox Margin="276,312,311,256"
-                  ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
-                  SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-        <TextBox TextWrapping="Wrap"
-                 Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,386,311,170"/>
-        <Label Content="ID" Margin="206,62,529,519" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label Content="Name" Margin="206,152,524,429" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label Content="Email" Margin="206,237,529,344" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label Content="Level" Margin="206,312,529,278" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label Content="Cost" Margin="206,386,524,195" RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Button Margin="317,527,352,51" Click="SaveButton_Click"></Button>
 
+        
+        <StackPanel>
+            <ListBox ItemsSource="{Binding}"
+ItemTemplate="{StaticResource MyDataTemplate}"
+HorizontalContentAlignment="Stretch" />
+            <Button Margin="317,527,352,51" Click="SaveButton_Click" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"></Button>
+            <ComboBox Width="120"/>
+        </StackPanel>
     </Grid>
+
+
+
 </Window>
