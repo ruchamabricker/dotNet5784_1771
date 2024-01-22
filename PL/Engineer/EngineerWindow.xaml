@@ -16,17 +16,22 @@
                  Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                  IsEnabled="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnableKey}}" />
                 <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,126,311,429"/>
+                         Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                         Margin="276,126,311,429"/>
                 <TextBox TextWrapping="Wrap" 
-                 Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,216,311,344"/>
+                         Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                         Margin="276,216,311,344"/>
                 <ComboBox Margin="276,312,311,256"
-                  ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
-                  SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                          ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                          SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
                 <TextBox TextWrapping="Wrap"
-                 Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
-                 Margin="276,386,311,170"/>
+                         Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                         Margin="276,386,311,170"/>
+                <TextBox TextWrapping="Wrap"
+                         Text="{Binding Task.Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                         Margin="276,480,311,60"
+                         IsEnabled="False"/>
+
                 <Label Content="ID" Margin="206,62,529,519" RenderTransformOrigin="0.5,0.5">
                     <Label.RenderTransform>
                         <TransformGroup>
@@ -77,6 +82,19 @@
                         </TransformGroup>
                     </Label.RenderTransform>
                 </Label>
+                <Label Content="Task" Margin="206,430,529,120" RenderTransformOrigin="0.5,0.5">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Button Margin="317,527,352,51" 
+                        Click="SaveButton_Click" 
+                        Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"></Button>
             </Grid>
         </DataTemplate>
     </Window.Resources>
@@ -89,13 +107,14 @@
         
         <StackPanel>
             <ListBox ItemsSource="{Binding}"
-ItemTemplate="{StaticResource MyDataTemplate}"
-HorizontalContentAlignment="Stretch" />
-            <Button Margin="317,527,352,51" Click="SaveButton_Click" Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"></Button>
+                     ItemTemplate="{StaticResource MyDataTemplate}"
+                     HorizontalContentAlignment="Stretch" />
+           
             <ComboBox Width="120"/>
         </StackPanel>
     </Grid>
 
 
-
+
+
 </Window>

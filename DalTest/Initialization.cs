@@ -13,13 +13,15 @@ public static class Initialization
 {
     private static IDal? s_dal; //stage 2
 
-
     private static readonly Random s_rand = new();
+
+
     /// <summary>
     /// the function creates 10 tasks
     /// </summary>
     private static void createTasks()
     {
+        s_dal!.Task.Reset();
         string[] taskAlias = new string[10]
 {
             "Fix a bug",
@@ -72,6 +74,7 @@ public static class Initialization
     /// </summary>
     private static void createEngineers()
     {
+        s_dal!.Engineer.Reset();
         string[] arrNames = {
   "Ethan Cohen",
   "Levi Goldberg",
@@ -136,6 +139,7 @@ public static class Initialization
     /// </summary>
     private static void createdependencies()
     {
+        s_dal!.Dependency.Reset();
         for (int i = 0; i < 25; i++)
         {
             //s_dalDependency!.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));

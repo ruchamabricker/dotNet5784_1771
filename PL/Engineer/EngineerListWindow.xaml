@@ -28,7 +28,8 @@
           SelectedValue="{Binding Path=EngineerLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
           SelectionChanged="cbEngineerExperience_SelectionChanged"/>
-        </Grid>
+
+        </Grid>
         <ListView x:Name="mouse" Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" 
                   MouseDoubleClick="engineerClicked_MouseDoubleClick">
             <ListView.View>

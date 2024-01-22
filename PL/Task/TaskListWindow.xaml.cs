@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Engineer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -51,5 +52,17 @@ public partial class TaskListWindow : Window
                 s_bl?.task.ReadAll(item => item.ComplexityLevel == TaskLevel);
             TaskList = (temp == null) ? new() : new(temp!);
         }
+    }
+
+    private void taskClicked_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        BO.Task? taskInList = (sender as ListView)?.SelectedItem as BO.Task;
+        if (taskInList != null)
+            new TaskWindow(taskInList.Id).ShowDialog();
+    }
+
+    private void handleNewTask_Click(object sender, RoutedEventArgs e)
+    {
+        new TaskWindow().ShowDialog();
     }
 }

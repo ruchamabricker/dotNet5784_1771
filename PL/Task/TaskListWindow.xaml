@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
         Title="TaskListWindow" Height="450" Width="800"
-            DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         SelectionChanged="cbTaskLevel_SelectionChanged" />
         </Grid>
         <ListView x:Name="mouse" Margin="5" Grid.Row="1" ItemsSource="{Binding TaskList}" 
-                  >
+                  MouseDoubleClick="taskClicked_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -37,6 +37,7 @@
         </ListView>
         <!--Button to add a new task-->
         <Button Content="Add new task"
+                Click="handleNewTask_Click"
                 Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" />
     </Grid>
 </Window>
