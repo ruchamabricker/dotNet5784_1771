@@ -35,6 +35,10 @@ namespace PL.Task
         DependencyProperty.Register("CurrentTask", typeof(ObservableCollection<BO.Task>),
         typeof(TaskWindow), new PropertyMetadata(null));
 
+        public void addDependency_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -80,11 +84,15 @@ namespace PL.Task
         public TaskWindow(int id = 0)
         {
             InitializeComponent();
+            var engineers = s_bl.Engineer.ReadAll(engineer=>engineer.Task==null);
+
             BO.Task task;
             if (id == 0)
             {
                 STATE = 0;
                 task = new BO.Task();
+                task.Engineer = new BO.EngineerInTask();
+
             }
             else
             {

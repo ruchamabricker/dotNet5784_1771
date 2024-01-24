@@ -12,41 +12,45 @@
         <converters:ConvertIdToContent x:Key="ConvertIdToContent" />
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="0,6,0,-6">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="139*"/>
-            <ColumnDefinition Width="261*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Created at:" HorizontalAlignment="Left" Height="31" Margin="120,114,0,0" VerticalAlignment="Top" Width="93"/>
-        <Label Content="Status" HorizontalAlignment="Left" Height="31" Margin="120,150,0,0" VerticalAlignment="Top" Width="49"/>
-        <Label Content="Required effort time" HorizontalAlignment="Left" Height="31" Margin="120,186,0,0" VerticalAlignment="Top" Width="126"/>
-        <Label Content="Depndencies list" HorizontalAlignment="Left" Height="31" Margin="120,222,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Created at:" HorizontalAlignment="Left" Height="30" Margin="74,114,0,0" VerticalAlignment="Top" Width="92" RenderTransformOrigin="1.196,0.568"/>
+        <Label Content="Status" HorizontalAlignment="Left" Height="30" Margin="74,150,0,0" VerticalAlignment="Top" Width="48"/>
+        <Label Content="Required effort time" HorizontalAlignment="Left" Height="30" Margin="74,186,0,0" VerticalAlignment="Top" Width="126"/>
+        <Label Content="Depndencies list" HorizontalAlignment="Left" Height="30" Margin="74,222,0,0" VerticalAlignment="Top" Width="110"/>
         <Label Content="Milestone" HorizontalAlignment="Left" Height="31" Margin="181,3,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
         <Label Content="Baseline start date" HorizontalAlignment="Left" Height="32" Margin="181,42,0,0" VerticalAlignment="Top" Width="113" Grid.Column="1"/>
         <Label Content="Start date" HorizontalAlignment="Left" Height="31" Margin="181,86,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
         <Label Content="Forcast date" HorizontalAlignment="Left" Height="31" Margin="181,127,0,0" VerticalAlignment="Top" Width="80" Grid.Column="1"/>
         <Label Content="Deadline date" HorizontalAlignment="Left" Height="32" Margin="181,170,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
-        <Label Content="Description" HorizontalAlignment="Left" Height="31" Margin="120,42,0,0" VerticalAlignment="Top" Width="111"/>
-        <Label Content="Alias" HorizontalAlignment="Left" Height="31" Margin="120,78,0,0" VerticalAlignment="Top" Width="49"/>
-        <Label Content="Id" HorizontalAlignment="Left" Height="31" Margin="120,11,0,0" VerticalAlignment="Top" Width="49"/>
+        <Label Content="Description" HorizontalAlignment="Left" Height="30" Margin="74,42,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Alias" HorizontalAlignment="Left" Height="30" Margin="74,78,0,0" VerticalAlignment="Top" Width="48"/>
+        <Label Content="Id" HorizontalAlignment="Left" Height="32" Margin="74,10,0,0" VerticalAlignment="Top" Width="48"/>
         <TextBox
             Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="16" Margin="256,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+            HorizontalAlignment="Left" Height="16" Margin="7,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
         <TextBox
             Text="{Binding Description, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="16" Margin="256,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+            HorizontalAlignment="Left" Height="16" Margin="7,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
         <TextBox
             Text="{Binding Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="16" Margin="256,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="256,223,422,101" Grid.ColumnSpan="2"/>
+            HorizontalAlignment="Left" Height="16" Margin="7,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
+        <ListView ItemsSource="{Binding DependenciesList}" Height="100"/>
+        <Button Content="Add dependency" Height="30" Width="126" Click="addDependency_Click"/>
         <DatePicker
             Text="{Binding CreatedAtDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="31" Margin="256,114,0,0" VerticalAlignment="Top" Width="122" Grid.ColumnSpan="2"/>
-        <ComboBox HorizontalAlignment="Left" Height="23" Margin="256,150,0,0" VerticalAlignment="Top" Width="122" Grid.ColumnSpan="2"/>
+           IsEnabled="False" HorizontalAlignment="Left" Height="31" Margin="7,114,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+        <ComboBox 
+              ItemsSource="{Binding Source={StaticResource TaskCollectionKey}}"
+              SelectedValue="{Binding Status, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+              HorizontalAlignment="Left" Height="23" Margin="7,150,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <TextBox
 			Text="{Binding CreatedAtDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="16" Margin="256,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.ColumnSpan="2"/>
+			HorizontalAlignment="Left" Height="16" Margin="7,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
         <Label Content="Remarks" HorizontalAlignment="Left" Height="31" Margin="181,302,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
         <Label Content="Complete date" HorizontalAlignment="Left" Height="30" Margin="181,217,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
         <Label Content="Deliverables" HorizontalAlignment="Left" Height="31" Margin="181,260,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
@@ -66,19 +70,19 @@
 			Text="{Binding CompleteDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="31" Margin="319,42,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <TextBox 
-			Text="{Binding Deliverables, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="16" Margin="319,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
-		<TextBox
 			Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			HorizontalAlignment="Left" Height="16" Margin="319,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
+        <TextBox
+			Text="{Binding Deliverables, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
             HorizontalAlignment="Left" Height="16" Margin="319,268,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
         <TextBox
-			Text="{Binding Engineer, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="16" Margin="319,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
-		<Button Content="Add new task"
-			   Click="SaveButton_Click"
-			   Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" />
-		
-		<Button Margin="317,527,352,51" 
-         Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"/>
+			Text="{Binding Engineer.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			HorizontalAlignment="Left" Height="16" Margin="319,350,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
+        <Button Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"
+			   Click="SaveButton_Click" HorizontalAlignment="Left" Width="100" Grid.Column="1" Margin="40,348,0,33" />
+        <Label Content="Engineer" HorizontalAlignment="Left" Height="31" Margin="181,340,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
+        <TextBox
+            Text="{Binding Milestone.Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+            HorizontalAlignment="Left" Height="16" Margin="319,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
     </Grid>
 </Window>

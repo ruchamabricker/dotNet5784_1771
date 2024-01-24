@@ -40,7 +40,7 @@ internal class TaskImplementation : ITask
             engineer = new BO.EngineerInTask()
             {
                 Id = (int)doTask.Engineerid,
-                Name = _dal.Engineer.Read(doTask.Id)?.Name ?? string.Empty
+                Name = _dal.Engineer.Read((int)doTask.Engineerid)!.Name
             };
         }
         else

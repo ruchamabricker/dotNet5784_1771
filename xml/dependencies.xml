@@ -25,4 +25,9 @@
     <DependentTask>1050</DependentTask>
     <DependsOnTask>1052</DependsOnTask>
   </Dependency>
+  <Dependency>
+    <Id>141</Id>
+    <DependentTask>1050</DependentTask>
+    <DependsOnTask>1052</DependsOnTask>
+  </Dependency>
 </ArrayOfDependency>
