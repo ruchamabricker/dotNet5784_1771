@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="TaskWindow" Height="450" Width="800"
         DataContext="{Binding CurrentTask, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
+
     <Window.Resources>
         <converters:ConvertIdToContent x:Key="ConvertIdToContent" />
     </Window.Resources>
@@ -39,8 +40,9 @@
         <TextBox
             Text="{Binding Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
             HorizontalAlignment="Left" Height="16" Margin="7,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
-        <ListView ItemsSource="{Binding DependenciesList}" Height="100"/>
+        <ListView ItemsSource="{Binding DependenciesList}" Margin="0,187,0,101"/>
         <Button Content="Add dependency" Height="30" Width="126" Click="addDependency_Click"/>
+        <TextBox Text="New Dependency" IsEnabled="{Binding IsTextBoxEnabled}" Margin="32,241,32,158" />
         <DatePicker
             Text="{Binding CreatedAtDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
            IsEnabled="False" HorizontalAlignment="Left" Height="31" Margin="7,114,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
