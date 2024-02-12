@@ -23,7 +23,6 @@ namespace PL.Task
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private int STATE;
-        public bool IsTextBoxEnabled { get; set; }
 
         public ObservableCollection<BO.Task> CurrentTask
         {
@@ -37,7 +36,7 @@ namespace PL.Task
 
         public void addDependency_Click(object sender, RoutedEventArgs e)
         {
-            IsTextBoxEnabled = !IsTextBoxEnabled;
+            //implement here saver of the dependency that was typed in....
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -80,15 +79,10 @@ namespace PL.Task
 
         }
 
-        private void ToggleTextBox()
-        {
-            IsTextBoxEnabled = !IsTextBoxEnabled;
-        }
+
         public TaskWindow(int id = 0)
         {
             InitializeComponent();
-
-            IsTextBoxEnabled = false;
 
             var engineers = s_bl.Engineer.ReadAll(engineer=>engineer.Task==null);
 
@@ -113,6 +107,11 @@ namespace PL.Task
                 }
             }
             CurrentTask = new ObservableCollection<BO.Task> { task };
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }
