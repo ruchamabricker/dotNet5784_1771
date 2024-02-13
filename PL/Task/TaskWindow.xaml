@@ -57,19 +57,19 @@
         <Label Content="Deliverables" HorizontalAlignment="Left" Height="31" Margin="186,235,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
         <DatePicker 
 			Text="{Binding BaselineStartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="31" Margin="324,191,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+			HorizontalAlignment="Left" Height="31" Margin="344,103,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker
 			Text="{Binding StartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="31" Margin="324,146,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+			HorizontalAlignment="Left" Height="31" Margin="344,58,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker 
 			Text="{Binding ForecastDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="31" Margin="324,102,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+			HorizontalAlignment="Left" Height="31" Margin="344,14,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker 
 			Text="{Binding DeadlineDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="31" Margin="324,61,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+			HorizontalAlignment="Left" Height="31" Margin="344,149,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker
 			Text="{Binding CompleteDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-			HorizontalAlignment="Left" Height="31" Margin="324,17,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+			HorizontalAlignment="Left" Height="31" Margin="344,194,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <TextBox 
 			Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="16" Margin="324,285,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>

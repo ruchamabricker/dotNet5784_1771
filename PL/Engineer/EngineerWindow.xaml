@@ -92,7 +92,7 @@
                         </TransformGroup>
                     </Label.RenderTransform>
                 </Label>
-                <Button Margin="317,527,352,51" 
+                <Button Margin="317,527,352,20" 
                         Click="SaveButton_Click" 
                         Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"></Button>
             </Grid>
@@ -103,13 +103,10 @@
 
     <!--Extrnal Grid-->
     <Grid>
-
-        
         <StackPanel>
             <ListBox ItemsSource="{Binding}"
                      ItemTemplate="{StaticResource MyDataTemplate}"
                      HorizontalContentAlignment="Stretch" />
-           
             <ComboBox Width="120"/>
         </StackPanel>
     </Grid>

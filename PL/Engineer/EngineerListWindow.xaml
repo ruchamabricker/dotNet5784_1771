@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.Engineer.EngineerListWindow"
+﻿<!--<Window x:Class="PL.Engineer.EngineerListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,22 +8,22 @@
         Title="EngineerListWindow" Height="450" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
-    <!--External Grid-->
+    --><!--External Grid--><!--
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--Internal, Upper Grid-->
+        --><!--Internal, Upper Grid--><!--
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--label for combobox-->
+            --><!--label for combobox--><!--
             <Label Content="search by level" Grid.Column="0" HorizontalAlignment="Left" Margin="33,0,0,0" VerticalAlignment="Center"/>
-            <!--ComboBox for choosing how to search-->
+            --><!--ComboBox for choosing how to search--><!--
             <ComboBox ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
           SelectedValue="{Binding Path=EngineerLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -38,8 +38,50 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <!--Button to add a new engineer???-->
+        --><!--Button to add a new engineer???--><!--
         <Button Content="Add new engineer"
                 Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="handleNewEngineer_Click" />
+    </Grid>
+</Window>-->
+<Window x:Class="PL.Engineer.EngineerListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Engineer"
+        mc:Ignorable="d"
+        Title="Engineer List" Height="450" Width="800"
+        Background="#F1F1F1"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid Background="#EAEAEA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Search by Level" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource EngineerCollectionKey}}"
+                      SelectedValue="{Binding Path=EngineerLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Grid.Column="1" VerticalAlignment="Center"/>
+        </Grid>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding EngineerList}" Margin="5"
+                  MouseDoubleClick="engineerClicked_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Engineer Details"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Content="Add New Engineer" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="150"
+                Click="handleNewEngineer_Click" Background="#4CAF50" Foreground="White"/>
+
     </Grid>
 </Window>
