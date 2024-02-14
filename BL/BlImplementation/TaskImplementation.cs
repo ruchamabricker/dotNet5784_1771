@@ -28,20 +28,27 @@ internal class TaskImplementation : ITask
         if (tasksInList == null) return null;
         BO.TaskInList? task = tasksInList.Where(task => task != null && _dal.Task.Read(task.Id)!.IsMilestone == true).FirstOrDefault();
         if (task == null) return null;
-        return new BO.MilestoneInTask() { Id = task.Id, Alias = task.Alias };
+        return new BO.MilestoneInTask() { Id = task.Id, Alias = task.Alias! };
 
     }
-
     private BO.EngineerInTask? calculateEngineer(DO.Task doTask)
     {
         BO.EngineerInTask engineer;
         if (doTask.Engineerid != null)
         {
-            engineer = new BO.EngineerInTask()
+            try
             {
-                Id = (int)doTask.Engineerid,
-                Name = _dal.Engineer.Read((int)doTask.Engineerid)!.Name
-            };
+                engineer = new BO.EngineerInTask()
+                {
+                    Id = (int)doTask.Engineerid,
+                    Name = _dal.Engineer.Read((int)doTask.Engineerid)!.Name
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new BO.BlDoesNotExistException("There is no such engineer" + ex.Message);
+            }
+
         }
         else
         {
@@ -99,14 +106,15 @@ internal class TaskImplementation : ITask
             task.Remarks);
         try
         {
+            int id = _dal.Task.Create(doTask);
+
             if (task.DependenciesList != null)
                 foreach (var dependency in task.DependenciesList)
                 {
                     if (dependency != null)
-                        _dal.Dependency.Create(new DO.Dependency(0, task.Id, dependency.Id));
+                        _dal.Dependency.Create(new DO.Dependency(0, id, dependency.Id));
                 }
 
-            int id = _dal.Task.Create(doTask);
             return id;
         }
         catch (DO.DalAlreadyExistsException ex)
@@ -185,7 +193,7 @@ internal class TaskImplementation : ITask
                 Deliverables = doTask.Deliverables,
                 Remarks = doTask.Remarks,
                 Engineer = calculateEngineer(doTask),
-                ComplexityLevel = (BO.EngineerExperience)doTask.Complexity
+                ComplexityLevel = (BO.EngineerExperience)doTask.Complexity!
             };
         });
         if (filter == null)

@@ -7,9 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="141*"/>
+            <RowDefinition Height="76*"/>
+        </Grid.RowDefinitions>
         <!--will show all engineers-->
         <Button Content="Handle Engineers" HorizontalAlignment="Left" Height="89" Margin="54,68,0,0" VerticalAlignment="Top" Width="689" Click="btnEngineers_Click"/>
-        <Button Content="Handle Tasks" HorizontalAlignment="Center" Height="89" VerticalAlignment="Center" Width="688" Click="btnTasks_Click"/>
-        <Button Content="Data Initialization" HorizontalAlignment="Left" Height="89" Margin="54,295,0,0" VerticalAlignment="Top" Width="689" Click="btnDataInitialization_Click"/>
+        <Button Content="Handle Tasks" HorizontalAlignment="Left" Height="89" VerticalAlignment="Top" Width="688" Click="btnTasks_Click" Margin="54,173,0,0"/>
+        <Button Content="Data Initialization" HorizontalAlignment="Center" Height="89" Margin="0,27,0,0" VerticalAlignment="Top" Width="684" Click="btnDataInitialization_Click" Grid.Row="1"/>
     </Grid>
 </Window>

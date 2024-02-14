@@ -33,12 +33,6 @@ public partial class EngineerListWindow : Window
     DependencyProperty.Register("EngineerList", typeof(ObservableCollection<BO.Engineer>),
     typeof(EngineerListWindow), new PropertyMetadata(null));
 
-    //private void cbEngineerExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    var temp = EngineerLevel == BO.EngineerExperience.None ? s_bl?.Engineer.ReadAll() :
-    //    s_bl?.Engineer.ReadAll(item => item.Level == EngineerLevel);
-    //    EngineerList = (temp == null) ? new() : new(temp!);
-    //}
     private void cbEngineerExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var comboBox = sender as ComboBox;

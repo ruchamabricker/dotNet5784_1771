@@ -11,7 +11,7 @@ using System.Xml.Linq;
 /// </summary>
 public static class Initialization
 {
-    private static IDal? s_dal; //stage 2
+    private static IDal? s_dal;
 
     private static readonly Random s_rand = new();
 
@@ -49,7 +49,7 @@ public static class Initialization
             "Investigate and fix issues reported by users",
             "Create detailed plans and requirements for development tasks"
         };
-
+        
         for (int i = 0; i < 10; i++)
         {
             int randNumber = s_rand.Next(0, 10);
@@ -128,7 +128,6 @@ public static class Initialization
             EngineerExperience engineerExperience = (EngineerExperience)(s_rand.Next(0, 3));
             double cost = s_rand.Next(120, 590);
 
-            //s_dalEngineer!.Create(new Engineer(id, name, email, engineerExperience, cost));
             s_dal!.Engineer.Create(new Engineer(id, name, email, engineerExperience, cost));
 
         }
@@ -142,7 +141,6 @@ public static class Initialization
         s_dal!.Dependency.Reset();
         for (int i = 0; i < 25; i++)
         {
-            //s_dalDependency!.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));
             s_dal!.Dependency.Create(new Dependency(0, s_rand.Next(0, 10), s_rand.Next(0, 10)));
         }
     }
@@ -155,17 +153,9 @@ public static class Initialization
     /// <exception cref="NullReferenceException"></exception>
     /// 
 
-
-    //public static void DO(ITask? dalTask, IDependency? dalDependency, IEngineer? dalEngineer)
-    //  public static void Do(IDal dal) //stage 2
     public static void Do() //stage 4
 
     {
-        //s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
-
-        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
         s_dal = Factory.Get; //stage 4
 
         createEngineers();

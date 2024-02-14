@@ -39,9 +39,9 @@
         <TextBox
             Text="{Binding Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
             HorizontalAlignment="Left" Height="16" Margin="7,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Grid.Column="1"/>
-        <ListView ItemsSource="{Binding DependenciesList}" Margin="9,217,431,133" Grid.Column="1"/>
-        <Button Content="Add dependency" Height="30" Width="126" Click="addDependency_Click" Margin="7,358,467,46" RenderTransformOrigin="0.513,-1.833" Grid.Column="1"/>
-        <TextBox x:Name="dependencyTextBox" Margin="7,315,457,84" Grid.Column="1" />
+        <ListView ItemsSource="{Binding DependenciesList}" Margin="9,217,431,154" Grid.Column="1"/>
+        <Button Content="Add dependency" Click="addDependency_Click" Margin="2,335,446,52" RenderTransformOrigin="0.513,-1.833" Grid.Column="1"/>
+        <TextBox x:Name="dependencyTextBox" Margin="10,285,454,114" Grid.Column="1" />
 
         <DatePicker
             Text="{Binding CreatedAtDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
@@ -57,19 +57,20 @@
         <Label Content="Complete date" HorizontalAlignment="Left" Height="30" Margin="186,192,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
         <Label Content="Deliverables" HorizontalAlignment="Left" Height="31" Margin="186,235,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
         <DatePicker 
-			Text="{Binding BaselineStartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			SelectedDate="{Binding BaselineStartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="31" Margin="344,17,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
+
         <DatePicker
-			Text="{Binding StartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			SelectedDate="{Binding StartDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="31" Margin="344,58,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker 
-			Text="{Binding ForecastDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			SelectedDate="{Binding ForecastDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="32" Margin="344,102,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker 
-			Text="{Binding DeadlineDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			SelectedDate="{Binding DeadlineDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="31" Margin="344,149,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <DatePicker
-			Text="{Binding CompleteDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+			SelectedDate="{Binding CompleteDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
 			HorizontalAlignment="Left" Height="31" Margin="344,194,0,0" VerticalAlignment="Top" Width="122" Grid.Column="1"/>
         <TextBox 
 			Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
@@ -83,6 +84,6 @@
         <Button Content="{Binding Id, Mode=OneTime, Converter={StaticResource ConvertIdToContent}}"
 			   Click="SaveButton_Click" HorizontalAlignment="Left" Width="100" Grid.Column="1" Margin="276,361,0,20" />
         <Label Content="Engineer" HorizontalAlignment="Left" Height="31" Margin="186,315,0,0" VerticalAlignment="Top" Width="90" Grid.Column="1"/>
-        <Label Content="Add new depndency" HorizontalAlignment="Left" Height="30" Margin="74,311,0,0" VerticalAlignment="Top" Width="128" Grid.ColumnSpan="2"/>
+        <Label Content="Add new depndency" HorizontalAlignment="Left" Height="30" Margin="72,283,0,0" VerticalAlignment="Top" Width="128"/>
     </Grid>
 </Window>

@@ -40,6 +40,16 @@ public partial class TaskListWindow : Window
         var temp = s_bl?.task.ReadAll();
         TaskList = temp == null ? new() : new(temp!);
 
+        Activated += TaskListWindow_Activated!;
+
+    }
+
+    private void TaskListWindow_Activated(object sender, EventArgs e)
+    {
+        // Execute the query and update the list
+        var temp = TaskLevel == BO.EngineerExperience.None ? s_bl?.task.ReadAll() :
+            s_bl?.task.ReadAll(item => item.ComplexityLevel == TaskLevel);
+        TaskList = (temp == null) ? new() : new(temp!);
     }
 
     private void cbTaskLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
